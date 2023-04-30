@@ -2,6 +2,7 @@
 
 namespace Startwind\Forrest\CliCommand;
 
+use GuzzleHttp\Client;
 use Startwind\Forrest\Repository\Loader\YamlLoader;
 use Startwind\Forrest\Repository\RepositoryCollection;
 use Symfony\Component\Console\Command\Command;
@@ -27,7 +28,9 @@ class ForrestCommand extends Command
 
     protected function initRepositories(): void
     {
-        $yamlLoader = new YamlLoader(self::DEFAULT_CONFIG_FILE);
+        $client = new Client();
+
+        $yamlLoader = new YamlLoader(self::DEFAULT_CONFIG_FILE, $client);
 
         $this->repositoryCollection = new RepositoryCollection();
         $yamlLoader->enrich($this->repositoryCollection);

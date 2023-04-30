@@ -5,11 +5,13 @@ namespace Startwind\Forrest\Adapter;
 use GuzzleHttp\Client;
 use Startwind\Forrest\Command\Command;
 
-class GistAdapter implements Adapter
+class GistAdapter implements Adapter, ClientAwareAdapter
 {
     const TYPE = 'gist';
 
     const GIST_URL = 'https://api.github.com/users/%s/gists';
+
+    private Client $client;
 
     private string $username;
     private string $prefix;
@@ -20,6 +22,11 @@ class GistAdapter implements Adapter
         $this->prefix = $prefix;
     }
 
+    public function setClient(Client $client)
+    {
+        $this->client = $client;
+    }
+
     public function getType(): string
     {
         return self::TYPE;
@@ -27,13 +34,11 @@ class GistAdapter implements Adapter
 
     private function getRawGists(string $username)
     {
-        $client = new Client();
-        $response = $client->get(sprintf(self::GIST_URL, $username));
-
+        $response = $this->client->get(sprintf(self::GIST_URL, $username));
         return json_decode((string)$response->getBody(), true);
     }
 
-    public function getCommands(): array
+    public function getCommands($withActualCommand = true): array
     {
         $gists = $this->getRawGists($this->username);
 
@@ -45,6 +50,7 @@ class GistAdapter implements Adapter
                     $name = $file['filename'];
                     $description = str_replace($this->prefix, '', $gist['description']);
 
+
                     $commands[] = new Command($name, $description, '');
                 }
             }
@@ -52,6 +58,17 @@ class GistAdapter implements Adapter
 
         return $commands;
     }
+
+    /**
+     * Return the raw content of the given gist.
+     */
+    private function getRawContent(string $rawUrl): string
+    {
+        $client = new Client();
+        $response = $client->get($rawUrl);
+        return (string)$response->getBody();
+    }
+
 
     static public function fromConfigArray(array $config): GistAdapter
     {
