@@ -1,0 +1,13 @@
+{
+  "minimum-stability": "dev",
+  "autoload": {
+    "psr-4": {
+      "Startwind\\Forrest\\": "src/"
+    }
+  },
+  "require": {
+    "symfony/console": "^6.2",
+    "symfony/yaml": "^6.2",
+    "guzzlehttp/guzzle": "^7.5"
+  }
+}

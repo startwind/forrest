@@ -1,0 +1,15 @@
+{
+  "main": "bin/forrest.php",
+  "blacklist": [
+    "docs",
+    ".gitignore",
+    "readme.md",
+    ".github",
+    "readme.md"
+  ],
+  "finder": [
+    {
+      "in": "."
+    }
+  ]
+}

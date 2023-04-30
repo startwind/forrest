@@ -1,0 +1,64 @@
+name: Release new Version
+
+on:
+  release:
+    types: [ created ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Get the version
+        id: get_version
+        run: echo ::set-output name=VERSION::${GITHUB_REF#refs/tags/}
+
+      - name: echo release
+        run: echo $RELEASE
+        env:
+          RELEASE: ${{ steps.get_version.outputs.VERSION }}
+
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Find and Replace
+        uses: jacobtomlinson/gha-find-replace@master
+        with:
+          exclude: "vendor/"
+          find: "##FORREST_VERSION##"
+          replace: ${{ steps.get_version.outputs.VERSION }}
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.1'
+          ini-values: phar.readonly=0
+          tools: composer
+          coverage: none
+
+      - name: Install Composer dependencies
+        uses: ramsey/composer-install@v2
+
+      - name: Download box.phar
+        run: |
+          wget https://github.com/box-project/box/releases/download/4.3.8/box.phar  -P /tmp/
+
+      - name: Run box builder
+        run: |
+          php /tmp/box.phar compile
+
+      - name: Move phar file to temp directory
+        run: |
+          mv bin/forrestforrest.phar /tmp
+
+      - name: Show content of /tmp
+        run: |
+          ls /tmp         
+
+      - name: Upload binaries to release
+        uses: svenstaro/upload-release-action@v2
+        with:
+            repo_token: ${{ secrets.REPO_TOKEN }}
+            file: /tmp/forrest.phar
+            asset_name: ${{ matrix.asset_name }}
+            tag: ${{ github.ref }}

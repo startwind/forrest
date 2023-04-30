@@ -1,0 +1,9 @@
+repositories:
+  "friends-of-wp":
+    adapter: gist
+    name: "Friends of WP"
+    description: "Some very helpful WordPress commands."
+    config:
+      username: "friends-of-wp"
+      prefix: 'wpdev: '
+
