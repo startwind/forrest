@@ -8,8 +8,6 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class ListCommand extends CommandCommand
 {
-    const DEFAULT_CONFIG_FILE = __DIR__ . '/../../config/default.yml';
-
     protected static $defaultName = 'commands:gist:list';
     protected static $defaultDescription = 'List all command that are registered in the repositories.';
 
