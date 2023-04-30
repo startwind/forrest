@@ -8,7 +8,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class ListCommand extends CommandCommand
 {
-    protected static $defaultName = 'commands:gist:list';
+    protected static $defaultName = 'commands:list';
     protected static $defaultDescription = 'List all command that are registered in the repositories.';
 
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -21,7 +21,7 @@ class ListCommand extends CommandCommand
             $commands = $repository->getCommands();
             foreach ($commands as $command) {
                 $rows[] = [
-                    $repoIdentifier . ':' . $command->getName(),
+                    $repoIdentifier . self::COMMAND_SEPARATOR . $command->getName(),
                     $command->getDescription()
                 ];
             }

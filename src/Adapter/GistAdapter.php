@@ -11,6 +11,8 @@ class GistAdapter implements Adapter, ClientAwareAdapter
 
     const GIST_URL = 'https://api.github.com/users/%s/gists';
 
+    const GIST_FIELD_RAW_URL = 'raw_url';
+
     private Client $client;
 
     private string $username;
@@ -49,9 +51,9 @@ class GistAdapter implements Adapter, ClientAwareAdapter
                 foreach ($gist['files'] as $file) {
                     $name = $file['filename'];
                     $description = str_replace($this->prefix, '', $gist['description']);
+                    $command = $this->getRawContent($file[self::GIST_FIELD_RAW_URL]);
 
-
-                    $commands[] = new Command($name, $description, '');
+                    $commands[] = new Command($name, $description, $command);
                 }
             }
         }
@@ -68,7 +70,6 @@ class GistAdapter implements Adapter, ClientAwareAdapter
         $response = $client->get($rawUrl);
         return (string)$response->getBody();
     }
-
 
     static public function fromConfigArray(array $config): GistAdapter
     {

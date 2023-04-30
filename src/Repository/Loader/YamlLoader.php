@@ -16,7 +16,6 @@ class YamlLoader
 
     const CONFIG_ELEMENT_DESCRIPTION = 'description';
 
-
     private array $config;
 
     private array $repositories = [];

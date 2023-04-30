@@ -16,5 +16,6 @@ $application->setVersion(FORREST_VERSION);
 # Repository
 $application->add(new \Startwind\Forrest\CliCommand\Repository\ListCommand());
 $application->add(new \Startwind\Forrest\CliCommand\Command\ListCommand());
+$application->add(new \Startwind\Forrest\CliCommand\Command\ShowCommand());
 
 $application->run();
