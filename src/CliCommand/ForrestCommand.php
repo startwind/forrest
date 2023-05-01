@@ -11,13 +11,16 @@ use Symfony\Component\Console\Command\Command as SymfonyCommand;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class ForrestCommand extends SymfonyCommand
+abstract class ForrestCommand extends SymfonyCommand
 {
     const COMMAND_SEPARATOR = ':';
 
     const DEFAULT_CONFIG_FILE = __DIR__ . '/../../config/default.yml';
+    const USER_CONFIG_FILE = '~/.forrest/config.yml';
 
     private RepositoryCollection $repositoryCollection;
+
+    private ?YamlLoader $yamlLoader = null;
 
     /**
      * Render a table with the statistics.
@@ -30,14 +33,25 @@ class ForrestCommand extends SymfonyCommand
         $table->render();
     }
 
-    protected function initRepositories(): void
+    protected function getYamlLoader(): YamlLoader
     {
-        $client = new Client();
+        return $this->yamlLoader;
+    }
 
-        $yamlLoader = new YamlLoader(self::DEFAULT_CONFIG_FILE, $client);
+    protected function initYamlLoader()
+    {
+        if (!$this->yamlLoader) {
+            $client = new Client();
+            $this->yamlLoader = new YamlLoader(self::DEFAULT_CONFIG_FILE, $client);
+        }
+    }
+
+    protected function enrichRepositories(): void
+    {
+        $this->initYamlLoader();
 
         $this->repositoryCollection = new RepositoryCollection();
-        $yamlLoader->enrich($this->repositoryCollection);
+        $this->yamlLoader->enrich($this->repositoryCollection);
     }
 
     protected function getCommand(string $identifier): Command
@@ -45,7 +59,7 @@ class ForrestCommand extends SymfonyCommand
         $repositoryIdentifier = substr($identifier, 0, strpos($identifier, self::COMMAND_SEPARATOR));
         $commandName = substr($identifier, strpos($identifier, self::COMMAND_SEPARATOR) + 1);
 
-        $this->initRepositories();
+        $this->enrichRepositories();
 
         foreach ($this->getRepositoryCollection()->getRepositories() as $key => $repository) {
             if ($key === $repositoryIdentifier) {

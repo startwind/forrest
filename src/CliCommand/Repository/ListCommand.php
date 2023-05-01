@@ -13,7 +13,7 @@ class ListCommand extends RepositoryCommand
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $this->initRepositories();
+        $this->enrichRepositories();
 
         $rows = [];
 
@@ -30,11 +30,5 @@ class ListCommand extends RepositoryCommand
         $this->renderTable($output, $headlines, $rows);
 
         return SymfonyCommand::SUCCESS;
-    }
-
-
-    private function geConfig(): array
-    {
-        return Yaml::parse(file_get_contents(self::DEFAULT_CONFIG_FILE), true);
     }
 }

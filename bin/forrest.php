@@ -19,4 +19,8 @@ $application->add(new \Startwind\Forrest\CliCommand\Command\RunCommand());
 # Repository
 $application->add(new \Startwind\Forrest\CliCommand\Repository\ListCommand());
 
+# Directory
+$application->add(new \Startwind\Forrest\CliCommand\Directory\ListCommand());
+$application->add(new \Startwind\Forrest\CliCommand\Directory\InstallCommand());
+
 $application->run();

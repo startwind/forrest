@@ -4,6 +4,7 @@ namespace Startwind\Forrest\Adapter;
 
 use GuzzleHttp\Client;
 use Startwind\Forrest\Command\Command;
+use Startwind\Forrest\Command\GistCommand;
 
 class GistAdapter implements Adapter, ClientAwareAdapter
 {
@@ -51,9 +52,8 @@ class GistAdapter implements Adapter, ClientAwareAdapter
                 foreach ($gist['files'] as $file) {
                     $name = $file['filename'];
                     $description = str_replace($this->prefix, '', $gist['description']);
-                    $command = $this->getRawContent($file[self::GIST_FIELD_RAW_URL]);
-
-                    $commands[] = new Command($name, $description, $command);
+                    $rawUrl = $file[self::GIST_FIELD_RAW_URL];
+                    $commands[] = new GistCommand($name, $description, $rawUrl, $this->client);
                 }
             }
         }

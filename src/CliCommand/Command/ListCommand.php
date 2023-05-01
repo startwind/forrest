@@ -13,7 +13,7 @@ class ListCommand extends CommandCommand
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $this->initRepositories();
+        $this->enrichRepositories();
 
         $rows = [];
 

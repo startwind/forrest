@@ -21,7 +21,7 @@ class RunCommand extends CommandCommand
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $this->initRepositories();
+        $this->enrichRepositories();
 
         $command = $this->getCommand($input->getArgument('identifier'));
 
