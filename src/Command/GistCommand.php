@@ -18,7 +18,7 @@ class GistCommand extends Command
         parent::__construct($name, $description, '');
     }
 
-    public function getCommand(): string
+    public function getPrompt(array $values = []): string
     {
         $response = $this->client->get($this->rawUrl);
         return (string)$response->getBody();

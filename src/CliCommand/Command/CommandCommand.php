@@ -15,7 +15,7 @@ class CommandCommand extends ForrestCommand
 
     protected function showCommandInformation(OutputInterface $output, Command $command): void
     {
-        $commands = explode("\n", $command->getCommand());
+        $commands = explode("\n", $command->getPrompt());
 
         $this->writeWarning($output, $this->runWarning);
 

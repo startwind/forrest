@@ -6,3 +6,4 @@ repositories:
     config:
       username: "friends-of-wp"
       prefix: 'wpdev: '
+
