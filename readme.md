@@ -2,7 +2,7 @@
 
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/startwind/forrest/badges/quality-score.png?b=main&s=579fbe045436392cced69014e18889609b7d2b1a)](https://scrutinizer-ci.com/g/startwind/forrest/?branch=main)
 
-
+Often there are only a handful of commands that are used in everyday life, also many command line tools have a lot of possible options, but only a few of them are used. We have designed Forrest to store exactly these commands centrally and thus simplify the use of the command line in a much.
 
 ![commands:show](docs/images/commands_list.png)
 
