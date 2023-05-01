@@ -3,6 +3,7 @@
 namespace Startwind\Forrest\CliCommand\Command;
 
 use Symfony\Component\Console\Command\Command as SymfonyCommand;
+use Symfony\Component\Console\Helper\TableSeparator;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -17,7 +18,13 @@ class ListCommand extends CommandCommand
 
         $rows = [];
 
+        $first = true;
+
         foreach ($this->getRepositoryCollection()->getRepositories() as $repoIdentifier => $repository) {
+            if (!$first) {
+                $rows[] = new TableSeparator();
+            }
+            $first = false;
             $commands = $repository->getCommands();
             foreach ($commands as $command) {
                 $rows[] = [
