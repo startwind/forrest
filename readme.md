@@ -50,10 +50,10 @@ Forrest is an open source project and is always looking for supporters. Anyone w
 - **Add ideas and inform about bugs** - The easiest way to help this project is adding your own ideas. We know the more people use this tool, the more ideas will come up. So feel free to add yours in our [issue tracker](https://github.com/startwind/forrest/issues). 
 
 
-- **Pull Requests** - If you are able to code, feel free to send us your [pull requests](https://github.com/startwind/forrest/pulls). If you have no idea for your own enhancements please have a look at our tracker. Easy to start tasks are marked as ["good first issue"](https://github.com/startwind/forrest/issues?q=is%3Aissue+is%3Aopen+label%3A"good+first+issue"). 
+- **Pull requests** - If you are able to code, feel free to send us your [pull requests](https://github.com/startwind/forrest/pulls). If you have no idea for your own enhancements please have a look at our tracker. Easy to start tasks are marked as ["good first issue"](https://github.com/startwind/forrest/issues?q=is%3Aissue+is%3Aopen+label%3A"good+first+issue"). 
 
 
-- **Add Repositories** - Everybody is an expert in something. That means you can add your own repositories about your tool. Just inform us when you are done and we will add it to the [official directory](https://github.com/startwind/forrest-directory).
+- **Add repositories** - Everybody is an expert in something. That means you can add your own repositories about your tool. Just inform us when you are done and we will add it to the [official directory](https://github.com/startwind/forrest-directory).
 
 ## Why we have chosen Forrest as the name
 
