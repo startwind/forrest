@@ -17,13 +17,18 @@ chmod +x forrest.phar
 
 ### Repository Commands
 
-- `repository:list` - Shows a list of all registered repositories. This is a combination of default repos and custom ones.
+- `repository:list` - Shows a list of all registered repositories.
 
 ### Commands
 
 - `commands:list` - List all registered commands that can be run.
 - `commands:show` - Show a single command with all its details and steps that will be executed. 
 - `commands:run` - Run a single command.
+
+### Directory Commands
+
+- `directory:list` - List all repositories from the Forrest directory.
+- `directory:install` - Install a specified repository from the Forrest directory.
 
 ## Why we have chosen Forrest as the name
 

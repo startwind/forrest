@@ -12,7 +12,7 @@ use Symfony\Component\Yaml\Yaml;
 class InstallCommand extends DirectoryCommand
 {
     protected static $defaultName = 'directory:install';
-    protected static $defaultDescription = 'List all repositories in the official Forrest directory.';
+    protected static $defaultDescription = 'Install a specific repository from the official Forrest directory.';
 
     protected function configure()
     {

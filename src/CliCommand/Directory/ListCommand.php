@@ -9,7 +9,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 class ListCommand extends DirectoryCommand
 {
     protected static $defaultName = 'directory:list';
-    protected static $defaultDescription = 'List all registered command repositories.';
+    protected static $defaultDescription = 'List all repositories in the official Forrest directory.';
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {

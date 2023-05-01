@@ -11,7 +11,7 @@ use Symfony\Component\Console\Question\ConfirmationQuestion;
 class ShowCommand extends CommandCommand
 {
     protected static $defaultName = 'commands:show';
-    protected static $defaultDescription = 'List all command that are registered in the repositories.';
+    protected static $defaultDescription = 'Show a specific command. It will not run it.';
 
     protected function configure()
     {

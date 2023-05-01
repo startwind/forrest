@@ -12,7 +12,7 @@ use Symfony\Component\Console\Question\ConfirmationQuestion;
 class RunCommand extends CommandCommand
 {
     protected static $defaultName = 'commands:run';
-    protected static $defaultDescription = 'List all command that are registered in the repositories.';
+    protected static $defaultDescription = 'Run a specific command.';
 
     protected function configure()
     {

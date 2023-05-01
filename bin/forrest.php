@@ -13,8 +13,8 @@ $application->setVersion(FORREST_VERSION);
 
 # Command Commands
 $application->add(new \Startwind\Forrest\CliCommand\Command\ListCommand());
-$application->add(new \Startwind\Forrest\CliCommand\Command\ShowCommand());
 $application->add(new \Startwind\Forrest\CliCommand\Command\RunCommand());
+$application->add(new \Startwind\Forrest\CliCommand\Command\ShowCommand());
 
 # Repository
 $application->add(new \Startwind\Forrest\CliCommand\Repository\ListCommand());
