@@ -15,6 +15,16 @@ chmod +x forrest.phar
 
 ## Usage
 
+The default installation of Forrest comes with only a few commands. We decided to keep the basic version very clean. Nevertheless there is the official Forrest directory where a lot of predefined commands are located. To list all the repositories run 
+
+```shell
+./forrest.phar directory:list
+```
+
+Choose the repositories you want to use. Behind every of those there can be many commands. 
+
+## Commands
+
 ### Repository Commands
 
 - `repository:list` - Shows a list of all registered repositories.
