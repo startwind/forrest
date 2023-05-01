@@ -49,7 +49,7 @@ jobs:
 
       - name: Move phar file to temp directory
         run: |
-          mv bin/forrestforrest.phar /tmp
+          mv bin/forrest.phar /tmp
 
       - name: Show content of /tmp
         run: |
