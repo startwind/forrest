@@ -7,6 +7,9 @@ To see the latest list of officially supported repositories, use the following c
 ```shell
 ./forrest.phar directory:list
 ```
+The output should look similar to this screenshot.
+
+![Directory list](images/directory_list.png)
 
 ## Official Repositories
 
