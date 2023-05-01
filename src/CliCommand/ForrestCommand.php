@@ -16,7 +16,7 @@ abstract class ForrestCommand extends SymfonyCommand
     const COMMAND_SEPARATOR = ':';
 
     const DEFAULT_CONFIG_FILE = __DIR__ . '/../../config/default.yml';
-    const USER_CONFIG_FILE = '~/.forrest/config.yml';
+    const USER_CONFIG_FILE = '.forrest/config.yml';
 
     private RepositoryCollection $repositoryCollection;
 
@@ -38,11 +38,32 @@ abstract class ForrestCommand extends SymfonyCommand
         return $this->yamlLoader;
     }
 
-    protected function initYamlLoader()
+    protected function getUserConfigFile(): string
     {
+        $home = getenv("HOME");
+        return $home . DIRECTORY_SEPARATOR . self::USER_CONFIG_FILE;
+    }
+
+    private function createUserConfig()
+    {
+        $userConfigFile = $this->getUserConfigFile();
+
+        if (!file_exists($userConfigFile)) {
+            $dir = dirname($userConfigFile);
+            if (!file_exists($dir)) {
+                mkdir($dir, 0777, true);
+            }
+            file_put_contents($userConfigFile, file_get_contents(self::DEFAULT_CONFIG_FILE));
+        }
+    }
+
+    protected function initYamlLoader(): void
+    {
+        $this->createUserConfig();
+
         if (!$this->yamlLoader) {
             $client = new Client();
-            $this->yamlLoader = new YamlLoader(self::DEFAULT_CONFIG_FILE, $client);
+            $this->yamlLoader = new YamlLoader($this->getUserConfigFile(), self::DEFAULT_CONFIG_FILE, $client);
         }
     }
 

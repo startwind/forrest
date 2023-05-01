@@ -22,14 +22,20 @@ class YamlLoader
 
     private Client $client;
 
-    public function __construct(string $yamlFilename, Client $client)
+    public function __construct(string $userConfigFile, string $fallbackConfigFile, Client $client)
     {
-        if (!file_exists($yamlFilename)) {
-            throw new \RuntimeException("Config file ($yamlFilename) not found");
+        if (!file_exists($userConfigFile)) {
+            $configFile = $fallbackConfigFile;
+        } else {
+            $configFile = $userConfigFile;
+        }
+
+        if (!file_exists($configFile)) {
+            throw new \RuntimeException("Config file ($configFile) not found");
         }
 
         $this->client = $client;
-        $this->config = Yaml::parse(file_get_contents($yamlFilename));
+        $this->config = Yaml::parse(file_get_contents($configFile));
 
         if (!array_key_exists(self::CONFIG_ELEMENT_REPOSITORIES, $this->config)) {
             throw new \RuntimeException('Config file does not contain the mandatory element "' . self::CONFIG_ELEMENT_REPOSITORIES . '".');
