@@ -23,7 +23,7 @@ The default installation of Forrest comes with only a few commands. We decided t
 ./forrest.phar directory:list
 ```
 
-Choose the repositories you want to use. Behind every of those there can be many commands. 
+Choose the repositories you want to use. Behind every of those there can be many commands. To learn more about the official repositories visit our [directory documentation](docs/directory.md).
 
 ## Commands
 
@@ -41,6 +41,8 @@ Choose the repositories you want to use. Behind every of those there can be many
 
 - `directory:list` - List all repositories from the Forrest directory.
 - `directory:install` - Install a specified repository from the Forrest directory.
+
+## How to support
 
 ## Why we have chosen Forrest as the name
 
