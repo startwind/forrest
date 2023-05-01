@@ -26,11 +26,17 @@ class YamlAdapter implements Adapter, ClientAwareAdapter
         $this->client = $client;
     }
 
+    /**
+     * @inheritDoc
+     */
     public function getType(): string
     {
         return self::TYPE;
     }
 
+    /**
+     * @inheritDoc
+     */
     public function getCommands(): array
     {
         $config = Yaml::parse(file_get_contents($this->yamlFile));
@@ -44,6 +50,9 @@ class YamlAdapter implements Adapter, ClientAwareAdapter
         return $commands;
     }
 
+    /**
+     * @inheritDoc
+     */
     static public function fromConfigArray(array $config): YamlAdapter
     {
         return new self($config['file']);

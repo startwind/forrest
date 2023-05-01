@@ -4,6 +4,9 @@ namespace Startwind\Forrest\Adapter;
 
 interface Adapter
 {
+    /**
+     * Return the type of the adapter
+     */
     public function getType(): string;
 
     /**
@@ -12,4 +15,9 @@ interface Adapter
      * @return \Startwind\Forrest\Command\Command[]
      */
     public function getCommands(): array;
+
+    /**
+     * Return a initialized adapter via config array.
+     */
+    static public function fromConfigArray(array $config): Adapter;
 }
