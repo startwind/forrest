@@ -41,7 +41,7 @@ class GistAdapter implements Adapter, ClientAwareAdapter
         return json_decode((string)$response->getBody(), true);
     }
 
-    public function getCommands($withActualCommand = true): array
+    public function getCommands(): array
     {
         $gists = $this->getRawGists($this->username);
 
