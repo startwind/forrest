@@ -6,7 +6,23 @@
 
 ## Installation
 
+Download the latest version of our PHAR archive and give it afterwards rights to be executed.
+
+```shell
+wget https://github.com/startwind/forrest/releases/latest/download/forrest.phar
+chmod +x forrest.phar
+```
+
 ## Usage
+
+### Repository Commands
+
+- `repository:list` - Shows a list of all registered repositories. This is a combination of default repos and custom ones.
+
+### Commands
+
+- `commands:list` - List all registered commands that can be run.
+- `commands:show` - Show a single command with all its details and steps that will be executed. 
 
 ## Why we have chosen Forrest as the name
 
