@@ -3,3 +3,4 @@ vendor
 .DS_Store
 in-dev
 tmp
+tmp/custom.yml

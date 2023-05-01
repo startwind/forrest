@@ -4,28 +4,31 @@ namespace Startwind\Forrest\Command;
 
 class Command
 {
-    private string $command;
+    private string $prompt;
     private string $name;
     private string $description;
 
     /**
-     * @param string $command
+     * @param string $prompt
      * @param string $name
      * @param string $description
      */
-    public function __construct(string $name, string $description, string $command)
+    public function __construct(string $name, string $description, string $prompt)
     {
-        $this->command = $command;
+        $this->prompt = $prompt;
         $this->name = $name;
         $this->description = $description;
     }
 
-    /**
-     * @return string
-     */
-    public function getCommand(): string
+    public function getPrompt(array $values = []): string
     {
-        return $this->command;
+        $prompt = $this->prompt;
+
+        foreach ($values as $key => $value) {
+            $prompt = str_replace($key, $value, $prompt);
+        }
+
+        return $prompt;
     }
 
     /**
@@ -42,5 +45,19 @@ class Command
     public function getDescription(): string
     {
         return $this->description;
+    }
+
+    public function getParameters(): array
+    {
+        $prompt = $this->getPrompt();
+        preg_match_all('^\$[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*^', $prompt, $matches);
+
+        $parameters = [];
+
+        foreach ($matches[0] as $match) {
+            $parameters[] = $match;
+        }
+
+        return $parameters;
     }
 }
