@@ -23,6 +23,7 @@ chmod +x forrest.phar
 
 - `commands:list` - List all registered commands that can be run.
 - `commands:show` - Show a single command with all its details and steps that will be executed. 
+- `commands:run` - Run a single command.
 
 ## Why we have chosen Forrest as the name
 
