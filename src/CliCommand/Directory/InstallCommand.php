@@ -2,7 +2,6 @@
 
 namespace Startwind\Forrest\CliCommand\Directory;
 
-use Startwind\Forrest\Repository\Loader\YamlLoader;
 use Symfony\Component\Console\Command\Command as SymfonyCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;

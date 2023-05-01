@@ -4,9 +4,6 @@ namespace Startwind\Forrest\CliCommand\Directory;
 
 use GuzzleHttp\Client;
 use Startwind\Forrest\CliCommand\ForrestCommand;
-use Symfony\Component\Console\Command\Command as SymfonyCommand;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Yaml\Yaml;
 
 abstract class DirectoryCommand extends ForrestCommand
