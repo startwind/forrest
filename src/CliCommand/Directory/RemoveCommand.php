@@ -2,6 +2,7 @@
 
 namespace Startwind\Forrest\CliCommand\Directory;
 
+use Startwind\Forrest\Config\ConfigFileHandler;
 use Symfony\Component\Console\Command\Command as SymfonyCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -41,11 +42,10 @@ class RemoveCommand extends DirectoryCommand
             return SymfonyCommand::SUCCESS;
         }
 
-        $config = Yaml::parse(file_get_contents($userConfigFile));
-
-        unset($config['repositories'][$identifier]);
-
-        file_put_contents($userConfigFile, Yaml::dump($config));
+        $configHandler = new ConfigFileHandler($userConfigFile);
+        $config = $configHandler->parse();
+        $config->removeRepository($identifier);
+        $configHandler->dump($config);
 
         $this->writeInfo($output, 'Successfully removed repository with identifier "' . $identifier . '".');
 

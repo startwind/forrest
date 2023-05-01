@@ -2,6 +2,7 @@
 
 namespace Startwind\Forrest\CliCommand\Directory;
 
+use Startwind\Forrest\Config\ConfigFileHandler;
 use Symfony\Component\Console\Command\Command as SymfonyCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -51,13 +52,12 @@ class InstallCommand extends DirectoryCommand
             return SymfonyCommand::FAILURE;
         }
 
-        $config = Yaml::parse(file_get_contents($userConfigFile));
-
-        $config['repositories'][$identifier] = $repoToInstall;
+        $configHandler = new ConfigFileHandler($userConfigFile);
+        $config = $configHandler->parse();
+        $config->addRepository($identifier, $repoToInstall);
+        $configHandler->dump($config);
 
         $this->writeInfo($output, 'Successfully installed new repository. Use commands:list to see new commands.');
-
-        file_put_contents($userConfigFile, Yaml::dump($config));
 
         return SymfonyCommand::SUCCESS;
     }
