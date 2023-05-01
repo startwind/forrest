@@ -15,4 +15,4 @@ The output should look similar to this screenshot.
 
 - **Friends of Linux** - Some very helpful everyday Linux commands.
 - **Friends of WP** - Some very helpful WordPress commands.
-
+- **Friends of PHP** - Some very helpful PHP CLI commands.

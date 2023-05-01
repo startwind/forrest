@@ -41,6 +41,7 @@ Choose the repositories you want to use. Behind every of those there can be many
 
 - `directory:list` - List all repositories from the Forrest directory.
 - `directory:install` - Install a specified repository from the Forrest directory.
+- `directory:remove` - Remove a specified installed repository.
 
 ## How to support
 

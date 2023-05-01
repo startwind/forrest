@@ -22,5 +22,6 @@ $application->add(new \Startwind\Forrest\CliCommand\Repository\ListCommand());
 # Directory
 $application->add(new \Startwind\Forrest\CliCommand\Directory\ListCommand());
 $application->add(new \Startwind\Forrest\CliCommand\Directory\InstallCommand());
+$application->add(new \Startwind\Forrest\CliCommand\Directory\RemoveCommand());
 
 $application->run();
