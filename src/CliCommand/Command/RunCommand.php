@@ -63,7 +63,13 @@ class RunCommand extends CommandCommand
         foreach ($commands as $command) {
             exec($command, $execOutput, $resultCode);
             if ($resultCode != SymfonyCommand::SUCCESS) {
-                $this->writeWarning($output, 'Error executing prompt: ' . $execOutput[0]);
+                if (count($execOutput) > 0) {
+                    $this->writeWarning($output, 'Error executing prompt: ' . $execOutput[0]);
+                } else {
+                    $this->writeWarning($output, 'Error executing prompt.');
+                }
+            } else {
+                $this->writeInfo($output, $execOutput);
             }
         }
     }
