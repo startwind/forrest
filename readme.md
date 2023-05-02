@@ -1,5 +1,4 @@
-# Forrest 
-## The package manager and runner for command line scripts 
+# Forrest - The package manager for command line scripts
 
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/startwind/forrest/badges/quality-score.png?b=main&s=579fbe045436392cced69014e18889609b7d2b1a)](https://scrutinizer-ci.com/g/startwind/forrest/?branch=main)
 
