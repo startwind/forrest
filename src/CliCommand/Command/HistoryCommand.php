@@ -19,8 +19,13 @@ class HistoryCommand extends CommandCommand
 
         $output->writeln('');
 
+        $count = 1;
+
+        # strlen((string)count($commands));
+
         foreach ($commands as $command) {
-            $output->writeln($command);
+            $output->write($count . '  ' . $command);
+            $count++;
         }
 
         return SymfonyCommand::SUCCESS;

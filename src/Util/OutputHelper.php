@@ -11,6 +11,9 @@ abstract class OutputHelper
      */
     static public function writeInfoBox(OutputInterface $output, string|array $message): void
     {
+        if (is_array($message) && empty($message)) {
+            return;
+        }
         $maxLength = 0;
 
         if (!is_array($message)) {
