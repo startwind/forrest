@@ -61,3 +61,7 @@ Forrest is an open source project and is always looking for supporters. Anyone w
 It's an homage to one of our favorit movies "Forrest Gump" and especially the scene with "Run Forrest! Run!". And we run as well. Command line scripts.
 
 ## How to add your custom repository
+
+It is very easy and straight forward to create new repositories, that can be used with Forrest. 
+
+- [How to create custom repository](docs/creating-repository.md)
