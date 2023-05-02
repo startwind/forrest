@@ -15,7 +15,7 @@ class ConfigFileHandler
 
     public function dump(Config $config): void
     {
-        file_put_contents($this->configFilename, Yaml::dump($config->getConfigArray()));
+        file_put_contents($this->configFilename, Yaml::dump($config->getConfigArray(), 4));
     }
 
     public function parse(): Config

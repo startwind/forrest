@@ -13,6 +13,7 @@ class YamlLoader
     const CONFIG_ELEMENT_REPOSITORIES = 'repositories';
     const CONFIG_ELEMENT_ADAPTER = 'adapter';
     const CONFIG_ELEMENT_NAME = 'name';
+    const CONFIG_ELEMENT_CONFIG = 'config';
 
     const CONFIG_ELEMENT_DESCRIPTION = 'description';
 
@@ -47,8 +48,6 @@ class YamlLoader
         foreach ($this->config[self::CONFIG_ELEMENT_REPOSITORIES] as $repoName => $repoConfig) {
             $adapterIdentifier = $repoConfig[self::CONFIG_ELEMENT_ADAPTER];
 
-            $adapter = AdapterFactory::getAdapter($adapterIdentifier, $repoConfig['config'], $this->client);
-
             if (!array_key_exists(self::CONFIG_ELEMENT_NAME, $repoConfig)) {
                 throw new \RuntimeException('No field for repository "' . $repoName . '" with value ' . self::CONFIG_ELEMENT_NAME . ' found. Fields given are: ' . implode(', ', array_keys($repoConfig)) . '.');
             }
@@ -56,6 +55,12 @@ class YamlLoader
             if (!array_key_exists(self::CONFIG_ELEMENT_DESCRIPTION, $repoConfig)) {
                 throw new \RuntimeException('No field for repository "' . $repoName . '" with value ' . self::CONFIG_ELEMENT_DESCRIPTION . ' found. Fields given are: ' . implode(', ', array_keys($repoConfig)) . '.');
             }
+
+            if (!array_key_exists(self::CONFIG_ELEMENT_CONFIG, $repoConfig)) {
+                throw new \RuntimeException('No field for repository "' . $repoName . '" with value ' . self::CONFIG_ELEMENT_CONFIG . ' found. Fields given are: ' . implode(', ', array_keys($repoConfig)) . '.');
+            }
+
+            $adapter = AdapterFactory::getAdapter($adapterIdentifier, $repoConfig['config'], $this->client);
 
             $this->repositories[$repoName] = new Repository($adapter, $repoConfig['name'], $repoConfig['description']);
         }
