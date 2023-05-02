@@ -36,7 +36,7 @@ For adding new commands please have a look at the [yaml format description](form
 If you did not register the repository on creation you can use the `repository:register` command.
 
 ````shell
-forrest.phar repository:create ~/local-forrest.yml
+./forrest.phar repository:create ~/local-forrest.yml
 ````
 
 ## Remote repository
@@ -51,7 +51,7 @@ This looks similar to this:
 In this case the command line to register that repository is:
 
 ```shell
-forrest.phar repository:create https://raw.githubusercontent.com/startwind/forrest-directory/main/repositories/friends-of-linux.yml
+./forrest.phar repository:create https://raw.githubusercontent.com/startwind/forrest-directory/main/repositories/friends-of-linux.yml
 ```
 
 Afterwards everybody who know the URL can use the commands. 
