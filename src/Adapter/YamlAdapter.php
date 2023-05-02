@@ -11,6 +11,7 @@ class YamlAdapter implements Adapter
 
     const YAML_FIELD_COMMANDS = 'commands';
     const YAML_FIELD_PROMPT = 'prompt';
+    const YAML_FIELD_DESCRIPTION = 'description';
 
     private string $yamlFile;
 
@@ -40,7 +41,10 @@ class YamlAdapter implements Adapter
             if (!array_key_exists(self::YAML_FIELD_PROMPT, $commandConfig)) {
                 throw new \RuntimeException('The mandatory field ' . self::YAML_FIELD_PROMPT . ' is not set for identifier "' . $identifier . '" (file: ' . $this->yamlFile . ').');
             }
-            $commands[] = new Command($commandConfig['name'], $commandConfig['description'], $commandConfig[self::YAML_FIELD_PROMPT]);
+            if (!array_key_exists(self::YAML_FIELD_DESCRIPTION, $commandConfig)) {
+                throw new \RuntimeException('The mandatory field ' . self::YAML_FIELD_DESCRIPTION . ' is not set for identifier "' . $identifier . '" (file: ' . $this->yamlFile . ').');
+            }
+            $commands[] = new Command($commandConfig['name'], $commandConfig[self::YAML_FIELD_DESCRIPTION], $commandConfig[self::YAML_FIELD_PROMPT]);
         }
 
         return $commands;
