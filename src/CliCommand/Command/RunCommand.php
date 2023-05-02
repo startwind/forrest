@@ -16,6 +16,7 @@ class RunCommand extends CommandCommand
 
     protected function configure()
     {
+        $this->setAliases(['run']);
         $this->addArgument('identifier', InputArgument::REQUIRED, 'The commands identifier.');
     }
 
