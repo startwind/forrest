@@ -32,11 +32,13 @@ Choose the repositories you want to use. Behind every of those there can be many
 - `commands:list` - List all registered commands that can be run.
 - `commands:show` - Show a single command with all its details and steps that will be executed. 
 - `commands:run` - Run a single command.
-- `commands:history` - Show the recent commands that were executed
+- `commands:history` - Show the recent commands that were executed.
 
 ### Repository Commands
 
 - `repository:list` - Shows a list of all registered repositories.
+- `repository:create` - Creates a new repository and adds it (optional).
+- `repository:register` - Add an existing repository to Forrest.
 
 ### Directory Commands
 
