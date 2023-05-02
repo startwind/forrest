@@ -4,6 +4,7 @@ namespace Startwind\Forrest\CliCommand;
 
 use GuzzleHttp\Client;
 use Startwind\Forrest\Command\Command;
+use Startwind\Forrest\History\HistoryHandler;
 use Startwind\Forrest\Repository\Loader\YamlLoader;
 use Startwind\Forrest\Repository\RepositoryCollection;
 use Startwind\Forrest\Util\OutputHelper;
@@ -16,7 +17,9 @@ abstract class ForrestCommand extends SymfonyCommand
     const COMMAND_SEPARATOR = ':';
 
     const DEFAULT_CONFIG_FILE = __DIR__ . '/../../config/default.yml';
-    const USER_CONFIG_FILE = '.forrest/config.yml';
+    const USER_CONFIG_DIR = '.forrest';
+    const USER_CONFIG_FILE = self::USER_CONFIG_DIR . '/config.yml';
+    const USER_HISTORY_FILE = self::USER_CONFIG_DIR . '/history';
 
     private RepositoryCollection $repositoryCollection;
 
@@ -42,6 +45,12 @@ abstract class ForrestCommand extends SymfonyCommand
     {
         $home = getenv("HOME");
         return $home . DIRECTORY_SEPARATOR . self::USER_CONFIG_FILE;
+    }
+
+    protected function getHistoryHandler(): HistoryHandler
+    {
+        $home = getenv("HOME");
+        return new HistoryHandler($home . DIRECTORY_SEPARATOR . self::USER_HISTORY_FILE);
     }
 
     private function createUserConfig()
