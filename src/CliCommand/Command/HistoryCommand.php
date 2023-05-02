@@ -9,7 +9,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 class HistoryCommand extends CommandCommand
 {
     protected static $defaultName = 'commands:history';
-    protected static $defaultDescription = 'List all command that are registered in the repositories.';
+    protected static $defaultDescription = 'Show the latest commands that were executed.';
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
