@@ -43,11 +43,13 @@ official repositories visit our [directory documentation](docs/directory.md).
 - `commands:list` - List all registered commands that can be run.
 - `commands:show` - Show a single command with all its details and steps that will be executed.
 - `commands:run` - Run a single command.
-- `commands:history` - Show the recent commands that were executed
+- `commands:history` - Show the recent commands that were executed.
 
 ### Repository Commands
 
 - `repository:list` - Shows a list of all registered repositories.
+- `repository:create` - Creates a new repository and adds it (optional).
+- `repository:register` - Add an existing repository to Forrest.
 
 ### Directory Commands
 
@@ -81,3 +83,7 @@ It's an homage to one of our favorit movies "Forrest Gump" and especially the sc
 as well. Command line scripts.
 
 ## How to add your custom repository
+
+It is very easy and straight forward to create new repositories, that can be used with Forrest. 
+
+- [How to create custom repository](docs/creating-repository.md)
