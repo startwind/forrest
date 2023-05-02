@@ -61,6 +61,7 @@ class RunCommand extends CommandCommand
         $commands = explode("\n", $prompt);
 
         foreach ($commands as $command) {
+            $this->getHistoryHandler()->addEntry($command);
             exec($command, $execOutput, $resultCode);
             if ($resultCode != SymfonyCommand::SUCCESS) {
                 if (count($execOutput) > 0) {
