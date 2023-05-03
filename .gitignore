@@ -5,3 +5,4 @@ in-dev
 tmp
 tmp/custom.yml
 latest.zip
+*.phar

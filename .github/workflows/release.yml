@@ -59,6 +59,10 @@ jobs:
         run: |
           php /tmp/box.phar compile
 
+      - name: Run box builder
+        run: |
+          php .devops/prebox.php
+
       - name: Move phar file to temp directory
         run: |
           mv bin/forrest.phar /tmp
