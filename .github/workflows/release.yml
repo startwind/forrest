@@ -41,9 +41,9 @@ jobs:
         with:
           composer-options: "--ignore-platform-reqs"
 
-      - name: downgrade to php 7.4
+      - name: Downgrade to php 7.4
         run: |
-          vendor/bin/rector
+          vendor/bin/rector -c .devops/rector-php-74.php
 
       - name: Download box.phar
         run: |
@@ -53,7 +53,7 @@ jobs:
         run: |
           php /tmp/box.phar compile
 
-      - name: Run box builder
+      - name: Remove version check from composer in phar file
         run: |
           php .devops/postbox.php
 
