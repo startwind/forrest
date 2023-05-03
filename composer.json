@@ -5,6 +5,9 @@
       "Startwind\\Forrest\\": "src/"
     }
   },
+  "autoload-dev": {
+    "Tests\\Startwind\\Forrest\\": "tests/"
+  },
   "require": {
     "symfony/console": "^6.2",
     "symfony/yaml": "^6.2",
@@ -12,6 +15,10 @@
     "consolidation/self-update": "2.x-dev"
   },
   "require-dev": {
-    "phpstan/phpstan": "1.11.x-dev"
+    "phpstan/phpstan": "1.11.x-dev",
+    "phpunit/phpunit": "^10"
+  },
+  "scripts": {
+    "test" : "vendor/bin/phpunit tests"
   }
 }
