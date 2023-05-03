@@ -5,11 +5,13 @@
     ".gitignore",
     "readme.md",
     ".github",
-    "readme.md"
+    "tests"
   ],
   "finder": [
     {
       "in": "."
     }
-  ]
+  ],
+  "check-requirements": false,
+  "exclude-composer-files": true
 }

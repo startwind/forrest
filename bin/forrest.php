@@ -1,3 +1,4 @@
+#!/usr/bin/env php
 <?php
 
 require __DIR__ . '/../vendor/autoload.php';
@@ -9,7 +10,7 @@ const FORREST_NAME = 'Forrest';
 
 $application = new Application();
 
-$application->setName('Startwind - Forrest: CLI Runner');
+$application->setName('Forrest - Package manager for CLI scripts');
 $application->setVersion(FORREST_VERSION);
 
 # Command Commands
