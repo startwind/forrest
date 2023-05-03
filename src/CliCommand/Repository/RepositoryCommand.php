@@ -29,9 +29,10 @@ abstract class RepositoryCommand extends ForrestCommand
             ]
         ];
 
-        $configHandler = new ConfigFileHandler($this->getUserConfigFile());
-        $config = $configHandler->parse();
+        $configHandler = $this->getConfigHandler();
+
+        $config = $configHandler->parseConfig();
         $config->addRepository($identifier, $repoArray);
-        $configHandler->dump($config);
+        $configHandler->dumpConfig($config);
     }
 }

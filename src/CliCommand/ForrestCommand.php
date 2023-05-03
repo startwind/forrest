@@ -4,6 +4,7 @@ namespace Startwind\Forrest\CliCommand;
 
 use GuzzleHttp\Client;
 use Startwind\Forrest\Command\Command;
+use Startwind\Forrest\Config\ConfigFileHandler;
 use Startwind\Forrest\History\HistoryHandler;
 use Startwind\Forrest\Repository\Loader\YamlLoader;
 use Startwind\Forrest\Repository\RepositoryCollection;
@@ -19,6 +20,7 @@ abstract class ForrestCommand extends SymfonyCommand
     const DEFAULT_CONFIG_FILE = __DIR__ . '/../../config/default.yml';
     const USER_CONFIG_DIR = '.forrest';
     const USER_CONFIG_FILE = self::USER_CONFIG_DIR . '/config.yml';
+    const USER_CHECKSUM_FILE = self::USER_CONFIG_DIR . '/checksum.json';
     const USER_HISTORY_FILE = self::USER_CONFIG_DIR . '/history';
 
     private RepositoryCollection $repositoryCollection;
@@ -45,6 +47,17 @@ abstract class ForrestCommand extends SymfonyCommand
     {
         $home = getenv("HOME");
         return $home . DIRECTORY_SEPARATOR . self::USER_CONFIG_FILE;
+    }
+
+    protected function getUserChecksumsFile(): string
+    {
+        $home = getenv("HOME");
+        return $home . DIRECTORY_SEPARATOR . self::USER_CHECKSUM_FILE;
+    }
+
+    protected function getConfigHandler(): ConfigFileHandler
+    {
+        return new ConfigFileHandler($this->getUserConfigFile(), $this->getUserChecksumsFile());
     }
 
     protected function getHistoryHandler(): HistoryHandler
