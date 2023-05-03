@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use Rector\Config\RectorConfig;
+use Rector\Set\ValueObject\DowngradeLevelSetList;
 
 return static function (RectorConfig $rectorConfig): void {
     $rectorConfig->paths([
@@ -12,6 +13,6 @@ return static function (RectorConfig $rectorConfig): void {
     ]);
 
     $rectorConfig->sets([
-        \Rector\Set\ValueObject\DowngradeLevelSetList::DOWN_TO_PHP_74
+        DowngradeLevelSetList::DOWN_TO_PHP_74
     ]);
 };
