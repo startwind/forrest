@@ -11,7 +11,7 @@ class AdapterFactory
         YamlAdapter::TYPE => YamlAdapter::class
     ];
 
-    static public function getAdapter($adapterType, array $config, Client $client): Adapter
+    static public function getAdapter(string $adapterType, array $config, Client $client): Adapter
     {
         if (!array_key_exists($adapterType, self::$adapters)) {
             throw new \RuntimeException("The adapter type $adapterType is not know. Allowed types are " . implode(', ', array_keys(self::$adapters)) . '.');

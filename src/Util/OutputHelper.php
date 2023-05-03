@@ -68,7 +68,7 @@ abstract class OutputHelper
     /**
      * Add whitespaces to the message of needed to fit to the box.
      */
-    static private function getPreparedMessage(string $message, int $maxLength, $additionalSpaces = 0): string
+    static private function getPreparedMessage(string $message, int $maxLength, int $additionalSpaces = 0): string
     {
         return $message . str_repeat(' ', $maxLength - strlen($message) + $additionalSpaces);
     }

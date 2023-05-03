@@ -4,6 +4,7 @@ namespace Startwind\Forrest\CliCommand\Repository;
 
 use Startwind\Forrest\Config\ConfigFileHandler;
 use Symfony\Component\Console\Command\Command as SymfonyCommand;
+use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -47,6 +48,7 @@ class RegisterCommand extends RepositoryCommand
             }
         }
 
+        /** @var QuestionHelper $questionHelper */
         $questionHelper = $this->getHelper('question');
 
         $name = $questionHelper->ask($input, $output, new Question('Name of the repository [default: ' . $defaultName . ']: ', $defaultName));

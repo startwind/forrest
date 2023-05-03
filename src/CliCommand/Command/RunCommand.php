@@ -3,6 +3,7 @@
 namespace Startwind\Forrest\CliCommand\Command;
 
 use Symfony\Component\Console\Command\Command as SymfonyCommand;
+use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -23,6 +24,8 @@ class RunCommand extends CommandCommand
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $this->enrichRepositories();
+
+        /** @var QuestionHelper $questionHelper */
         $questionHelper = $this->getHelper('question');
 
         $command = $this->getCommand($input->getArgument('identifier'));

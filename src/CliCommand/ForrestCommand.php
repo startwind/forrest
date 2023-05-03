@@ -53,7 +53,7 @@ abstract class ForrestCommand extends SymfonyCommand
         return new HistoryHandler($home . DIRECTORY_SEPARATOR . self::USER_HISTORY_FILE);
     }
 
-    private function createUserConfig()
+    private function createUserConfig(): void
     {
         $userConfigFile = $this->getUserConfigFile();
 

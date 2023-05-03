@@ -3,6 +3,7 @@
 namespace Startwind\Forrest\CliCommand\Repository;
 
 use Symfony\Component\Console\Command\Command as SymfonyCommand;
+use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -28,6 +29,7 @@ class CreateCommand extends RepositoryCommand
 
         $output->writeln('');
 
+        /** @var QuestionHelper $questionHelper */
         $questionHelper = $this->getHelper('question');
 
         if (file_exists($repositoryFileName)) {

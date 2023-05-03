@@ -28,7 +28,7 @@ class GistAdapter implements Adapter, ClientAwareAdapter
     /**
      * @inheritDoc
      */
-    public function setClient(Client $client)
+    public function setClient(Client $client): void
     {
         $this->client = $client;
     }
@@ -44,7 +44,7 @@ class GistAdapter implements Adapter, ClientAwareAdapter
     /**
      * Return the raw gists from
      */
-    private function getRawGists(string $username)
+    private function getRawGists(string $username): array
     {
         $response = $this->client->get(sprintf(self::GIST_URL, $username));
         return json_decode((string)$response->getBody(), true);
