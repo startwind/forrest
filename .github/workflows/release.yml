@@ -54,7 +54,7 @@ jobs:
           find: "require __DIR__ . '/platform_check.php';"
           replace: "# require __DIR__ . '/platform_check.php';"
 
-      - name: List
+      - name: List1
         run: |
           ls -lah vendor/composer
 
@@ -74,10 +74,10 @@ jobs:
         run: |
           mv bin/forrest.phar /tmp
 
-      - name: Show content of /tmp
+      - name: List1
         run: |
-          ls /tmp         
-
+          ls -lah vendor/composer
+          
       - name: Upload binaries to release
         uses: svenstaro/upload-release-action@v2
         with:
