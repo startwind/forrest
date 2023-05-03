@@ -23,6 +23,10 @@ class Command
         $this->description = $description;
     }
 
+    /**
+     * Return the prompt. If the values are set the parameters will be set and the
+     * prompt completed.
+     */
     public function getPrompt(array $values = []): string
     {
         $prompt = $this->prompt;
@@ -35,7 +39,7 @@ class Command
     }
 
     /**
-     * @return string
+     * Return the name of the command.
      */
     public function getName(): string
     {
@@ -43,13 +47,16 @@ class Command
     }
 
     /**
-     * @return string
+     * Return the description of the command.
      */
     public function getDescription(): string
     {
         return $this->description;
     }
 
+    /**
+     * Return the parameters that have to be inserted.
+     */
     public function getParameters(): array
     {
         $prompt = $this->getPrompt();
@@ -62,5 +69,14 @@ class Command
         }
 
         return $parameters;
+    }
+
+    /**
+     * Return the checksum of the command. This is used to check if a command
+     * was changed.
+     */
+    public function getChecksum(): string
+    {
+        return md5($this->getPrompt());
     }
 }
