@@ -12,6 +12,7 @@
     "consolidation/self-update": "2.x-dev"
   },
   "require-dev": {
-    "phpstan/phpstan": "1.11.x-dev"
+    "phpstan/phpstan": "1.11.x-dev",
+    "rector/rector": "0.15.x-dev"
   }
 }
