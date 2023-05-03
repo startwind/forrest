@@ -46,10 +46,10 @@ jobs:
           find: '"php": ">=8.1"'
           replace: '"php": ">=7.4"'
 
-      - name: Find and Replace Composer check
+      - name: Find and replace Composer check
         uses: jacobtomlinson/gha-find-replace@master
         with:
-          include: "vendor/composer/autoload_real.php"
+          include: "src/vendor/composer/autoload_real.php"
           find: "require __DIR__ . '/platform_check.php';"
           replace: "# require __DIR__ . '/platform_check.php';"
 
