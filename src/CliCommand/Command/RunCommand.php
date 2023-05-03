@@ -20,12 +20,17 @@ class RunCommand extends CommandCommand
     protected function configure()
     {
         $this->setAliases(['run']);
-        $this->addArgument('identifier', InputArgument::REQUIRED, 'The commands identifier.');
+        $this->addArgument('identifier', InputArgument::OPTIONAL, 'The commands identifier.', false);
         $this->addOption('force', null, InputOption::VALUE_OPTIONAL, 'Run the command without asking for permission.', false);
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
+        if (!$input->getArgument('identifier')) {
+            $this->renderListCommand($input, $output);
+            return SymfonyCommand::SUCCESS;
+        }
+
         $this->enrichRepositories();
 
         /** @var QuestionHelper $questionHelper */
