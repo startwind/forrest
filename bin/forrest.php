@@ -23,10 +23,16 @@ $application->add(new \Startwind\Forrest\CliCommand\Repository\ListCommand());
 $application->add(new \Startwind\Forrest\CliCommand\Repository\CreateCommand());
 $application->add(new \Startwind\Forrest\CliCommand\Repository\RegisterCommand());
 
+# Repository Command
+$application->add(new \Startwind\Forrest\CliCommand\Repository\Command\AddCommand());
+// $application->add(new \Startwind\Forrest\CliCommand\Repository\Command\RemoveCommand());
+
 # Directory
 $application->add(new \Startwind\Forrest\CliCommand\Directory\ListCommand());
 $application->add(new \Startwind\Forrest\CliCommand\Directory\InstallCommand());
 $application->add(new \Startwind\Forrest\CliCommand\Directory\RemoveCommand());
+
+// $application->setDefaultCommand('commands:list');
 
 # Others
 if (!str_contains(FORREST_VERSION, '##FORREST_VERSION')) {
