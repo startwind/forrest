@@ -10,7 +10,7 @@ const FORREST_NAME = 'Forrest';
 
 $application = new Application();
 
-$application->setName('Forrest');
+$application->setName('Forrest - Package manager for CLI scripts');
 $application->setVersion(FORREST_VERSION);
 
 # Command Commands

@@ -14,6 +14,8 @@ class ListCommand extends CommandCommand
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
+        $output->writeln('');
+
         $this->enrichRepositories();
 
         $rows = [];
