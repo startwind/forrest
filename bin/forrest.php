@@ -21,8 +21,9 @@ $application->add(new \Startwind\Forrest\CliCommand\Command\HistoryCommand());
 
 # Repository
 $application->add(new \Startwind\Forrest\CliCommand\Repository\ListCommand());
-$application->add(new \Startwind\Forrest\CliCommand\Repository\CreateCommand());
+$application->add(new \Startwind\Forrest\CliCommand\Repository\Command\CreateCommand());
 $application->add(new \Startwind\Forrest\CliCommand\Repository\RegisterCommand());
+$application->add(new \Startwind\Forrest\CliCommand\Repository\RemoveCommand());
 
 # Repository Command
 $application->add(new \Startwind\Forrest\CliCommand\Repository\Command\AddCommand());
@@ -31,7 +32,6 @@ $application->add(new \Startwind\Forrest\CliCommand\Repository\Command\AddComman
 # Directory
 $application->add(new \Startwind\Forrest\CliCommand\Directory\ListCommand());
 $application->add(new \Startwind\Forrest\CliCommand\Directory\InstallCommand());
-$application->add(new \Startwind\Forrest\CliCommand\Directory\RemoveCommand());
 
 // $application->setDefaultCommand('commands:list');
 
