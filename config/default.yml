@@ -1,9 +1,15 @@
 repositories:
-  "friends-of-wp":
-    adapter: gist
-    name: "Friends of WP"
-    description: "Some very helpful WordPress commands."
-    config:
-      username: "friends-of-wp"
-      prefix: 'wpdev: '
+  #"friends-of-wp":
+  #  adapter: gist
+  #  name: "Friends of WP"
+  #  description: "Some very helpful WordPress commands."
+  #  config:
+  #    username: "friends-of-wp"
+  #    prefix: 'wpdev: '
 
+  forrest-linux:
+    adapter: yaml
+    name: 'Forrest Linux Repository'
+    description: 'Some very helpful everyday Linux commands.'
+    config:
+      file: 'https://raw.githubusercontent.com/startwind/forrest-directory/main/repositories/forrest-linux.yml'

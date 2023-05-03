@@ -3,7 +3,7 @@
 namespace Startwind\Forrest\Adapter;
 
 use GuzzleHttp\Client;
-use Startwind\Forrest\Adapter\Exception\RateLimitExceededExceededException;
+use Startwind\Forrest\Adapter\Exception\RateLimitExceededException;
 use Startwind\Forrest\Command\Command;
 use Startwind\Forrest\Command\GistCommand;
 
@@ -54,7 +54,7 @@ class GistAdapter implements Adapter, ClientAwareAdapter
                 $response = $this->client->get(sprintf(self::GIST_URL, $username));
             } catch (\Exception $exception) {
                 if (str_contains($exception->getMessage(), 'rate limit exceeded')) {
-                    throw new RateLimitExceededExceededException('Gist API rate limit exceeded.');
+                    throw new RateLimitExceededException('Gist API rate limit exceeded.');
                 } else {
                     throw $exception;
                 }

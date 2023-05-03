@@ -2,10 +2,14 @@
 
 namespace Startwind\Forrest\Adapter;
 
+use GuzzleHttp\Client;
+use GuzzleHttp\Exception\ClientException;
+use GuzzleHttp\Psr7\Response;
+use Startwind\Forrest\Adapter\Exception\RepositoryNotFoundException;
 use Startwind\Forrest\Command\Command;
 use Symfony\Component\Yaml\Yaml;
 
-class YamlAdapter implements Adapter
+class YamlAdapter implements Adapter, ClientAwareAdapter
 {
     const TYPE = 'yaml';
 
@@ -15,6 +19,8 @@ class YamlAdapter implements Adapter
     const YAML_FIELD_DESCRIPTION = 'description';
 
     private string $yamlFile;
+
+    private Client $client;
 
     public function __construct(string $yamlFile)
     {
@@ -29,12 +35,32 @@ class YamlAdapter implements Adapter
         return self::TYPE;
     }
 
+    private function getConfig(): array
+    {
+        if (str_contains($this->yamlFile, '://')) {
+            try {
+                $response = $this->client->get($this->yamlFile);
+            } catch (ClientException $exception) {
+                if ($exception->getResponse()->getStatusCode() === 404) {
+                    throw new RepositoryNotFoundException("The given repository can't be found.");
+                } else {
+                    throw $exception;
+                }
+            }
+            $content = (string)$response->getBody();
+        } else {
+            $content = file_get_contents($this->yamlFile);
+        }
+
+        return Yaml::parse($content);
+    }
+
     /**
      * @inheritDoc
      */
     public function getCommands(): array
     {
-        $config = Yaml::parse(file_get_contents($this->yamlFile));
+        $config = $this->getConfig();
 
         $commands = [];
 
@@ -120,5 +146,10 @@ class YamlAdapter implements Adapter
     private function convertNameToIdentifier(string $name): string
     {
         return strtolower(str_replace(' ', '_', $name));
+    }
+
+    public function setClient(Client $client): void
+    {
+        $this->client = $client;
     }
 }
