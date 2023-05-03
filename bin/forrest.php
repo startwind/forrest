@@ -5,6 +5,7 @@ require __DIR__ . '/../vendor/autoload.php';
 use Symfony\Component\Console\Application;
 
 const FORREST_VERSION = '##FORREST_VERSION##';
+const FORREST_NAME = 'Forrest';
 
 $application = new Application();
 
@@ -26,5 +27,10 @@ $application->add(new \Startwind\Forrest\CliCommand\Repository\RegisterCommand()
 $application->add(new \Startwind\Forrest\CliCommand\Directory\ListCommand());
 $application->add(new \Startwind\Forrest\CliCommand\Directory\InstallCommand());
 $application->add(new \Startwind\Forrest\CliCommand\Directory\RemoveCommand());
+
+# Others
+if (FORREST_VERSION != '##FORREST_VERSION##') {
+    $application->add(new \SelfUpdate\SelfUpdateCommand(FORREST_NAME, FORREST_VERSION, "startwind/forrest"));
+}
 
 $application->run();
