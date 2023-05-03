@@ -56,7 +56,7 @@ jobs:
 
       - name: List
         run: |
-          ls -lah
+          ls -lah vendor/composer
 
       - name: Empty the file
         run: |     
