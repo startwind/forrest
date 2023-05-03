@@ -54,6 +54,10 @@ jobs:
           find: "require __DIR__ . '/platform_check.php';"
           replace: "# require __DIR__ . '/platform_check.php';"
 
+      - name: List
+        run: |
+          ls -lah
+
       - name: Empty the file
         run: |     
           > vendor/composer/platform_check.php
