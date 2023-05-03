@@ -53,6 +53,4 @@ class Repository
     {
         return $this->adapter->getCommands();
     }
-
-
 }
