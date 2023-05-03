@@ -51,7 +51,7 @@ jobs:
       - name: Find and replace Composer check
         uses: jacobtomlinson/gha-find-replace@master
         with:
-          exclude: "vendor/composer/**"
+          include: "vendor/composer/**"
           find: "require __DIR__ . '/platform_check.php';"
           replace: "# require __DIR__ . '/platform_check.php';"
 
