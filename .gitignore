@@ -6,3 +6,4 @@ tmp
 tmp/custom.yml
 latest.zip
 *.phar
+bin/forrest.phar
