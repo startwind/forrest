@@ -29,7 +29,7 @@ $application->add(new \Startwind\Forrest\CliCommand\Directory\InstallCommand());
 $application->add(new \Startwind\Forrest\CliCommand\Directory\RemoveCommand());
 
 # Others
-if (FORREST_VERSION != '##FORREST_VERSION##') {
+if (!str_contains(FORREST_VERSION, '##FORREST_VERSION')) {
     $application->add(new \SelfUpdate\SelfUpdateCommand(FORREST_NAME, FORREST_VERSION, "startwind/forrest"));
 }
 
