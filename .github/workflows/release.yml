@@ -41,15 +41,9 @@ jobs:
         with:
           composer-options: "--ignore-platform-reqs"
 
-      - name: Find and replace Composer check
-        uses: jacobtomlinson/gha-find-replace@master
-        with:
-          find: "require __DIR__ . '/platform_check.php';"
-          replace: "# require __DIR__ . '/platform_check.php';"
-
-      - name: List1
+      - name: downgrade to php 7.4
         run: |
-          ls -lah vendor/composer
+          vendor/bin/rector
 
       - name: Download box.phar
         run: |
@@ -61,15 +55,11 @@ jobs:
 
       - name: Run box builder
         run: |
-          php .devops/prebox.php
+          php .devops/postbox.php
 
       - name: Move phar file to temp directory
         run: |
           mv bin/forrest.phar /tmp
-
-      - name: List1
-        run: |
-          ls -lah vendor/composer
 
       - name: Upload binaries to release
         uses: svenstaro/upload-release-action@v2
