@@ -10,7 +10,7 @@ const FORREST_NAME = 'Forrest';
 
 $application = new Application();
 
-$application->setName('Startwind - Forrest: CLI Runner');
+$application->setName('Forrest');
 $application->setVersion(FORREST_VERSION);
 
 # Command Commands
