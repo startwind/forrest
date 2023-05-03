@@ -2,6 +2,8 @@
 
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/startwind/forrest/badges/quality-score.png?b=main&s=579fbe045436392cced69014e18889609b7d2b1a)](https://scrutinizer-ci.com/g/startwind/forrest/?branch=main)
 
+Forrest is an easier way to execute and share commands on your command line. They are easily parameterized and searchable by name, description, or command arguments.
+
 Often there are only a handful of commands that are used in everyday life, also many command line tools have a lot of
 possible options, but only a few of them are used. We have designed Forrest to store exactly these commands centrally
 and thus simplify the use of the command line by a lot.

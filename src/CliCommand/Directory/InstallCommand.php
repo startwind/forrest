@@ -52,10 +52,11 @@ class InstallCommand extends DirectoryCommand
             return SymfonyCommand::FAILURE;
         }
 
-        $configHandler = new ConfigFileHandler($userConfigFile);
-        $config = $configHandler->parse();
+        $configHandler = $this->getConfigHandler();
+
+        $config = $configHandler->parseConfig();
         $config->addRepository($identifier, $repoToInstall);
-        $configHandler->dump($config);
+        $configHandler->dumpConfig($config);
 
         $this->writeInfo($output, 'Successfully installed new repository. Use commands:list to see new commands.');
 

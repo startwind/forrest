@@ -11,7 +11,7 @@ In the beginning, you should always start with a local and therefore private rep
 For the creation, Forrest provides the appropriate commands.
 
 ```shell
-forrest.phar repository:create ~/local-forrest.yml
+./forrest.phar repository:create ~/local-forrest.yml
 ```
 
 Once the repository is created, you can register it. Normally you will be asked if you want to add it right after the creation. In most cases this makes sense.
