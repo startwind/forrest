@@ -1,8 +1,5 @@
 {
   "main": "bin/forrest.php",
-  "require": {
-    "php": "^7.4"
-  },
   "blacklist": [
     "docs",
     ".gitignore",

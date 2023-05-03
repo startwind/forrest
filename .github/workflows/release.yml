@@ -45,7 +45,7 @@ jobs:
 
       - name: Run box builder
         run: |
-          php /tmp/box.phar compile
+          BOX_REQUIREMENT_CHECKER=0 php /tmp/box.phar compile
 
       - name: Move phar file to temp directory
         run: |
