@@ -46,6 +46,13 @@ jobs:
           find: '"php": ">=8.1"'
           replace: '"php": ">=7.4"'
 
+      - name: Find and Replace Composer check
+        uses: jacobtomlinson/gha-find-replace@master
+        with:
+          include: "vendor/composer/autoload_real.php"
+          find: "require __DIR__ . '/platform_check.php';"
+          replace: ''
+
       - name: Download box.phar
         run: |
           wget https://github.com/box-project/box/releases/download/4.3.8/box.phar  -P /tmp/
