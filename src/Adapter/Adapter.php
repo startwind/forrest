@@ -2,6 +2,8 @@
 
 namespace Startwind\Forrest\Adapter;
 
+use Startwind\Forrest\Command\Command;
+
 interface Adapter
 {
     /**
@@ -20,4 +22,19 @@ interface Adapter
      * Return a initialized adapter via config array.
      */
     static public function fromConfigArray(array $config): Adapter;
+
+    /**
+     * Return true if the repository can be edited.
+     */
+    public function isEditable(): bool;
+
+    /**
+     * Add a new command to the repository and persist it already.
+     */
+    public function addCommand(Command $command): void;
+
+    /**
+     * Remove command from the repository and persist it already.
+     */
+    public function removeCommand(string $commandName): void;
 }
