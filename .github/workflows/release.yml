@@ -51,7 +51,7 @@ jobs:
         with:
           include: "vendor/composer/autoload_real.php"
           find: "require __DIR__ . '/platform_check.php';"
-          replace: ''
+          replace: "# require __DIR__ . '/platform_check.php';"
 
       - name: Download box.phar
         run: |
