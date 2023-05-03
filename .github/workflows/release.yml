@@ -41,13 +41,6 @@ jobs:
         with:
           composer-options: "--ignore-platform-reqs"
 
-      - name: Find and Replace php 8.1
-        uses: jacobtomlinson/gha-find-replace@master
-        with:
-          include: "composer.lock"
-          find: '"php": ">=8.1"'
-          replace: '"php": ">=7.4"'
-
       - name: Find and replace Composer check
         uses: jacobtomlinson/gha-find-replace@master
         with:
@@ -57,10 +50,6 @@ jobs:
       - name: List1
         run: |
           ls -lah vendor/composer
-
-      - name: Empty the file
-        run: |     
-          > vendor/composer/platform_check.php
 
       - name: Download box.phar
         run: |
@@ -77,7 +66,7 @@ jobs:
       - name: List1
         run: |
           ls -lah vendor/composer
-          
+
       - name: Upload binaries to release
         uses: svenstaro/upload-release-action@v2
         with:
