@@ -38,6 +38,8 @@ jobs:
 
       - name: Install Composer dependencies
         uses: ramsey/composer-install@v2
+        with:
+          composer-options: "--ignore-platform-req=php"
 
       - name: Find and Replace php 8.1
         uses: jacobtomlinson/gha-find-replace@master
@@ -49,7 +51,7 @@ jobs:
       - name: Find and replace Composer check
         uses: jacobtomlinson/gha-find-replace@master
         with:
-          include: "src/vendor/composer/autoload_real.php"
+          include: "vendor/composer/autoload_real.php"
           find: "require __DIR__ . '/platform_check.php';"
           replace: "# require __DIR__ . '/platform_check.php';"
 
