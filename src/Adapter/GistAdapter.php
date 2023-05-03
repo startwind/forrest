@@ -20,7 +20,7 @@ class GistAdapter implements Adapter, ClientAwareAdapter
     private string $username;
     private string $prefix;
 
-    private string $rawGist = "";
+    private array $rawGist = [];
 
     public function __construct(string $username, string $prefix)
     {
@@ -49,7 +49,7 @@ class GistAdapter implements Adapter, ClientAwareAdapter
      */
     private function getRawGists(string $username): array
     {
-        if (!$this->rawGist) {
+        if (empty($this->rawGist)) {
             try {
                 $response = $this->client->get(sprintf(self::GIST_URL, $username));
             } catch (\Exception $exception) {
