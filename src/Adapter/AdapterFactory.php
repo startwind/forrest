@@ -6,6 +6,7 @@ use GuzzleHttp\Client;
 
 class AdapterFactory
 {
+    /** @var array<string, string> */
     private static array $adapters = [
         GistAdapter::TYPE => GistAdapter::class,
         YamlAdapter::TYPE => YamlAdapter::class,
