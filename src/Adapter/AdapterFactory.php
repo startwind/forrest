@@ -8,7 +8,7 @@ class AdapterFactory
 {
     private static array $adapters = [
         GistAdapter::TYPE => GistAdapter::class,
-        YamlAdapter::TYPE => YamlAdapter::class
+        YamlAdapter::TYPE => YamlAdapter::class,
     ];
 
     public static function getAdapter(string $adapterType, array $config, Client $client): Adapter
@@ -20,7 +20,7 @@ class AdapterFactory
         $adapterClass = self::$adapters[$adapterType];
 
         /** @var Adapter $adapter */
-        $adapter = call_user_func(array($adapterClass, 'fromConfigArray'), $config);
+        $adapter = call_user_func([$adapterClass, 'fromConfigArray'], $config);
 
         if ($adapter instanceof ClientAwareAdapter) {
             $adapter->setClient($client);

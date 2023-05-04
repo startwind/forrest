@@ -14,8 +14,6 @@ abstract class DirectoryCommand extends ForrestCommand
     {
         $client = new Client();
         $response = $client->get(self::MASTER_DIRECTORY_URL);
-        $directory = Yaml::parse($response->getBody());
-
-        return $directory;
+        return Yaml::parse($response->getBody());
     }
 }

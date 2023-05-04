@@ -17,15 +17,12 @@ class GistAdapter implements Adapter, ClientAwareAdapter
 
     private Client $client;
 
-    private string $username;
-    private string $prefix;
-
     private array $rawGist = [];
 
-    public function __construct(string $username, string $prefix)
-    {
-        $this->username = $username;
-        $this->prefix = $prefix;
+    public function __construct(
+        private readonly string $username,
+        private readonly string $prefix
+    ) {
     }
 
     /**

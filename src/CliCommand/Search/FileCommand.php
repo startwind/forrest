@@ -15,7 +15,7 @@ class FileCommand extends SearchCommand
     protected static $defaultName = 'search:file';
     protected static $defaultDescription = 'Search for commands that fit the given file.';
 
-    protected function configure()
+    protected function configure(): void
     {
         $this->addArgument('filename', InputArgument::REQUIRED, 'The filename you want to get commands for.');
     }
