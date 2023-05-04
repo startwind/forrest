@@ -56,12 +56,12 @@ official repositories visit our [directory documentation](docs/directory.md).
 - `repository:list` - Shows a list of all registered repositories.
 - `repository:create` - Creates a new repository and adds it (optional).
 - `repository:register` - Add an existing repository to Forrest.
+- `repository:remove` - Remove a specified installed repository.
 
 ### Directory Commands
 
 - `directory:list` - List all repositories from the Forrest directory.
 - `directory:install` - Install a specified repository from the Forrest directory.
-- `directory:remove` - Remove a specified installed repository.
 
 ## How to support
 

@@ -27,5 +27,4 @@ class ShowCommand extends CommandCommand
 
         return SymfonyCommand::SUCCESS;
     }
-
 }
