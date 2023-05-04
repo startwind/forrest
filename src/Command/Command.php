@@ -2,6 +2,8 @@
 
 namespace Startwind\Forrest\Command;
 
+use Startwind\Forrest\Command\Parameters\Parameter;
+
 class Command
 {
     public const PARAMETER_PREFIX = '${';
@@ -9,11 +11,23 @@ class Command
 
     private bool $isRunnable = true;
 
+    /**
+     * @var Parameter[]
+     */
+    private array $parameters = [];
+
+    /**
+     * @param string $prompt
+     * @param string $name
+     * @param string $description
+     */
+
     public function __construct(
         private readonly string $name,
         private readonly string $description,
-        private readonly string $prompt
-    ) {
+        private readonly string $prompt)
+    {
+
     }
 
     /**
@@ -41,7 +55,7 @@ class Command
         $prompt = $this->prompt;
 
         foreach ($values as $key => $value) {
-            $prompt = str_replace(self::PARAMETER_PREFIX . $key . self::PARAMETER_POSTFIX, $value, $prompt);
+            $prompt = str_replace(self::PARAMETER_PREFIX . $key . self::PARAMETER_POSTFIX, (string)$value, $prompt);
         }
 
         return $prompt;
@@ -64,20 +78,29 @@ class Command
     }
 
     /**
+     * Set all parameter definitions
+     */
+    public function setParameters(array $parameters): void
+    {
+        foreach ($parameters as $identifier => $parameter) {
+            $this->setParameter($identifier, $parameter);
+        }
+    }
+
+    /**
+     * Set a single parameter definition
+     */
+    private function setParameter(string $identifier, Parameter $parameter): void
+    {
+        $this->parameters[$identifier] = $parameter;
+    }
+
+    /**
      * Return the parameters that have to be inserted.
      */
     public function getParameters(): array
     {
-        $prompt = $this->getPrompt();
-        preg_match_all('^\${[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*}^', $prompt, $matches);
-
-        $parameters = [];
-
-        foreach ($matches[0] as $match) {
-            $parameters[] = str_replace(self::PARAMETER_PREFIX, '', str_replace(self::PARAMETER_POSTFIX, '', $match));
-        }
-
-        return $parameters;
+        return $this->parameters;
     }
 
     /**

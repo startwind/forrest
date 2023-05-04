@@ -4,12 +4,12 @@ namespace Startwind\Forrest\Adapter;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ClientException;
-use GuzzleHttp\Psr7\Response;
 use Startwind\Forrest\Adapter\Exception\RepositoryNotFoundException;
 use Startwind\Forrest\Command\Command;
+use Startwind\Forrest\Command\Parameters\ParameterFactory;
 use Symfony\Component\Yaml\Yaml;
 
-class YamlAdapter implements Adapter, ClientAwareAdapter
+class YamlAdapter extends BasicAdapter implements ClientAwareAdapter
 {
     public const TYPE = 'yaml';
 
@@ -17,8 +17,8 @@ class YamlAdapter implements Adapter, ClientAwareAdapter
     public const YAML_FIELD_PROMPT = 'prompt';
     public const YAML_FIELD_NAME = 'name';
     public const YAML_FIELD_DESCRIPTION = 'description';
-
-    public const YAM_FIELD_RUNNABLE = 'runnable';
+    public const YAML_FIELD_RUNNABLE = 'runnable';
+    public const YAML_FIELD_PARAMETERS = 'parameters';
 
     private string $yamlFile;
 
@@ -73,10 +73,21 @@ class YamlAdapter implements Adapter, ClientAwareAdapter
             if (!array_key_exists(self::YAML_FIELD_DESCRIPTION, $commandConfig)) {
                 throw new \RuntimeException('The mandatory field ' . self::YAML_FIELD_DESCRIPTION . ' is not set for identifier "' . $identifier . '" (file: ' . $this->yamlFile . ').');
             }
-            $command = new Command($commandConfig[self::YAML_FIELD_NAME], $commandConfig[self::YAML_FIELD_DESCRIPTION], $commandConfig[self::YAML_FIELD_PROMPT]);
 
-            if (array_key_exists(self::YAM_FIELD_RUNNABLE, $commandConfig)) {
-                if ($commandConfig[self::YAM_FIELD_RUNNABLE] === false) {
+            $prompt = $commandConfig[self::YAML_FIELD_PROMPT];
+
+            $command = new Command($commandConfig[self::YAML_FIELD_NAME], $commandConfig[self::YAML_FIELD_DESCRIPTION], $prompt);
+
+            if (array_key_exists(self::YAML_FIELD_PARAMETERS, $commandConfig)) {
+                $parameterConfig = $commandConfig[self::YAML_FIELD_PARAMETERS];
+            } else {
+                $parameterConfig = [];
+            }
+
+            $command->setParameters($this->createParameters($prompt, $parameterConfig));
+
+            if (array_key_exists(self::YAML_FIELD_RUNNABLE, $commandConfig)) {
+                if ($commandConfig[self::YAML_FIELD_RUNNABLE] === false) {
                     $command->flagAsNotRunnable();
                 }
             }
@@ -86,6 +97,28 @@ class YamlAdapter implements Adapter, ClientAwareAdapter
 
         return $commands;
     }
+
+    /**
+     * @return \Startwind\Forrest\Command\Parameters\Parameter[]
+     */
+    protected function createParameters(string $prompt, array $parameterConfig): array
+    {
+        $parameterNames = $this->extractParametersFromPrompt($prompt);
+
+        $parameters = [];
+
+        foreach ($parameterNames as $parameterName) {
+            if (array_key_exists($parameterName, $parameterConfig)) {
+                $config = $parameterConfig[$parameterName];
+            } else {
+                $config = [];
+            }
+            $parameters[$parameterName] = ParameterFactory::create($config);
+        }
+
+        return $parameters;
+    }
+
 
     /**
      * @inheritDoc
