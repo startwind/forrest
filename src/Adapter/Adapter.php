@@ -14,7 +14,7 @@ interface Adapter
     /**
      * Return all commands behind this repository.
      *
-     * @return \Startwind\Forrest\Command\Command[]
+     * @return Command[]
      */
     public function getCommands(): array;
 

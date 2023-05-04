@@ -12,7 +12,7 @@ class ShowCommand extends CommandCommand
     protected static $defaultName = 'commands:show';
     protected static $defaultDescription = 'Show a specific command. It will not run it.';
 
-    protected function configure()
+    protected function configure(): void
     {
         $this->addArgument('identifier', InputArgument::REQUIRED, 'The commands identifier.');
     }

@@ -17,7 +17,7 @@ class RunCommand extends CommandCommand
     protected static $defaultName = 'commands:run';
     protected static $defaultDescription = 'Run a specific command.';
 
-    protected function configure()
+    protected function configure(): void
     {
         $this->setAliases(['run']);
         $this->addArgument('identifier', InputArgument::OPTIONAL, 'The commands identifier.', false);
