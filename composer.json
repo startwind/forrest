@@ -6,7 +6,9 @@
     }
   },
   "autoload-dev": {
-    "Tests\\Startwind\\Forrest\\": "tests/"
+    "psr-4": {
+      "Tests\\Startwind\\Forrest\\": "tests/"
+    }
   },
   "require": {
     "php": "^8.1",
