@@ -19,7 +19,7 @@ interface Adapter
     public function getCommands(): array;
 
     /**
-     * Return a initialized adapter via config array.
+     * Return an initialized adapter via config array.
      */
     public static function fromConfigArray(array $config): Adapter;
 

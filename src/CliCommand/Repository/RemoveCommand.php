@@ -12,7 +12,7 @@ class RemoveCommand extends RepositoryCommand
     protected static $defaultName = 'repository:remove';
     protected static $defaultDescription = 'Remove a specific repository.';
 
-    protected function configure()
+    protected function configure(): void
     {
         $this->addArgument('identifier', InputArgument::REQUIRED, 'The repositories identifier.');
     }

@@ -4,9 +4,12 @@ namespace Startwind\Forrest\Adapter;
 
 abstract class BasicAdapter implements Adapter
 {
-    const PARAMETER_PREFIX = '${';
-    const PARAMETER_POSTFIX = '}';
+    public const PARAMETER_PREFIX = '${';
+    public const PARAMETER_POSTFIX = '}';
 
+    /**
+     * @return string[]
+     */
     protected function extractParametersFromPrompt(string $prompt): array
     {
         preg_match_all('^\${[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*}^', $prompt, $matches);

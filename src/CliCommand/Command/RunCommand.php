@@ -4,6 +4,7 @@ namespace Startwind\Forrest\CliCommand\Command;
 
 use Startwind\Forrest\Command\Command;
 use Startwind\Forrest\Command\Parameters\NameAwareParameter;
+use Startwind\Forrest\Command\Parameters\Parameter;
 use Symfony\Component\Console\Command\Command as SymfonyCommand;
 use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Input\InputArgument;
@@ -80,7 +81,8 @@ class RunCommand extends CommandCommand
     }
 
     /**
-     * @param \Startwind\Forrest\Command\Parameters\Parameter[] $parameters
+     * @param Parameter[] $parameters
+     * @return array<string, mixed>
      */
     private function handleParameters(QuestionHelper $questionHelper, InputInterface $input, OutputInterface $output, array $parameters): array
     {

@@ -16,7 +16,7 @@ class RegisterCommand extends RepositoryCommand
     protected static $defaultName = 'repository:register';
     protected static $defaultDescription = 'Add an existing local repository.';
 
-    protected function configure()
+    protected function configure(): void
     {
         $this->addArgument('repositoryFileName', InputArgument::REQUIRED, 'The filename of the repository.');
     }

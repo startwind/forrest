@@ -3,7 +3,6 @@
 namespace Startwind\Forrest\CliCommand\Repository;
 
 use Startwind\Forrest\CliCommand\ForrestCommand;
-use Startwind\Forrest\Config\ConfigFileHandler;
 
 abstract class RepositoryCommand extends ForrestCommand
 {
@@ -18,7 +17,7 @@ abstract class RepositoryCommand extends ForrestCommand
     /**
      * Register a new repository
      */
-    protected function registerRepository(string $identifier, string $name, string $description, string $repositoryFileName)
+    protected function registerRepository(string $identifier, string $name, string $description, string $repositoryFileName): void
     {
         $repoArray = [
             'adapter' => 'yaml',

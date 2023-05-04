@@ -3,6 +3,7 @@
 namespace Startwind\Forrest\Adapter;
 
 use GuzzleHttp\Client;
+use GuzzleHttp\Exception\GuzzleException;
 use Startwind\Forrest\Adapter\Exception\RateLimitExceededException;
 use Startwind\Forrest\Command\Command;
 use Startwind\Forrest\Command\GistCommand;
@@ -17,15 +18,12 @@ class GistAdapter implements Adapter, ClientAwareAdapter
 
     private Client $client;
 
-    private string $username;
-    private string $prefix;
-
     private array $rawGist = [];
 
-    public function __construct(string $username, string $prefix)
-    {
-        $this->username = $username;
-        $this->prefix = $prefix;
+    public function __construct(
+        private readonly string $username,
+        private readonly string $prefix
+    ) {
     }
 
     /**
@@ -46,6 +44,8 @@ class GistAdapter implements Adapter, ClientAwareAdapter
 
     /**
      * Return the raw gists from
+     *
+     * @throws GuzzleException
      */
     private function getRawGists(string $username): array
     {

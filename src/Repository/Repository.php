@@ -50,7 +50,7 @@ class Repository
         $this->adapter->addCommand($command);
     }
 
-    static public function createUniqueCommandName(string $repositoryIdentifier, Command $command): string
+    public static function createUniqueCommandName(string $repositoryIdentifier, Command $command): string
     {
         return $repositoryIdentifier . ':' . $command->getName();
     }
