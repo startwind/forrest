@@ -55,9 +55,15 @@ class RunCommand extends CommandCommand
             $this->writeInfo($output, $prompt);
         }
 
-        $force = ($input->getOption('force') !== false);
+        if (!$command->isRunnable()) {
+            $this->writeWarning($output, [
+                'This command was marked as not callable from Forrest. Please copy the prompt and run it',
+                'on the command line.'
+            ]);
+            return SymfonyCommand::SUCCESS;
+        }
 
-        if ($force) {
+        if ($input->getOption('force') !== false) {
             if (!$this->handleChecksum($command, $questionHelper, $input, $output)) {
                 return SymfonyCommand::FAILURE;
             }

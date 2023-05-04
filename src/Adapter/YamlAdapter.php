@@ -18,6 +18,8 @@ class YamlAdapter implements Adapter, ClientAwareAdapter
     const YAML_FIELD_NAME = 'name';
     const YAML_FIELD_DESCRIPTION = 'description';
 
+    const YAM_FIELD_RUNNABLE = 'runnable';
+
     private string $yamlFile;
 
     private Client $client;
@@ -71,7 +73,15 @@ class YamlAdapter implements Adapter, ClientAwareAdapter
             if (!array_key_exists(self::YAML_FIELD_DESCRIPTION, $commandConfig)) {
                 throw new \RuntimeException('The mandatory field ' . self::YAML_FIELD_DESCRIPTION . ' is not set for identifier "' . $identifier . '" (file: ' . $this->yamlFile . ').');
             }
-            $commands[] = new Command($commandConfig[self::YAML_FIELD_NAME], $commandConfig[self::YAML_FIELD_DESCRIPTION], $commandConfig[self::YAML_FIELD_PROMPT]);
+            $command = new Command($commandConfig[self::YAML_FIELD_NAME], $commandConfig[self::YAML_FIELD_DESCRIPTION], $commandConfig[self::YAML_FIELD_PROMPT]);
+
+            if (array_key_exists(self::YAM_FIELD_RUNNABLE, $commandConfig)) {
+                if ($commandConfig[self::YAM_FIELD_RUNNABLE] === false) {
+                    $command->flagAsNotRunnable();
+                }
+            }
+
+            $commands[] = $command;
         }
 
         return $commands;
