@@ -15,13 +15,13 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 abstract class ForrestCommand extends SymfonyCommand
 {
-    const COMMAND_SEPARATOR = ':';
+    public const COMMAND_SEPARATOR = ':';
 
-    const DEFAULT_CONFIG_FILE = __DIR__ . '/../../config/default.yml';
-    const USER_CONFIG_DIR = '.forrest';
-    const USER_CONFIG_FILE = self::USER_CONFIG_DIR . '/config.yml';
-    const USER_CHECKSUM_FILE = self::USER_CONFIG_DIR . '/checksum.json';
-    const USER_HISTORY_FILE = self::USER_CONFIG_DIR . '/history';
+    public const DEFAULT_CONFIG_FILE = __DIR__ . '/../../config/default.yml';
+    public const USER_CONFIG_DIR = '.forrest';
+    public const USER_CONFIG_FILE = self::USER_CONFIG_DIR . '/config.yml';
+    public const USER_CHECKSUM_FILE = self::USER_CONFIG_DIR . '/checksum.json';
+    public const USER_HISTORY_FILE = self::USER_CONFIG_DIR . '/history';
 
     private RepositoryCollection $repositoryCollection;
 

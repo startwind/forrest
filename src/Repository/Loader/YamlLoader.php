@@ -10,12 +10,12 @@ use Symfony\Component\Yaml\Yaml;
 
 class YamlLoader
 {
-    const CONFIG_ELEMENT_REPOSITORIES = 'repositories';
-    const CONFIG_ELEMENT_ADAPTER = 'adapter';
-    const CONFIG_ELEMENT_NAME = 'name';
-    const CONFIG_ELEMENT_CONFIG = 'config';
+    public const CONFIG_ELEMENT_REPOSITORIES = 'repositories';
+    public const CONFIG_ELEMENT_ADAPTER = 'adapter';
+    public const CONFIG_ELEMENT_NAME = 'name';
+    public const CONFIG_ELEMENT_CONFIG = 'config';
 
-    const CONFIG_ELEMENT_DESCRIPTION = 'description';
+    public const CONFIG_ELEMENT_DESCRIPTION = 'description';
 
     private array $config;
 

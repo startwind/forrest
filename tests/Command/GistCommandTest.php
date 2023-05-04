@@ -38,4 +38,3 @@ final class GistCommandTest extends TestCase
         $this->assertEquals('https://some.raw.gist.url/forrest', (string)$request->getUri());
     }
 }
-

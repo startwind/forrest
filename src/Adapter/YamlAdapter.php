@@ -11,14 +11,14 @@ use Symfony\Component\Yaml\Yaml;
 
 class YamlAdapter implements Adapter, ClientAwareAdapter
 {
-    const TYPE = 'yaml';
+    public const TYPE = 'yaml';
 
-    const YAML_FIELD_COMMANDS = 'commands';
-    const YAML_FIELD_PROMPT = 'prompt';
-    const YAML_FIELD_NAME = 'name';
-    const YAML_FIELD_DESCRIPTION = 'description';
+    public const YAML_FIELD_COMMANDS = 'commands';
+    public const YAML_FIELD_PROMPT = 'prompt';
+    public const YAML_FIELD_NAME = 'name';
+    public const YAML_FIELD_DESCRIPTION = 'description';
 
-    const YAM_FIELD_RUNNABLE = 'runnable';
+    public const YAM_FIELD_RUNNABLE = 'runnable';
 
     private string $yamlFile;
 
@@ -90,7 +90,7 @@ class YamlAdapter implements Adapter, ClientAwareAdapter
     /**
      * @inheritDoc
      */
-    static public function fromConfigArray(array $config): YamlAdapter
+    public static function fromConfigArray(array $config): YamlAdapter
     {
         return new self($config['file']);
     }

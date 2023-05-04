@@ -8,7 +8,7 @@ use Symfony\Component\Yaml\Yaml;
 
 abstract class DirectoryCommand extends ForrestCommand
 {
-    const MASTER_DIRECTORY_URL = 'https://raw.githubusercontent.com/startwind/forrest-directory/main/directory.yml';
+    public const MASTER_DIRECTORY_URL = 'https://raw.githubusercontent.com/startwind/forrest-directory/main/directory.yml';
 
     protected function getDirectory(): array
     {

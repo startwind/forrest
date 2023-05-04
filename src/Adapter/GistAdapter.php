@@ -9,11 +9,11 @@ use Startwind\Forrest\Command\GistCommand;
 
 class GistAdapter implements Adapter, ClientAwareAdapter
 {
-    const TYPE = 'gist';
+    public const TYPE = 'gist';
 
-    const GIST_URL = 'https://api.github.com/users/%s/gists';
+    public const GIST_URL = 'https://api.github.com/users/%s/gists';
 
-    const GIST_FIELD_RAW_URL = 'raw_url';
+    public const GIST_FIELD_RAW_URL = 'raw_url';
 
     private Client $client;
 
@@ -92,7 +92,7 @@ class GistAdapter implements Adapter, ClientAwareAdapter
     /**
      * @inheritDoc
      */
-    static public function fromConfigArray(array $config): GistAdapter
+    public static function fromConfigArray(array $config): GistAdapter
     {
         return new self($config['username'], $config['prefix']);
     }

@@ -18,9 +18,11 @@
   "require-dev": {
     "phpstan/phpstan": "1.11.x-dev",
     "rector/rector": "0.15.x-dev",
-    "phpunit/phpunit": "^10"
+    "phpunit/phpunit": "^10",
+    "friendsofphp/php-cs-fixer": "dev-master"
   },
   "scripts": {
-    "test" : "vendor/bin/phpunit tests"
+    "test" : "vendor/bin/phpunit tests",
+    "cs" : "vendor/bin/php-cs-fixer fix --rules=@PSR12 ."
   }
 }

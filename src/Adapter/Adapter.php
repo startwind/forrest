@@ -21,7 +21,7 @@ interface Adapter
     /**
      * Return a initialized adapter via config array.
      */
-    static public function fromConfigArray(array $config): Adapter;
+    public static function fromConfigArray(array $config): Adapter;
 
     /**
      * Return true if the repository can be edited.

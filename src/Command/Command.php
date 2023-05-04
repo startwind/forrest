@@ -4,16 +4,17 @@ namespace Startwind\Forrest\Command;
 
 class Command
 {
-    const PARAMETER_PREFIX = '${';
-    const PARAMETER_POSTFIX = '}';
+    public const PARAMETER_PREFIX = '${';
+    public const PARAMETER_POSTFIX = '}';
 
     private bool $isRunnable = true;
 
     public function __construct(
         private readonly string $name,
         private readonly string $description,
-        private readonly string $prompt)
-    {}
+        private readonly string $prompt
+    ) {
+    }
 
     /**
      * Return true if the prompt can be run via Forrest.

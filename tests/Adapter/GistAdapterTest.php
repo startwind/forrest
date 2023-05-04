@@ -62,4 +62,3 @@ final class GistAdapterTest extends TestCase
         }
     }
 }
-

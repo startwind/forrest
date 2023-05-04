@@ -20,7 +20,9 @@ class ConfigFileHandler
     {
         if (file_exists($this->checksumFilename)) {
             $checksums = json_decode(file_get_contents($this->checksumFilename), true);
-            if (!$checksums) $checksums = [];
+            if (!$checksums) {
+                $checksums = [];
+            }
         } else {
             $checksums = [];
         }
