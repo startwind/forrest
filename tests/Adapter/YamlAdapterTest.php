@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Startwind\Forrest\Adapter;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Startwind\Forrest\Adapter\YamlAdapter;
 
@@ -21,9 +22,7 @@ final class YamlAdapterTest extends TestCase
         $this->assertEquals('yaml' , $this->subject->getType());
     }
 
-    /**
-     * @dataProvider yamlConfigProvider
-     */
+    #[DataProvider('yamlConfigProvider')]
     public function testConfigArray(array $config): void 
     {
         $result = YamlAdapter::fromConfigArray($config);

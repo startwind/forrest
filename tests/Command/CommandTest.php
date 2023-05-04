@@ -4,14 +4,13 @@ declare(strict_types=1);
 
 namespace Tests\Startwind\Forrest\Command;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Startwind\Forrest\Command\Command;
 
 final class CommandTest extends TestCase
 {
-    /**
-     * @dataProvider promptProvider
-     */
+    #[DataProvider('promptProvider')]
     public function testGetPrompt(array $values, string $prompt, string $expected): void
     {
         $command = new Command(
