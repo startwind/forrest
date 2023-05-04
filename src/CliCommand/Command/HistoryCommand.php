@@ -11,6 +11,11 @@ class HistoryCommand extends CommandCommand
     protected static $defaultName = 'commands:history';
     protected static $defaultDescription = 'Show the latest commands that were executed.';
 
+    protected function configure()
+    {
+        $this->setAliases(['history']);
+    }
+
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $historyHandler = $this->getHistoryHandler();
