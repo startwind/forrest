@@ -4,6 +4,8 @@ namespace Startwind\Forrest\CliCommand\Command;
 
 use Startwind\Forrest\CliCommand\ForrestCommand;
 use Startwind\Forrest\Command\Command;
+use Startwind\Forrest\Output\OutputHelper;
+use Startwind\Forrest\Repository\Repository;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -32,9 +34,7 @@ class CommandCommand extends ForrestCommand
      */
     protected function renderListCommand(InputInterface $input, OutputInterface $output): void
     {
-        $output->writeln('');
-        $output->writeln("Forrest - Package manager for CLI scripts <fg=green>" . FORREST_VERSION . '</>');
-        $output->writeln('');
+        OutputHelper::renderHeader($output);
 
         $this->enrichRepositories();
 
@@ -45,7 +45,7 @@ class CommandCommand extends ForrestCommand
         foreach ($repositories as $repoIdentifier => $repository) {
             try {
                 foreach ($repository->getCommands() as $command) {
-                    $maxLength = max($maxLength, strlen($repoIdentifier . ':' . $command->getName()));
+                    $maxLength = max($maxLength, strlen(Repository::createUniqueCommandName($repoIdentifier, $command)));
                 }
             } catch (\Exception $exception) {
                 unset($repositories[$repoIdentifier]);
@@ -66,12 +66,7 @@ class CommandCommand extends ForrestCommand
             $output->writeln('<fg=yellow>' . $repository->getName() . '</> (' . $repoIdentifier . ')');
             $output->writeln('');
 
-            $commands = $repository->getCommands();
-            foreach ($commands as $command) {
-                $commandIdentifier = $repoIdentifier . ':' . $command->getName();
-                $spaces = str_repeat(' ', $maxLength - strlen($commandIdentifier) + 2);
-                $output->writeln('  <fg=green>' . $commandIdentifier . '</>' . $spaces . $command->getDescription());
-            }
+            OutputHelper::renderCommands($output, $repository->getCommands(), $repoIdentifier, $maxLength);
         }
 
         $output->writeln('');

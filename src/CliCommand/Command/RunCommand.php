@@ -3,6 +3,7 @@
 namespace Startwind\Forrest\CliCommand\Command;
 
 use Startwind\Forrest\Command\Command;
+use Startwind\Forrest\Command\Parameters\NameAwareParameter;
 use Symfony\Component\Console\Command\Command as SymfonyCommand;
 use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Input\InputArgument;
@@ -43,8 +44,13 @@ class RunCommand extends CommandCommand
         $parameters = $command->getParameters();
         $values = [];
 
-        foreach ($parameters as $parameter) {
-            $values[$parameter] = $questionHelper->ask($input, $output, new Question('  Select value for ' . $parameter . ': '));
+        foreach ($parameters as $identifier => $parameter) {
+            if ($parameter instanceof NameAwareParameter) {
+                $name = $parameter->getName();
+            } else {
+                $name = $identifier;
+            }
+            $values[$identifier] = $questionHelper->ask($input, $output, new Question('  Select value for ' . $name . ': '));
         }
 
         $prompt = $command->getPrompt($values);
