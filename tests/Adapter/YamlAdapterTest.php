@@ -9,11 +9,11 @@ use Startwind\Forrest\Adapter\YamlAdapter;
 
 final class YamlAdapterTest extends TestCase
 {
-    private $subject = null;
+    private ?YamlAdapter $subject = null;
     
     public function setup(): void 
     {
-        $this->subject = new YamlAdapter('yamlfile.yaml');
+        $this->subject = new YamlAdapter('file.yaml');
     }
 
     public function testGetType(): void

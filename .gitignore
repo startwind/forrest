@@ -1,6 +1,9 @@
 .idea
 vendor
 .DS_Store
+
+.phpunit.result.cache
+
 in-dev
 tmp
 tmp/custom.yml

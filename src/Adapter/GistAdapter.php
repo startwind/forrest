@@ -59,6 +59,7 @@ class GistAdapter implements Adapter, ClientAwareAdapter
                     throw $exception;
                 }
             }
+            // @todo: validate json before decode and serialize to an object
             $this->rawGist = json_decode((string)$response->getBody(), true);
         }
 
