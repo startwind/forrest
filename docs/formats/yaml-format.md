@@ -15,8 +15,11 @@ commands:
     description: "Run a php CLI command with a defined memory limit"
     prompt: "php -d memory_limit=${limit_in_megabyte}M ${filename}"
 
-  dockerCommand:
-
+    worker-shell:
+      name: 'docker:shell'
+      description: 'Login into the docker container'
+      runnable: false
+      prompt: 'docker exec -it worker /bin/bash'
 ```
 
 ## Command fields
