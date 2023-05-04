@@ -6,7 +6,6 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ClientException;
 use Startwind\Forrest\Adapter\Exception\RepositoryNotFoundException;
 use Startwind\Forrest\Command\Command;
-use Startwind\Forrest\Command\Parameters\Config;
 use Startwind\Forrest\Command\Parameters\ParameterFactory;
 use Symfony\Component\Yaml\Yaml;
 

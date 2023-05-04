@@ -1,6 +1,7 @@
 <?php
 
 namespace Startwind\Forrest\Command\Parameters;
+
 class ParameterFactory
 {
     const TYPE_MIXED = 'forrest_mixed';
@@ -8,6 +9,9 @@ class ParameterFactory
 
     const FIELD_TYPE = 'type';
 
+    /**
+     * Create a Parameter configuration object from the given config array.
+     */
     static public function create(array $config): Parameter
     {
         if (array_key_exists(self::FIELD_TYPE, $config)) {
@@ -29,7 +33,7 @@ class ParameterFactory
         if (empty($config)) {
             return new UndefinedParameter();
         } else {
-            return new MixedParameter();
+            return new UndefinedParameter();
         }
     }
 

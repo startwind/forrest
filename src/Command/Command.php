@@ -79,6 +79,9 @@ class Command
         return $this->description;
     }
 
+    /**
+     * Set all parameter definitions
+     */
     public function setParameters(array $parameters): void
     {
         foreach ($parameters as $identifier => $parameter) {
@@ -86,6 +89,9 @@ class Command
         }
     }
 
+    /**
+     * Set a single parameter definition
+     */
     private function setParameter(string $identifier, Parameter $parameter): void
     {
         $this->parameters[$identifier] = $parameter;

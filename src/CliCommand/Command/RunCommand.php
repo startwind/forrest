@@ -46,7 +46,7 @@ class RunCommand extends CommandCommand
 
         foreach ($parameters as $identifier => $parameter) {
             if ($parameter instanceof NameAwareParameter) {
-                $name = $parameter->getName();
+                $name = $identifier . ' (' . $parameter->getName(). ')';
             } else {
                 $name = $identifier;
             }
