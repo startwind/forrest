@@ -2164,12 +2164,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpstan/phpstan.git",
-                "reference": "13e03f444d0b331bd7cc487c72caf7e6646647d0"
+                "reference": "5d2ef3c4e89d139f16b15b899f16ea1aab7ecee9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/13e03f444d0b331bd7cc487c72caf7e6646647d0",
-                "reference": "13e03f444d0b331bd7cc487c72caf7e6646647d0",
+                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/5d2ef3c4e89d139f16b15b899f16ea1aab7ecee9",
+                "reference": "5d2ef3c4e89d139f16b15b899f16ea1aab7ecee9",
                 "shasum": ""
             },
             "require": {
@@ -2219,7 +2219,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-05-02T12:26:22+00:00"
+            "time": "2023-05-04T13:50:23+00:00"
         },
         {
             "name": "phpunit/php-code-coverage",
@@ -2814,12 +2814,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/rectorphp/rector.git",
-                "reference": "ad0c32ebbb4378059f85d49c56d4a7f2648e212e"
+                "reference": "68933a635ea91ba6d96a8200cabab4623fe3247f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/rectorphp/rector/zipball/ad0c32ebbb4378059f85d49c56d4a7f2648e212e",
-                "reference": "ad0c32ebbb4378059f85d49c56d4a7f2648e212e",
+                "url": "https://api.github.com/repos/rectorphp/rector/zipball/68933a635ea91ba6d96a8200cabab4623fe3247f",
+                "reference": "68933a635ea91ba6d96a8200cabab4623fe3247f",
                 "shasum": ""
             },
             "require": {
@@ -2868,7 +2868,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2023-05-02T07:09:01+00:00"
+            "time": "2023-05-04T13:18:16+00:00"
         },
         {
             "name": "sebastian/cli-parser",
@@ -4442,7 +4442,8 @@
     "stability-flags": {
         "consolidation/self-update": 20,
         "phpstan/phpstan": 20,
-        "rector/rector": 20
+        "rector/rector": 20,
+        "friendsofphp/php-cs-fixer": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,

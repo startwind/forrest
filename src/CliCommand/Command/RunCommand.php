@@ -139,7 +139,12 @@ class RunCommand extends CommandCommand
                     $this->writeWarning($output, 'Error executing prompt.');
                 }
             } else {
-                $this->writeInfo($output, $execOutput);
+                if (count($execOutput) > 0) {
+                    $this->writeInfo($output, 'Output: ');
+                    $output->writeln($execOutput);
+                } else {
+                    $this->writeInfo($output, 'No output from command');
+                }
             }
         }
     }
