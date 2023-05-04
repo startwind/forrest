@@ -6,8 +6,7 @@ class HistoryHandler
 {
     public function __construct(
         private readonly string $historyFilename
-    )
-    {
+    ) {
     }
 
     /**
