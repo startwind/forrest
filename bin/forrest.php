@@ -33,8 +33,6 @@ $application->add(new \Startwind\Forrest\CliCommand\Repository\Command\AddComman
 $application->add(new \Startwind\Forrest\CliCommand\Directory\ListCommand());
 $application->add(new \Startwind\Forrest\CliCommand\Directory\InstallCommand());
 
-// $application->setDefaultCommand('commands:list');
-
 # Others
 if (!str_contains(FORREST_VERSION, '##FORREST_VERSION')) {
     $application->add(new \SelfUpdate\SelfUpdateCommand(FORREST_NAME, FORREST_VERSION, "startwind/forrest"));
