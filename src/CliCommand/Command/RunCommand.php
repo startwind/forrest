@@ -42,16 +42,8 @@ class RunCommand extends CommandCommand
         $this->showCommandInformation($output, $command);
 
         $parameters = $command->getParameters();
-        $values = [];
 
-        foreach ($parameters as $identifier => $parameter) {
-            if ($parameter instanceof NameAwareParameter) {
-                $name = $identifier . ' (' . $parameter->getName(). ')';
-            } else {
-                $name = $identifier;
-            }
-            $values[$identifier] = $questionHelper->ask($input, $output, new Question('  Select value for ' . $name . ': '));
-        }
+        $values = $this->handleParameters($questionHelper, $input, $output, $parameters);
 
         $prompt = $command->getPrompt($values);
 
@@ -85,6 +77,34 @@ class RunCommand extends CommandCommand
         $this->executeCommand($output, $prompt);
 
         return SymfonyCommand::SUCCESS;
+    }
+
+    /**
+     * @param \Startwind\Forrest\Command\Parameters\Parameter[] $parameters
+     */
+    private function handleParameters(QuestionHelper $questionHelper, InputInterface $input, OutputInterface $output, array $parameters): array
+    {
+        $values = [];
+
+        foreach ($parameters as $identifier => $parameter) {
+            if ($parameter->getName()) {
+                $name = $identifier . ' (' . $parameter->getName() . ')';
+            } else {
+                $name = $identifier;
+            }
+
+            if ($parameter->getDefaultValue()) {
+                $defaultString = ' [default: ' . $parameter->getDefaultValue() . ']';
+                $defaultValue = $parameter->getDefaultValue();
+            } else {
+                $defaultString = '';
+                $defaultValue = '';
+            }
+
+            $values[$identifier] = $questionHelper->ask($input, $output, new Question('  Select value for ' . $name . $defaultString . ': ', $defaultValue));
+        }
+
+        return $values;
     }
 
     /**

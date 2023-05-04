@@ -6,7 +6,6 @@ class ParameterFactory
 {
     const TYPE_MIXED = 'forrest_mixed';
     const TYPE_FILENAME = 'forrest_filename';
-
     const FIELD_TYPE = 'type';
 
     /**
@@ -22,9 +21,29 @@ class ParameterFactory
 
         switch ($type) {
             case self::TYPE_FILENAME:
-                return self::createFileParameter($config);
+                $parameter = self::createFileParameter($config);
+                break;
             default:
-                return self::createMixedParameter($config);
+                $parameter = self::createMixedParameter($config);
+        }
+
+        self::enrichParameters($parameter, $config);
+
+        return $parameter;
+    }
+
+    static private function enrichParameters(Parameter $parameter, array $config): void
+    {
+        if (array_key_exists('name', $config)) {
+            $parameter->setName($config['name']);
+        }
+
+        if (array_key_exists('description', $config)) {
+            $parameter->setDescription($config['description']);
+        }
+
+        if (array_key_exists('default', $config)) {
+            $parameter->setDefaultValue($config['default']);
         }
     }
 
@@ -33,21 +52,13 @@ class ParameterFactory
         if (empty($config)) {
             return new UndefinedParameter();
         } else {
-            return new UndefinedParameter();
+            return new Parameter();
         }
     }
 
     static private function createFileParameter($config): FileParameter
     {
         $fileParameter = new FileParameter();
-
-        if (array_key_exists('name', $config)) {
-            $fileParameter->setName($config['name']);
-        }
-
-        if (array_key_exists('description', $config)) {
-            $fileParameter->setDescription($config['description']);
-        }
 
         if (array_key_exists('file-formats', $config)) {
             $fileParameter->setFileFormats($config['file-formats']);
