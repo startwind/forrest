@@ -22,8 +22,27 @@ commands:
     description: 'Login into the docker container'
     runnable: false
     prompt: 'docker exec -it worker /bin/bash'
+
+  files-tar-decompress:
+    name: 'files:tar:decompress'
+    description: 'Decompress the given tar file'
+    prompt: 'tar -zxvf ${filename}'
+    parameters:
+      filename:
+        name: tar file
+        description: Tar file that should be extracted
+        type: forrest_filename
+        file-formats:
+          - tar.gz
+          - tar
 ```
 
 ## Command fields
 
-- **runnable** [default: true] - if set to false Forrest will only show the command and not run it. This is the case if a command can be harmful or it does not return. 
+- **runnable** [default: true] - if set to false Forrest will only show the command and not run it. This is the case if a command can be harmful or it does not return. *IMPORTANT: the parameters identifier must correspond to the parameter in the prompt.*
+
+- **parameters** [optional] - The parameter field helps specifying and validating the parameter. It can also help predefine values or define enums. 
+  - **name** - The name of the parameter.
+  - **description** - The description of the parameter. Will be shown when the user has to enter the value.
+  - **type** - The type of the value. This will help validating the parameter and will provide new functionality based on the type. 
+  - **file-formats** - dd

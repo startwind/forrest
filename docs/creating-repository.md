@@ -4,6 +4,8 @@ Commands are divided into repositories in Forrest. We recommend that these are s
 
 When creating local repositories we recommend to choose our [YAML format](formats/yaml-format.md).
 
+If you want to see examples of YAML file please visit the [official Forrest GitHub Repository](https://github.com/startwind/forrest-directory/tree/main/repositories) and browse through the files.
+
 ## Local repository
 
 In the beginning, you should always start with a local and therefore private repository. Here, you can create and manage your own commands without affecting other users.
