@@ -47,6 +47,10 @@ official repositories visit our [directory documentation](docs/directory.md).
 - `commands:run` - Run a single command.
 - `commands:history` - Show the recent commands that were executed.
 
+### Search Commands
+
+- `search:file` - Shows a list of commands that fit the given file. [More information](docs/commands/search_file.md)
+
 ### Repository Commands
 
 - `repository:list` - Shows a list of all registered repositories.
