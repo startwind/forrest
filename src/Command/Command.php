@@ -4,25 +4,16 @@ namespace Startwind\Forrest\Command;
 
 class Command
 {
-    const PARAMETER_PREFIX = '${';
-    const PARAMETER_POSTFIX = '}';
-
-    private string $prompt;
-    private string $name;
-    private string $description;
+    public const PARAMETER_PREFIX = '${';
+    public const PARAMETER_POSTFIX = '}';
 
     private bool $isRunnable = true;
 
-    /**
-     * @param string $prompt
-     * @param string $name
-     * @param string $description
-     */
-    public function __construct(string $name, string $description, string $prompt)
-    {
-        $this->prompt = $prompt;
-        $this->name = $name;
-        $this->description = $description;
+    public function __construct(
+        private readonly string $name,
+        private readonly string $description,
+        private readonly string $prompt
+    ) {
     }
 
     /**

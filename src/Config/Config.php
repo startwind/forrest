@@ -4,13 +4,11 @@ namespace Startwind\Forrest\Config;
 
 class Config
 {
-    const PARAM_REPOSITORIES = 'repositories';
+    public const PARAM_REPOSITORIES = 'repositories';
 
-    private array $configArray;
-
-    public function __construct(array $configArray)
-    {
-        $this->configArray = $configArray;
+    public function __construct(
+        private array $configArray
+    ) {
     }
 
     public function addRepository(string $key, array $repositoryConfig): void
