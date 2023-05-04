@@ -11,6 +11,9 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class CommandCommand extends ForrestCommand
 {
+    /**
+     * @var string[]
+     */
     protected array $runWarning = [
         "Be careful. Please only run command that you understand. We only have limited control",
         "of repositories that are not owned by this project."

@@ -14,7 +14,7 @@ class InstallCommand extends DirectoryCommand
     protected static $defaultName = 'directory:install';
     protected static $defaultDescription = 'Install a specific repository from the official Forrest directory.';
 
-    protected function configure()
+    protected function configure(): void
     {
         $this->addArgument('identifier', InputArgument::REQUIRED, 'The repositories identifier');
     }

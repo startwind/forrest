@@ -16,7 +16,7 @@ class CreateCommand extends RepositoryCommand
     protected static $defaultName = 'repository:create';
     protected static $defaultDescription = 'Creates a boilerplate for a new command repository.';
 
-    protected function configure()
+    protected function configure(): void
     {
         $this->addArgument('repositoryFileName', InputArgument::REQUIRED, 'The filename of new repository.');
     }

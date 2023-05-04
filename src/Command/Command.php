@@ -16,18 +16,11 @@ class Command
      */
     private array $parameters = [];
 
-    /**
-     * @param string $prompt
-     * @param string $name
-     * @param string $description
-     */
-
     public function __construct(
         private readonly string $name,
         private readonly string $description,
-        private readonly string $prompt)
-    {
-
+        private readonly string $prompt
+    ) {
     }
 
     /**

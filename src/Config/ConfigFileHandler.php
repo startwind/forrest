@@ -7,13 +7,10 @@ use Symfony\Component\Yaml\Yaml;
 
 class ConfigFileHandler
 {
-    private string $configFilename;
-    private string $checksumFilename;
-
-    public function __construct(string $configFilename, string $checksumFilename)
-    {
-        $this->configFilename = $configFilename;
-        $this->checksumFilename = $checksumFilename;
+    public function __construct(
+        private readonly string $configFilename,
+        private readonly string $checksumFilename
+    ) {
     }
 
     public function persistChecksum(Command $command): void

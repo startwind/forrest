@@ -20,13 +20,10 @@ class YamlAdapter extends BasicAdapter implements ClientAwareAdapter
     public const YAML_FIELD_RUNNABLE = 'runnable';
     public const YAML_FIELD_PARAMETERS = 'parameters';
 
-    private string $yamlFile;
-
     private Client $client;
 
-    public function __construct(string $yamlFile)
+    public function __construct(private readonly string $yamlFile)
     {
-        $this->yamlFile = $yamlFile;
     }
 
     /**
@@ -156,7 +153,7 @@ class YamlAdapter extends BasicAdapter implements ClientAwareAdapter
         $config[self::YAML_FIELD_COMMANDS][$command->getName()] = [
             self::YAML_FIELD_NAME => $this->convertNameToIdentifier($command->getName()),
             self::YAML_FIELD_DESCRIPTION => $command->getDescription(),
-            self::YAML_FIELD_PROMPT => $command->getPrompt()
+            self::YAML_FIELD_PROMPT => $command->getPrompt(),
         ];
 
         file_put_contents($this->yamlFile, Yaml::dump($config, 2));
