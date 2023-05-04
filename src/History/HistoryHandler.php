@@ -6,7 +6,8 @@ class HistoryHandler
 {
     public function __construct(
         private readonly string $historyFilename
-    ) {
+    )
+    {
     }
 
     /**
@@ -22,6 +23,10 @@ class HistoryHandler
      */
     public function getEntries(): array
     {
+        if (!is_file($this->historyFilename)) {
+            return [];
+        }
+
         return file($this->historyFilename);
     }
 }

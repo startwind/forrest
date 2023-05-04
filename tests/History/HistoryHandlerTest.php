@@ -36,6 +36,16 @@ class HistoryHandlerTest extends TestCase
         }
     }
 
+    public function testWhenHistoryFileNotExists(): void
+    {
+        $historyHandler = new HistoryHandler('wrong-filename');
+
+        $history = $historyHandler->getEntries();
+
+        $this->assertEmpty($history);
+        $this->assertFileDoesNotExist('wrong-filename');
+    }
+
     public function tearDown(): void
     {
         unlink($this->tmpFilename);
