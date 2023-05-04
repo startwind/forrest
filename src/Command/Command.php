@@ -11,6 +11,8 @@ class Command
     private string $name;
     private string $description;
 
+    private bool $isRunnable = true;
+
     /**
      * @param string $prompt
      * @param string $name
@@ -21,6 +23,22 @@ class Command
         $this->prompt = $prompt;
         $this->name = $name;
         $this->description = $description;
+    }
+
+    /**
+     * Return true if the prompt can be run via Forrest.
+     */
+    public function isRunnable(): bool
+    {
+        return $this->isRunnable;
+    }
+
+    /**
+     * If this method is called Forrest will not run the command but only show it.
+     */
+    public function flagAsNotRunnable(): void
+    {
+        $this->isRunnable = false;
     }
 
     /**

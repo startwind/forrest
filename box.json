@@ -11,5 +11,7 @@
     {
       "in": "."
     }
-  ]
+  ],
+  "check-requirements": false,
+  "exclude-composer-files": true
 }

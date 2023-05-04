@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "ef85f3c0094e4dbb0063966b79d8847f",
+    "content-hash": "5bfd2ea7baf6fd5f97fac8bad858c26d",
     "packages": [
         {
             "name": "composer/semver",
@@ -2263,6 +2263,68 @@
             "time": "2023-05-02T04:48:19+00:00"
         },
         {
+            "name": "rector/rector",
+            "version": "dev-main",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/rectorphp/rector.git",
+                "reference": "ad0c32ebbb4378059f85d49c56d4a7f2648e212e"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/rectorphp/rector/zipball/ad0c32ebbb4378059f85d49c56d4a7f2648e212e",
+                "reference": "ad0c32ebbb4378059f85d49c56d4a7f2648e212e",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.2|^8.0",
+                "phpstan/phpstan": "^1.10.14"
+            },
+            "conflict": {
+                "rector/rector-doctrine": "*",
+                "rector/rector-downgrade-php": "*",
+                "rector/rector-phpunit": "*",
+                "rector/rector-symfony": "*"
+            },
+            "default-branch": true,
+            "bin": [
+                "bin/rector"
+            ],
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-main": "0.15-dev"
+                }
+            },
+            "autoload": {
+                "files": [
+                    "bootstrap.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Instant Upgrade and Automated Refactoring of any PHP code",
+            "keywords": [
+                "automation",
+                "dev",
+                "migration",
+                "refactoring"
+            ],
+            "support": {
+                "issues": "https://github.com/rectorphp/rector/issues",
+                "source": "https://github.com/rectorphp/rector/tree/main"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/tomasvotruba",
+                    "type": "github"
+                }
+            ],
+            "time": "2023-05-02T07:09:01+00:00"
+        },
+        {
             "name": "sebastian/cli-parser",
             "version": "dev-main",
             "source": {
@@ -3255,7 +3317,8 @@
     "minimum-stability": "dev",
     "stability-flags": {
         "consolidation/self-update": 20,
-        "phpstan/phpstan": 20
+        "phpstan/phpstan": 20,
+        "rector/rector": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,

@@ -2,7 +2,7 @@
 
 namespace Startwind\Forrest\CliCommand\Repository;
 
-use Startwind\Forrest\Config\ConfigFileHandler;
+use GuzzleHttp\Client;
 use Symfony\Component\Console\Command\Command as SymfonyCommand;
 use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Input\InputArgument;
@@ -21,11 +21,26 @@ class RegisterCommand extends RepositoryCommand
         $this->addArgument('repositoryFileName', InputArgument::REQUIRED, 'The filename of the repository.');
     }
 
+    private function repositoryFileExists(string $repositoryFileName): bool
+    {
+        if (str_contains($repositoryFileName, '://')) {
+            $client = new Client();
+            try {
+                $client->get($repositoryFileName);
+            } catch (\Exception $exception) {
+                return false;
+            }
+            return true;
+        } else {
+            return file_exists($repositoryFileName);
+        }
+    }
+
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $repositoryFileName = $input->getArgument('repositoryFileName');
 
-        if (!file_exists($repositoryFileName)) {
+        if (!$this->repositoryFileExists($repositoryFileName)) {
             $this->writeWarning($output, 'File "' . $repositoryFileName . '" not found.');
             return SymfonyCommand::FAILURE;
         }

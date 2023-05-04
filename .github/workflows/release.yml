@@ -38,6 +38,12 @@ jobs:
 
       - name: Install Composer dependencies
         uses: ramsey/composer-install@v2
+        with:
+          composer-options: "--ignore-platform-reqs"
+
+      - name: Downgrade to php 7.4
+        run: |
+          vendor/bin/rector -c .devops/rector-php-74.php
 
       - name: Download box.phar
         run: |
@@ -47,13 +53,13 @@ jobs:
         run: |
           php /tmp/box.phar compile
 
+      - name: Remove version check from composer in phar file
+        run: |
+          php .devops/postbox.php
+
       - name: Move phar file to temp directory
         run: |
           mv bin/forrest.phar /tmp
-
-      - name: Show content of /tmp
-        run: |
-          ls /tmp         
 
       - name: Upload binaries to release
         uses: svenstaro/upload-release-action@v2

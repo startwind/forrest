@@ -3,6 +3,7 @@
 namespace Startwind\Forrest\Repository;
 
 use Startwind\Forrest\Adapter\Adapter;
+use Startwind\Forrest\Command\Command;
 
 class Repository
 {
@@ -54,5 +55,16 @@ class Repository
         return $this->adapter->getCommands();
     }
 
+    /**
+     * Return true if the repository can be edited
+     */
+    public function isEditable(): bool
+    {
+        return $this->getAdapter()->isEditable();
+    }
 
+    public function addCommand(Command $command): void
+    {
+        $this->adapter->addCommand($command);
+    }
 }

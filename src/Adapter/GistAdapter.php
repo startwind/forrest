@@ -3,6 +3,7 @@
 namespace Startwind\Forrest\Adapter;
 
 use GuzzleHttp\Client;
+use Startwind\Forrest\Adapter\Exception\RateLimitExceededException;
 use Startwind\Forrest\Command\Command;
 use Startwind\Forrest\Command\GistCommand;
 
@@ -18,6 +19,8 @@ class GistAdapter implements Adapter, ClientAwareAdapter
 
     private string $username;
     private string $prefix;
+
+    private array $rawGist = [];
 
     public function __construct(string $username, string $prefix)
     {
@@ -46,8 +49,20 @@ class GistAdapter implements Adapter, ClientAwareAdapter
      */
     private function getRawGists(string $username): array
     {
-        $response = $this->client->get(sprintf(self::GIST_URL, $username));
-        return json_decode((string)$response->getBody(), true);
+        if (empty($this->rawGist)) {
+            try {
+                $response = $this->client->get(sprintf(self::GIST_URL, $username));
+            } catch (\Exception $exception) {
+                if (str_contains($exception->getMessage(), 'rate limit exceeded')) {
+                    throw new RateLimitExceededException('Gist API rate limit exceeded.');
+                } else {
+                    throw $exception;
+                }
+            }
+            $this->rawGist = json_decode((string)$response->getBody(), true);
+        }
+
+        return $this->rawGist;
     }
 
     /**
@@ -79,5 +94,29 @@ class GistAdapter implements Adapter, ClientAwareAdapter
     static public function fromConfigArray(array $config): GistAdapter
     {
         return new self($config['username'], $config['prefix']);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function isEditable(): bool
+    {
+        return false;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function addCommand(Command $command): void
+    {
+        throw new \RuntimeException('Unable to add a command to a GIST repository.');
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function removeCommand(string $commandName): void
+    {
+        throw new \RuntimeException('Unable to remove a command to a GIST repository.');
     }
 }
