@@ -1,8 +1,7 @@
 <?php
 
-namespace Startwind\Forrest\CliCommand\Repository\Command;
+namespace Startwind\Forrest\CliCommand\Repository;
 
-use Startwind\Forrest\CliCommand\Repository\RepositoryCommand;
 use Symfony\Component\Console\Command\Command as SymfonyCommand;
 use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Input\InputArgument;
@@ -14,7 +13,7 @@ use Symfony\Component\Yaml\Yaml;
 
 class CreateCommand extends RepositoryCommand
 {
-    protected static $defaultName = 'repository:command:create';
+    protected static $defaultName = 'repository:create';
     protected static $defaultDescription = 'Creates a boilerplate for a new command repository.';
 
     protected function configure()
