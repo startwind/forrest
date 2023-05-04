@@ -11,7 +11,7 @@ class ListCommand extends CommandCommand
     protected static $defaultName = 'commands:list';
     protected static $defaultDescription = 'List all command that are registered in the repositories.';
 
-    protected function configure()
+    protected function configure(): void
     {
         $this->setAliases(['commands']);
     }

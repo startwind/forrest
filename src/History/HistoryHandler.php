@@ -22,6 +22,10 @@ class HistoryHandler
      */
     public function getEntries(): array
     {
+        if (!is_file($this->historyFilename)) {
+            return [];
+        }
+
         return file($this->historyFilename);
     }
 }

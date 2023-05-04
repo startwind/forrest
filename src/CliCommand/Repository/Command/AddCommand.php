@@ -5,6 +5,7 @@ namespace Startwind\Forrest\CliCommand\Repository\Command;
 use Startwind\Forrest\CliCommand\Repository\RepositoryCommand;
 use Startwind\Forrest\Command\Command;
 use Symfony\Component\Console\Command\Command as SymfonyCommand;
+use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\Question;
@@ -50,6 +51,7 @@ class AddCommand extends RepositoryCommand
 
         $output->writeln('');
 
+        /** @var QuestionHelper $questionHelper */
         $questionHelper = $this->getHelper('question');
         $repoId = $questionHelper->ask($input, $output, new Question('Which repository do you want to edit [1-' . $count . ']? '));
 

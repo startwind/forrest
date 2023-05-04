@@ -21,9 +21,7 @@ class YamlLoader
 
     private array $repositories = [];
 
-    private Client $client;
-
-    public function __construct(string $userConfigFile, string $fallbackConfigFile, Client $client)
+    public function __construct(string $userConfigFile, string $fallbackConfigFile, private readonly Client $client)
     {
         if (!file_exists($userConfigFile)) {
             $configFile = $fallbackConfigFile;
@@ -35,7 +33,6 @@ class YamlLoader
             throw new \RuntimeException("Config file ($configFile) not found");
         }
 
-        $this->client = $client;
         $this->config = Yaml::parse(file_get_contents($configFile));
 
         if (!array_key_exists(self::CONFIG_ELEMENT_REPOSITORIES, $this->config)) {
