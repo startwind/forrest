@@ -4,14 +4,14 @@ namespace Startwind\Forrest\Command\Parameters;
 
 class ParameterFactory
 {
-    const TYPE_MIXED = 'forrest_mixed';
-    const TYPE_FILENAME = 'forrest_filename';
-    const FIELD_TYPE = 'type';
+    public const TYPE_MIXED = 'forrest_mixed';
+    public const TYPE_FILENAME = 'forrest_filename';
+    public const FIELD_TYPE = 'type';
 
     /**
      * Create a Parameter configuration object from the given config array.
      */
-    static public function create(array $config): Parameter
+    public static function create(array $config): Parameter
     {
         if (array_key_exists(self::FIELD_TYPE, $config)) {
             $type = $config[self::FIELD_TYPE];
@@ -32,7 +32,7 @@ class ParameterFactory
         return $parameter;
     }
 
-    static private function enrichParameters(Parameter $parameter, array $config): void
+    private static function enrichParameters(Parameter $parameter, array $config): void
     {
         if (array_key_exists('name', $config)) {
             $parameter->setName($config['name']);
@@ -47,7 +47,7 @@ class ParameterFactory
         }
     }
 
-    static private function createMixedParameter(array $config): Parameter
+    private static function createMixedParameter(array $config): Parameter
     {
         if (empty($config)) {
             return new UndefinedParameter();
@@ -56,7 +56,7 @@ class ParameterFactory
         }
     }
 
-    static private function createFileParameter($config): FileParameter
+    private static function createFileParameter($config): FileParameter
     {
         $fileParameter = new FileParameter();
 

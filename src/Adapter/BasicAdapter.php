@@ -4,8 +4,8 @@ namespace Startwind\Forrest\Adapter;
 
 abstract class BasicAdapter implements Adapter
 {
-    const PARAMETER_PREFIX = '${';
-    const PARAMETER_POSTFIX = '}';
+    public const PARAMETER_PREFIX = '${';
+    public const PARAMETER_POSTFIX = '}';
 
     protected function extractParametersFromPrompt(string $prompt): array
     {

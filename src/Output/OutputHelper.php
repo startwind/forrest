@@ -7,14 +7,14 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class OutputHelper
 {
-    static public function renderHeader(OutputInterface $output): void
+    public static function renderHeader(OutputInterface $output): void
     {
         $output->writeln('');
         $output->writeln("Forrest - Package manager for CLI scripts <fg=green>" . FORREST_VERSION . '</>');
         $output->writeln('');
     }
 
-    static public function renderCommands(OutputInterface $output, array $commands, string $repoIdentifier = null, int $maxLength = -1): void
+    public static function renderCommands(OutputInterface $output, array $commands, string $repoIdentifier = null, int $maxLength = -1): void
     {
         if ($maxLength == -1) {
             foreach ($commands as $commandId => $command) {
