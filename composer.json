@@ -6,9 +6,12 @@
     }
   },
   "autoload-dev": {
-    "Tests\\Startwind\\Forrest\\": "tests/"
+    "psr-4": {
+      "Tests\\Startwind\\Forrest\\": "tests/"
+    }
   },
   "require": {
+    "php": "^8.1",
     "symfony/console": "^6.2",
     "symfony/yaml": "^6.2",
     "guzzlehttp/guzzle": "^7.5",
@@ -17,9 +20,11 @@
   "require-dev": {
     "phpstan/phpstan": "1.11.x-dev",
     "rector/rector": "0.15.x-dev",
-    "phpunit/phpunit": "^10"
+    "phpunit/phpunit": "^10",
+    "friendsofphp/php-cs-fixer": "dev-master"
   },
   "scripts": {
-    "test" : "vendor/bin/phpunit tests"
+    "test" : "vendor/bin/phpunit tests",
+    "cs" : "vendor/bin/php-cs-fixer fix --rules=@PSR12 ."
   }
 }

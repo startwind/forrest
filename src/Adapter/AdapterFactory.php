@@ -6,12 +6,12 @@ use GuzzleHttp\Client;
 
 class AdapterFactory
 {
-    static private array $adapters = [
+    private static array $adapters = [
         GistAdapter::TYPE => GistAdapter::class,
         YamlAdapter::TYPE => YamlAdapter::class
     ];
 
-    static public function getAdapter(string $adapterType, array $config, Client $client): Adapter
+    public static function getAdapter(string $adapterType, array $config, Client $client): Adapter
     {
         if (!array_key_exists($adapterType, self::$adapters)) {
             throw new \RuntimeException("The adapter type $adapterType is not know. Allowed types are " . implode(', ', array_keys(self::$adapters)) . '.');

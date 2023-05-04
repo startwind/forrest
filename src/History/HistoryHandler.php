@@ -4,11 +4,9 @@ namespace Startwind\Forrest\History;
 
 class HistoryHandler
 {
-    private string $historyFilename;
-
-    public function __construct(string $historyFilename)
-    {
-        $this->historyFilename = $historyFilename;
+    public function __construct(
+        private readonly string $historyFilename
+    ) {
     }
 
     /**

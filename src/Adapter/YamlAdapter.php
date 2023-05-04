@@ -11,15 +11,14 @@ use Symfony\Component\Yaml\Yaml;
 
 class YamlAdapter extends BasicAdapter implements ClientAwareAdapter
 {
-    const TYPE = 'yaml';
+    public const TYPE = 'yaml';
 
-    const YAML_FIELD_COMMANDS = 'commands';
-    const YAML_FIELD_PROMPT = 'prompt';
-    const YAML_FIELD_NAME = 'name';
-    const YAML_FIELD_DESCRIPTION = 'description';
-    const YAML_FIELD_PARAMETERS = 'parameters';
-
-    const YAM_FIELD_RUNNABLE = 'runnable';
+    public const YAML_FIELD_COMMANDS = 'commands';
+    public const YAML_FIELD_PROMPT = 'prompt';
+    public const YAML_FIELD_NAME = 'name';
+    public const YAML_FIELD_DESCRIPTION = 'description';
+    public const YAML_FIELD_RUNNABLE = 'runnable';
+    public const YAML_FIELD_PARAMETERS = 'parameters';
 
     private string $yamlFile;
 
@@ -87,8 +86,8 @@ class YamlAdapter extends BasicAdapter implements ClientAwareAdapter
 
             $command->setParameters($this->createParameters($prompt, $parameterConfig));
 
-            if (array_key_exists(self::YAM_FIELD_RUNNABLE, $commandConfig)) {
-                if ($commandConfig[self::YAM_FIELD_RUNNABLE] === false) {
+            if (array_key_exists(self::YAML_FIELD_RUNNABLE, $commandConfig)) {
+                if ($commandConfig[self::YAML_FIELD_RUNNABLE] === false) {
                     $command->flagAsNotRunnable();
                 }
             }
@@ -124,7 +123,7 @@ class YamlAdapter extends BasicAdapter implements ClientAwareAdapter
     /**
      * @inheritDoc
      */
-    static public function fromConfigArray(array $config): YamlAdapter
+    public static function fromConfigArray(array $config): YamlAdapter
     {
         return new self($config['file']);
     }

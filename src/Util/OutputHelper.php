@@ -9,7 +9,7 @@ abstract class OutputHelper
     /**
      * Show a blue output box with a info message.
      */
-    static public function writeInfoBox(OutputInterface $output, string|array $message): void
+    public static function writeInfoBox(OutputInterface $output, string|array $message): void
     {
         if (is_array($message) && empty($message)) {
             return;
@@ -40,7 +40,7 @@ abstract class OutputHelper
     /**
      * Show a red output box with a warning message.
      */
-    static public function writeErrorBox(OutputInterface $output, string|array $message): void
+    public static function writeErrorBox(OutputInterface $output, string|array $message): void
     {
         $maxLength = 0;
 
@@ -68,7 +68,7 @@ abstract class OutputHelper
     /**
      * Add whitespaces to the message of needed to fit to the box.
      */
-    static private function getPreparedMessage(string $message, int $maxLength, int $additionalSpaces = 0): string
+    private static function getPreparedMessage(string $message, int $maxLength, int $additionalSpaces = 0): string
     {
         return $message . str_repeat(' ', $maxLength - strlen($message) + $additionalSpaces);
     }
@@ -76,7 +76,7 @@ abstract class OutputHelper
     /**
      * Fill out the spaces in the trailing empty lines in the box.
      */
-    static private function getSpaces(string $message): string
+    private static function getSpaces(string $message): string
     {
         return str_repeat(' ', strlen($message) + 4);
     }

@@ -1,34 +1,36 @@
-<?php 
+<?php
+
 
 declare(strict_types=1);
 
+namespace Tests\Startwind\Forrest\Adapter;
+
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Startwind\Forrest\Adapter\YamlAdapter;
 
 final class YamlAdapterTest extends TestCase
 {
-    private $subject = null;
-    
-    public function setup(): void 
+    private ?YamlAdapter $subject = null;
+
+    public function setup(): void
     {
-        $this->subject = new YamlAdapter('yamlfile.yaml');
+        $this->subject = new YamlAdapter('file.yaml');
     }
 
     public function testGetType(): void
     {
-        $this->assertEquals('yaml' , $this->subject->getType());
+        $this->assertEquals('yaml', $this->subject->getType());
     }
 
-    /**
-     * @dataProvider yamlConfigProvider
-     */
-    public function testConfigArray(array $config): void 
+    #[DataProvider('yamlConfigProvider')]
+    public function testConfigArray(array $config): void
     {
         $result = YamlAdapter::fromConfigArray($config);
         $this->assertInstanceOf(YamlAdapter::class, $result);
     }
 
-    static public function yamlConfigProvider(): array
+    public static function yamlConfigProvider(): array
     {
         return [
             [['file' => 'yaml.file']],
@@ -36,4 +38,3 @@ final class YamlAdapterTest extends TestCase
         ];
     }
 }
-
