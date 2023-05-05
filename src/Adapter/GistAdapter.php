@@ -23,7 +23,8 @@ class GistAdapter implements Adapter, ClientAwareAdapter
     public function __construct(
         private readonly string $username,
         private readonly string $prefix
-    ) {
+    )
+    {
     }
 
     /**
@@ -92,7 +93,7 @@ class GistAdapter implements Adapter, ClientAwareAdapter
     /**
      * @inheritDoc
      */
-    public static function fromConfigArray(array $config): GistAdapter
+    public static function fromConfigArray(array $config): Adapter
     {
         return new self($config['username'], $config['prefix']);
     }

@@ -119,11 +119,10 @@ class YamlAdapter extends BasicAdapter implements ClientAwareAdapter
         return $parameters;
     }
 
-
     /**
      * @inheritDoc
      */
-    public static function fromConfigArray(array $config): YamlAdapter
+    public static function fromConfigArray(array $config): Adapter
     {
         return new self($config['file']);
     }
@@ -181,7 +180,6 @@ class YamlAdapter extends BasicAdapter implements ClientAwareAdapter
 
         file_put_contents($this->yamlFile, Yaml::dump($config, 2));
     }
-
 
     /**
      * Return a valid identifier based on the command name.

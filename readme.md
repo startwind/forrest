@@ -82,7 +82,7 @@ extend the tool. But even without the experience can help. Here are several ways
 - **Pull requests** - If you are able to code, feel free to send us
   your [pull requests](https://github.com/startwind/forrest/pulls). If you have no idea for your own enhancements please
   have a look at our tracker. Easy to start tasks are marked
-  as ["good first issue"](https://github.com/startwind/forrest/issues?q=is%3Aissue+is%3Aopen+label%3A"good+first+issue"). Please also have a look at our [developer guidelines](docs/development/index.md)
+  as ["good first issue"](https://github.com/startwind/forrest/issues?q=is%3Aissue+is%3Aopen+label%3A"good+first+issue"). Please also have a look at our [developer guidelines](docs/development/index.md).
 
 
 - **Add repositories** - Everybody is an expert in something. That means you can add your own repositories about your
