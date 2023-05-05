@@ -1,6 +1,9 @@
+---
 name: CI
 
-on: [push]
+on:
+  - pull_request
+  - push
 
 jobs:
   phpunit:
@@ -22,3 +25,11 @@ jobs:
         with:
           path: src tests bin
           level: 5
+
+    php-cs-fixer:
+      runs-on: ubuntu-latest
+
+      steps:
+        - uses: actions/checkout@v3
+        - uses: php-actions/composer@v6
+        - uses: php-actions/

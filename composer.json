@@ -27,9 +27,11 @@
     "test" : "vendor/bin/phpunit tests",
     "cs" : "vendor/bin/php-cs-fixer fix --rules=@PSR12 .",
     "phpstan": "vendor/bin/phpstan analyse",
+    "yamllint": "find . -path \\*/vendor -prune -false -o -name \\*.y\\*ml | xargs yamllint -d \"{extends: relaxed, rules: {line-length: {max: 120}}}\"",
     "fix": [
       "@cs",
-      "@phpstan"
+      "@phpstan",
+      "@yamllint"
     ]
   }
 }
