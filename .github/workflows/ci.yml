@@ -8,16 +8,15 @@ on:
 jobs:
   phpunit:
     runs-on: ubuntu-latest
-
     steps:
       - uses: actions/checkout@v3
       - run: echo "The ${{ github.repository }} repository has been cloned to the runner."
       - uses: php-actions/composer@v6
-      - run: vendor/bin/phpunit tests --do-not-cache-result
+      - name: run phpunit tests
+        run: vendor/bin/phpunit tests --do-not-cache-result
 
   phpstan:
     runs-on: ubuntu-latest
-
     steps:
       - uses: actions/checkout@v3
       - uses: php-actions/composer@v6
@@ -26,10 +25,10 @@ jobs:
           path: src tests bin
           level: 5
 
-    php-cs-fixer:
-      runs-on: ubuntu-latest
-
-      steps:
-        - uses: actions/checkout@v3
-        - uses: php-actions/composer@v6
-        - uses: php-actions/
+  php-cs-fixer:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: php-actions/composer@v6
+      - name: run php-cs-fixer
+        run: vendor/bin/php-cs-fixer fix --rules=@PSR12 .
