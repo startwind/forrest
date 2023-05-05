@@ -129,14 +129,28 @@ abstract class ForrestCommand extends SymfonyCommand
         return $repositoryIdentifier;
     }
 
-    protected function writeWarning(OutputInterface $output, string|array $message): void
+    /**
+     * Write an error message in a beautiful box
+     */
+    protected function writeError(OutputInterface $output, string|array $message): void
     {
         OutputHelper::writeErrorBox($output, $message);
     }
 
+    /**
+     * Write an info message in a beautiful box
+     */
     protected function writeInfo(OutputInterface $output, string|array $message): void
     {
         OutputHelper::writeInfoBox($output, $message);
+    }
+
+    /**
+     * Write a warning message in a beautiful box
+     */
+    protected function writeWarning(OutputInterface $output, string|array $message): void
+    {
+        OutputHelper::writeWarningBox($output, $message);
     }
 
     protected function getRepositoryCollection(): RepositoryCollection

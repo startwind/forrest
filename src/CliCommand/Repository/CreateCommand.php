@@ -35,7 +35,7 @@ class CreateCommand extends RepositoryCommand
         if (file_exists($repositoryFileName)) {
             $overwrite = $questionHelper->ask($input, $output, new ConfirmationQuestion('File already exists. Do you want to overwrite it? [y/n] ', false));
             if (!$overwrite) {
-                $this->writeWarning($output, 'No repository created. File already exists.');
+                $this->writeError($output, 'No repository created. File already exists.');
                 return SymfonyCommand::FAILURE;
             }
         }

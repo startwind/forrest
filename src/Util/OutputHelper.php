@@ -11,58 +11,54 @@ abstract class OutputHelper
      */
     public static function writeInfoBox(OutputInterface $output, string|array $message): void
     {
-        if (is_array($message) && empty($message)) {
-            return;
-        }
-        $maxLength = 0;
+        self::writeMessage($output, $message, '<bg=cyan>', '</>');
+    }
 
-        if (!is_array($message)) {
-            $message = [$message];
-        }
-
-        foreach ($message as $singleMessage) {
-            $maxLength = max($maxLength, strlen($singleMessage));
-        }
-
-        $spaces = self::getSpaces($message[0]);
-
-        $output->writeln("");
-        $output->writeln('<bg=cyan>' . self::getPreparedMessage('', $maxLength, 4) . "</>");
-
-        foreach ($message as $singleMessage) {
-            $output->writeln("<bg=cyan>  " . self::getPreparedMessage($singleMessage, $maxLength, 2) . "</>");
-        }
-
-        $output->writeln('<bg=cyan>' . $spaces . "</>");
-        $output->writeln("");
+    /**
+     * Show a red output box with a error message.
+     */
+    public static function writeErrorBox(OutputInterface $output, string|array $message): void
+    {
+        self::writeMessage($output, $message, '<error>', '</error>');
     }
 
     /**
      * Show a red output box with a warning message.
      */
-    public static function writeErrorBox(OutputInterface $output, string|array $message): void
+    public static function writeWarningBox(OutputInterface $output, string|array $message): void
+    {
+        self::writeMessage($output, $message, '<bg=yellow>', '</>');
+    }
+
+    private static function writeMessage(OutputInterface $output, string|array $message, string $prefix = '', string $postfix = ''): void
     {
         $maxLength = 0;
 
+        $messages = self::prepareMessages($message);
+
+        foreach ($messages as $singleMessage) {
+            $maxLength = max($maxLength, strlen($singleMessage));
+        }
+
+        $output->writeln("");
+
+        foreach ($messages as $singleMessage) {
+            $output->writeln($prefix . "  " . self::getPreparedMessage($singleMessage, $maxLength, 2) . $postfix);
+        }
+
+        $output->writeln("");
+    }
+
+    private static function prepareMessages(string|array $message): array
+    {
         if (!is_array($message)) {
             $message = [$message];
         }
 
-        foreach ($message as $singleMessage) {
-            $maxLength = max($maxLength, strlen($singleMessage));
-        }
+        array_unshift($message, '');
+        $message[] = '';
 
-        $spaces = self::getSpaces($message[0]);
-
-        $output->writeln("");
-        $output->writeln('<error>' . self::getPreparedMessage('', $maxLength, 4) . "</error>");
-
-        foreach ($message as $singleMessage) {
-            $output->writeln("<error>  " . self::getPreparedMessage($singleMessage, $maxLength, 2) . "</error>");
-        }
-
-        $output->writeln('<error>' . $spaces . "</error>");
-        $output->writeln("");
+        return $message;
     }
 
     /**

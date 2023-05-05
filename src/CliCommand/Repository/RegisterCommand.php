@@ -41,7 +41,7 @@ class RegisterCommand extends RepositoryCommand
         $repositoryFileName = $input->getArgument('repositoryFileName');
 
         if (!$this->repositoryFileExists($repositoryFileName)) {
-            $this->writeWarning($output, 'File "' . $repositoryFileName . '" not found.');
+            $this->writeError($output, 'File "' . $repositoryFileName . '" not found.');
             return SymfonyCommand::FAILURE;
         }
 

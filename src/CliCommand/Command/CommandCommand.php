@@ -52,7 +52,7 @@ class CommandCommand extends ForrestCommand
                 }
             } catch (\Exception $exception) {
                 unset($repositories[$repoIdentifier]);
-                $this->writeWarning($output, [
+                $this->writeError($output, [
                     'Unable to fetch commands from ' . $repoIdentifier . '. ' . $exception->getMessage()
                 ]);
                 $output->writeln('');

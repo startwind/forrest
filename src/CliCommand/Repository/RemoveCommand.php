@@ -30,7 +30,7 @@ class RemoveCommand extends RepositoryCommand
         $identifier = $input->getArgument('identifier');
 
         if (!$this->isInstalled($identifier)) {
-            $this->writeWarning($output, 'The given repository "' . $identifier . '" is not installed.');
+            $this->writeError($output, 'The given repository "' . $identifier . '" is not installed.');
             return SymfonyCommand::FAILURE;
         }
 

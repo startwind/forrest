@@ -3,8 +3,8 @@
 namespace Startwind\Forrest\CliCommand\Command;
 
 use Startwind\Forrest\Command\Command;
-use Startwind\Forrest\Command\Parameters\NameAwareParameter;
 use Startwind\Forrest\Command\Parameters\Parameter;
+use Startwind\Forrest\Util\OSHelper;
 use Symfony\Component\Console\Command\Command as SymfonyCommand;
 use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Input\InputArgument;
@@ -38,12 +38,13 @@ class RunCommand extends CommandCommand
         /** @var QuestionHelper $questionHelper */
         $questionHelper = $this->getHelper('question');
 
-
         $commandIdentifier = $input->getArgument('identifier');
         $command = $this->getCommand($commandIdentifier);
         $repositoryIdentifier = $this->getRepositoryIdentifier($commandIdentifier);
 
         $this->showCommandInformation($output, $command);
+
+        // $this->handleRootUser($output);
 
         $parameters = $command->getParameters();
 
@@ -127,6 +128,14 @@ class RunCommand extends CommandCommand
         }
     }
 
+    private function handleRootUser(OutputInterface $output)
+    {
+        if (true || OSHelper::isRoot()) {
+            $this->writeError($output, 'You are running this command as root user. Be careful.');
+            $output->writeln('');
+        }
+    }
+
     /**
      * Run every single command in the executable command.
      */
@@ -139,9 +148,9 @@ class RunCommand extends CommandCommand
             exec($command, $execOutput, $resultCode);
             if ($resultCode != SymfonyCommand::SUCCESS) {
                 if (count($execOutput) > 0) {
-                    $this->writeWarning($output, 'Error executing prompt: ' . $execOutput[0]);
+                    $this->writeError($output, 'Error executing prompt: ' . $execOutput[0]);
                 } else {
-                    $this->writeWarning($output, 'Error executing prompt.');
+                    $this->writeError($output, 'Error executing prompt.');
                 }
             } else {
                 if (count($execOutput) > 0) {

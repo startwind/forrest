@@ -34,21 +34,21 @@ class InstallCommand extends DirectoryCommand
         $repositories = $directory['repositories'];
 
         if (!array_key_exists($identifier, $repositories)) {
-            $this->writeWarning($output, 'No repository with identifier "' . $identifier . '" found.');
+            $this->writeError($output, 'No repository with identifier "' . $identifier . '" found.');
             return SymfonyCommand::FAILURE;
         }
 
         $repoToInstall = $repositories[$identifier];
 
         if ($this->isInstalled($identifier)) {
-            $this->writeWarning($output, 'The given repository "' . $identifier . '" is already installed.');
+            $this->writeError($output, 'The given repository "' . $identifier . '" is already installed.');
             return SymfonyCommand::FAILURE;
         }
 
         $userConfigFile = $this->getUserConfigFile();
 
         if (!file_exists($userConfigFile)) {
-            $this->writeWarning($output, 'Unable to create config file "' . $userConfigFile . '". This is needed for adding a new repository.');
+            $this->writeError($output, 'Unable to create config file "' . $userConfigFile . '". This is needed for adding a new repository.');
             return SymfonyCommand::FAILURE;
         }
 
