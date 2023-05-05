@@ -48,6 +48,9 @@ class YamlAdapter extends BasicAdapter implements ClientAwareAdapter
             }
             $content = (string)$response->getBody();
         } else {
+            if (!file_exists($this->yamlFile)) {
+                throw new RepositoryNotFoundException('Unable to open ' . $this->yamlFile . '. File not found.');
+            }
             $content = file_get_contents($this->yamlFile);
         }
 

@@ -59,7 +59,7 @@ class CreateCommand extends RepositoryCommand
             ]
         ];
 
-        file_put_contents($repositoryFileName, Yaml::dump($content, 4));
+        $this->saveRepositoryFile($repositoryFileName, $content);
 
         $this->writeInfo($output, 'Repository file "' . $repositoryFileName . '" successfully created.');
 
@@ -71,5 +71,17 @@ class CreateCommand extends RepositoryCommand
         }
 
         return SymfonyCommand::SUCCESS;
+    }
+
+    /**
+     * Store the repo file but make sure the directory exists.
+     */
+    private function saveRepositoryFile(string $filename, array $content): void
+    {
+        $dir = dirname($filename);
+        if (!is_dir($dir)) {
+            mkdir($dir, 0777, true);
+        }
+        file_put_contents($filename, Yaml::dump($content, 4));
     }
 }

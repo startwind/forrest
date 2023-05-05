@@ -38,7 +38,10 @@ class RunCommand extends CommandCommand
         /** @var QuestionHelper $questionHelper */
         $questionHelper = $this->getHelper('question');
 
-        $command = $this->getCommand($input->getArgument('identifier'));
+
+        $commandIdentifier = $input->getArgument('identifier');
+        $command = $this->getCommand($commandIdentifier);
+        $repositoryIdentifier = $this->getRepositoryIdentifier($commandIdentifier);
 
         $this->showCommandInformation($output, $command);
 
@@ -63,7 +66,7 @@ class RunCommand extends CommandCommand
         }
 
         if ($input->getOption('force') !== false) {
-            if (!$this->handleChecksum($command, $questionHelper, $input, $output)) {
+            if (!$this->handleChecksum($command, $repositoryIdentifier, $questionHelper, $input, $output)) {
                 return SymfonyCommand::FAILURE;
             }
         } else {
@@ -72,7 +75,7 @@ class RunCommand extends CommandCommand
             }
         }
 
-        $this->getConfigHandler()->persistChecksum($command);
+        $this->getConfigHandler()->persistChecksum($command, $repositoryIdentifier);
 
         $output->writeln('');
         $this->executeCommand($output, $prompt);
@@ -112,10 +115,10 @@ class RunCommand extends CommandCommand
     /**
      * Ask the user if the run should be allowed although the signature of the command has changed.
      */
-    private function handleChecksum(Command $command, QuestionHelper $questionHelper, InputInterface $input, OutputInterface $output): bool
+    private function handleChecksum(Command $command, string $repositoryIdentifier, QuestionHelper $questionHelper, InputInterface $input, OutputInterface $output): bool
     {
         $configHandler = $this->getConfigHandler();
-        $hasChanged = $configHandler->hasChecksumChanged($command);
+        $hasChanged = $configHandler->hasChecksumChanged($command, $repositoryIdentifier);
 
         if ($hasChanged) {
             return $questionHelper->ask($input, $output, new ConfirmationQuestion('  The signature of the command has changed since you last run it. Do you confirm to still run it? [y/n] ', false));

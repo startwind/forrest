@@ -10,10 +10,11 @@ class ConfigFileHandler
     public function __construct(
         private readonly string $configFilename,
         private readonly string $checksumFilename
-    ) {
+    )
+    {
     }
 
-    public function persistChecksum(Command $command): void
+    public function persistChecksum(Command $command, string $repositoryIdentifier): void
     {
         if (file_exists($this->checksumFilename)) {
             $checksums = json_decode(file_get_contents($this->checksumFilename), true);
@@ -24,11 +25,11 @@ class ConfigFileHandler
             $checksums = [];
         }
 
-        $checksums[$command->getName()] = $command->getChecksum();
+        $checksums[$this->getChecksumIdentifier($command, $repositoryIdentifier)] = $command->getChecksum();
         file_put_contents($this->checksumFilename, json_encode($checksums));
     }
 
-    public function hasChecksumChanged(Command $command): bool
+    public function hasChecksumChanged(Command $command, string $repositoryIdentifier): bool
     {
         if (!file_exists($this->checksumFilename)) {
             return true;
@@ -39,7 +40,18 @@ class ConfigFileHandler
             return true;
         }
 
-        return $checksums[$command->getName()] !== $command->getChecksum();
+        $checksumIdentifier = $this->getChecksumIdentifier($command, $repositoryIdentifier);
+
+        if (!array_key_exists($checksumIdentifier, $checksums)) {
+            return true;
+        }
+
+        return $checksums[$this->getChecksumIdentifier($command, $repositoryIdentifier)] !== $command->getChecksum();
+    }
+
+    private function getChecksumIdentifier(Command $command, string $repositoryIdentifier): string
+    {
+        return $repositoryIdentifier . $command->getName();
     }
 
     public function dumpConfig(Config $config): void
