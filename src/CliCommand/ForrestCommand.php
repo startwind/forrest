@@ -132,15 +132,16 @@ abstract class ForrestCommand extends SymfonyCommand
     /**
      * Write an error message in a beautiful box
      */
-    protected function writeError(OutputInterface $output, string|array $message): void
+    protected function renderErrorBox(OutputInterface $output, string|array $message): void
     {
         OutputHelper::writeErrorBox($output, $message);
     }
 
+
     /**
      * Write an info message in a beautiful box
      */
-    protected function writeInfo(OutputInterface $output, string|array $message): void
+    protected function renderInfoBox(OutputInterface $output, string|array $message): void
     {
         OutputHelper::writeInfoBox($output, $message);
     }
@@ -148,9 +149,16 @@ abstract class ForrestCommand extends SymfonyCommand
     /**
      * Write a warning message in a beautiful box
      */
-    protected function writeWarning(OutputInterface $output, string|array $message): void
+    protected function renderWarningBox(OutputInterface $output, string|array $message): void
     {
         OutputHelper::writeWarningBox($output, $message);
+    }
+
+    protected function renderInfo(OutputInterface $output, string|array $message): void
+    {
+        $output->writeln('');
+        $output->writeln('<fg=yellow>' . $message . '</>');
+        $output->writeln('');
     }
 
     protected function getRepositoryCollection(): RepositoryCollection

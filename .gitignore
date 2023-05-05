@@ -8,6 +8,7 @@ vendor
 in-dev
 tmp
 tmp/custom.yml
-latest.zip
+*.zip
 *.phar
 bin/forrest.phar
+*.tar

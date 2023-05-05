@@ -3,6 +3,7 @@
 
 require __DIR__ . '/../vendor/autoload.php';
 
+use SelfUpdate\SelfUpdateCommand;
 use Symfony\Component\Console\Application;
 
 const FORREST_VERSION = '##FORREST_VERSION##';
@@ -33,12 +34,13 @@ $application->add(new \Startwind\Forrest\CliCommand\Repository\Command\AddComman
 $application->add(new \Startwind\Forrest\CliCommand\Directory\ListCommand());
 $application->add(new \Startwind\Forrest\CliCommand\Directory\InstallCommand());
 
-# File
+# Search
 $application->add(new \Startwind\Forrest\CliCommand\Search\FileCommand());
+$application->add(new \Startwind\Forrest\CliCommand\Search\PatternCommand());
 
 # Others
 if (!str_contains(FORREST_VERSION, '##FORREST_VERSION')) {
-    $application->add(new \SelfUpdate\SelfUpdateCommand(FORREST_NAME, FORREST_VERSION, "startwind/forrest"));
+    $application->add(new SelfUpdateCommand(FORREST_NAME, FORREST_VERSION, "startwind/forrest"));
 }
 
 $application->run();

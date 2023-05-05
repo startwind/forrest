@@ -35,7 +35,7 @@ class CreateCommand extends RepositoryCommand
         if (file_exists($repositoryFileName)) {
             $overwrite = $questionHelper->ask($input, $output, new ConfirmationQuestion('File already exists. Do you want to overwrite it? [y/n] ', false));
             if (!$overwrite) {
-                $this->writeError($output, 'No repository created. File already exists.');
+                $this->renderErrorBox($output, 'No repository created. File already exists.');
                 return SymfonyCommand::FAILURE;
             }
         }
@@ -61,13 +61,13 @@ class CreateCommand extends RepositoryCommand
 
         $this->saveRepositoryFile($repositoryFileName, $content);
 
-        $this->writeInfo($output, 'Repository file "' . $repositoryFileName . '" successfully created.');
+        $this->renderInfoBox($output, 'Repository file "' . $repositoryFileName . '" successfully created.');
 
         $register = $questionHelper->ask($input, $output, new ConfirmationQuestion('Do you already want to register the repository? [y/n] ', false));
 
         if ($register) {
             $this->registerRepository($identifier, $name, $description, $repositoryFileName);
-            $this->writeInfo($output, 'Repository file "' . $repositoryFileName . '" successfully registered.');
+            $this->renderInfoBox($output, 'Repository file "' . $repositoryFileName . '" successfully registered.');
         }
 
         return SymfonyCommand::SUCCESS;

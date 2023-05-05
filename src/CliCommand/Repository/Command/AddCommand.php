@@ -17,7 +17,7 @@ class AddCommand extends RepositoryCommand
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $this->writeInfo($output, [
+        $this->renderInfoBox($output, [
             'Create a new command. If you want to create more complex commands',
             'please use a text editor/IDE and edit the YAML file manually.',
             '',
@@ -65,7 +65,7 @@ class AddCommand extends RepositoryCommand
 
         $repo->addCommand(new Command($commandName, $commandDescription, $commandPrompt));
 
-        $this->writeInfo($output, 'Successfully added a new command.');
+        $this->renderInfoBox($output, 'Successfully added a new command.');
 
         return SymfonyCommand::SUCCESS;
     }
