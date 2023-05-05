@@ -55,11 +55,11 @@ class RunCommand extends CommandCommand
         if (count($values) > 0) {
             $output->writeln('');
             $output->writeln('  Final prompt: ');
-            $this->writeInfo($output, $prompt);
+            $this->renderInfoBox($output, $prompt);
         }
 
         if (!$command->isRunnable()) {
-            $this->writeWarning($output, [
+            $this->renderWarningBox($output, [
                 'This command was marked as not callable from Forrest. Please copy the prompt and run it',
                 'on the command line.'
             ]);
@@ -131,7 +131,7 @@ class RunCommand extends CommandCommand
     private function handleRootUser(OutputInterface $output)
     {
         if (true || OSHelper::isRoot()) {
-            $this->writeError($output, 'You are running this command as root user. Be careful.');
+            $this->renderErrorBox($output, 'You are running this command as root user. Be careful.');
             $output->writeln('');
         }
     }
@@ -148,16 +148,16 @@ class RunCommand extends CommandCommand
             exec($command, $execOutput, $resultCode);
             if ($resultCode != SymfonyCommand::SUCCESS) {
                 if (count($execOutput) > 0) {
-                    $this->writeError($output, 'Error executing prompt: ' . $execOutput[0]);
+                    $this->renderErrorBox($output, 'Error executing prompt: ' . $execOutput[0]);
                 } else {
-                    $this->writeError($output, 'Error executing prompt.');
+                    $this->renderErrorBox($output, 'Error executing prompt.');
                 }
             } else {
                 if (count($execOutput) > 0) {
-                    $this->writeInfo($output, 'Output: ');
+                    $this->renderInfoBox($output, 'Output: ');
                     $output->writeln($execOutput);
                 } else {
-                    $this->writeInfo($output, 'No output from command');
+                    $this->renderInfoBox($output, 'No output from command');
                 }
             }
         }

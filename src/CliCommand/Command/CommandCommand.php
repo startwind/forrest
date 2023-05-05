@@ -23,11 +23,11 @@ class CommandCommand extends ForrestCommand
     {
         $commands = explode("\n", $command->getPrompt());
 
-        $this->writeWarning($output, $this->runWarning);
+        $this->renderWarningBox($output, $this->runWarning);
 
         $output->writeln('');
         $output->writeln('  Command to be run:');
-        $this->writeInfo($output, $commands);
+        $this->renderInfoBox($output, $commands);
         $output->writeln('');
 
     }
@@ -52,7 +52,7 @@ class CommandCommand extends ForrestCommand
                 }
             } catch (\Exception $exception) {
                 unset($repositories[$repoIdentifier]);
-                $this->writeError($output, [
+                $this->renderErrorBox($output, [
                     'Unable to fetch commands from ' . $repoIdentifier . '. ' . $exception->getMessage()
                 ]);
                 $output->writeln('');

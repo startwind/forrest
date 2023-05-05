@@ -30,7 +30,7 @@ class OutputHelper
             }
         }
 
-        usort($commands, function (Command $a, Command $b) {
+        uasort($commands, function (Command $a, Command $b) {
             return $a->getName() <=> $b->getName();
         });
 
