@@ -10,8 +10,7 @@ class ConfigFileHandler
     public function __construct(
         private readonly string $configFilename,
         private readonly string $checksumFilename
-    )
-    {
+    ) {
     }
 
     public function persistChecksum(Command $command, string $repositoryIdentifier): void

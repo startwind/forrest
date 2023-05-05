@@ -26,7 +26,7 @@
   "scripts": {
     "test" : "vendor/bin/phpunit tests",
     "cs" : "vendor/bin/php-cs-fixer fix --rules=@PSR12 .",
-    "phpstan": "vendor/bin/phpstan analyse -l 5 src tests bin",
+    "phpstan": "vendor/bin/phpstan analyse",
     "fix": [
       "@cs",
       "@phpstan"
