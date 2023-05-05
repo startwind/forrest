@@ -2,9 +2,6 @@
 name: File linting
 
 on:
-  pull_request:
-    paths:
-      - '**.y?ml'
   push:
     paths:
       - '**.y?ml'
