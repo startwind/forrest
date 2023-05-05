@@ -31,3 +31,12 @@ jobs:
       - uses: php-actions/composer@v6
       - name: run php-cs-fixer
         run: vendor/bin/php-cs-fixer fix --rules=@PSR12 .
+
+  validate-yaml:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Run yamllint
+        run: |
+          find . -path \*/vendor -prune -false -o -name \*.y\*ml |
+          xargs yamllint -d "{extends: relaxed, rules: {line-length: {max: 120}}}" || true
