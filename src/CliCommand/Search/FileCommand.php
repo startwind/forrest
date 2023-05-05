@@ -18,6 +18,7 @@ class FileCommand extends SearchCommand
     protected function configure(): void
     {
         $this->addArgument('filename', InputArgument::REQUIRED, 'The filename you want to get commands for.');
+        $this->setAliases(['file']);
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
