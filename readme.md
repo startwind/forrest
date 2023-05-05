@@ -10,6 +10,8 @@ and thus simplify the use of the command line by a lot.
 
 ![commands:show](docs/images/commands_list.png)
 
+- Forrest is [secure by design](docs/secure-by-design.md).
+
 ## Installation
 
 Download the latest version of our PHAR archive and give it afterwards rights to be executed.
