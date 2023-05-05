@@ -12,6 +12,8 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class FileCommand extends SearchCommand
 {
+    private const FILE_TYPE_DIRECTORY = 'directory';
+
     protected static $defaultName = 'search:file';
     protected static $defaultDescription = 'Search for commands that fit the given file.';
 
@@ -45,11 +47,14 @@ class FileCommand extends SearchCommand
                         if (str_contains($config['filename'], $fileType)) {
                             return true;
                         }
+                        if ($config['isDirectory'] && strtolower($fileType) == self::FILE_TYPE_DIRECTORY) {
+                            return true;
+                        }
                     }
                 }
             }
             return false;
-        }, ['filename' => $filename]);
+        }, ['filename' => $filename, 'isDirectory' => is_dir($filename)]);
 
         if (!empty($fileCommands)) {
             OutputHelper::renderCommands($output, $fileCommands);
