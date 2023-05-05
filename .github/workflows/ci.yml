@@ -3,12 +3,21 @@ name: CI
 on: [push]
 
 jobs:
-  build-test:
+  phpunit:
     runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v3
       - run: echo "The ${{ github.repository }} repository has been cloned to the runner."
       - uses: php-actions/composer@v6
-      - run: echo "Composer dependencies have been installed"
       - run: vendor/bin/phpunit tests --do-not-cache-result
+
+  phpstan:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: php-actions/composer@v6
+      - uses: php-actions/phpstan@v3
+        with:
+          path: src tests bin
