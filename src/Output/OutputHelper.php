@@ -2,6 +2,7 @@
 
 namespace Startwind\Forrest\Output;
 
+use Startwind\Forrest\Command\Command;
 use Startwind\Forrest\Repository\Repository;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -28,6 +29,10 @@ class OutputHelper
                 $maxLength = max($maxLength, strlen($commandIdentifier));
             }
         }
+
+        usort($commands, function (Command $a, Command $b) {
+            return $a->getName() <=> $b->getName();
+        });
 
         foreach ($commands as $commandId => $command) {
             if ($repoIdentifier) {
