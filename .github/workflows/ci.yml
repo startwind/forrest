@@ -21,3 +21,4 @@ jobs:
       - uses: php-actions/phpstan@v3
         with:
           path: src tests bin
+          level: 5
