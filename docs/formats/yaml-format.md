@@ -10,7 +10,10 @@ commands:
   startServer:
     name: "server:start"
     description: "Starting the built-in web server"
-    prompt: "php -S localhost:8000"
+    prompt: "php -S localhost:${port}"
+    parameters:
+      port:
+        default: 8000
     
   memoryLimit:
     name: "run:memory:limit"
@@ -44,5 +47,6 @@ commands:
 - **parameters** [optional] - The parameter field helps specifying and validating the parameter. It can also help predefine values or define enums. 
   - **name** - The name of the parameter.
   - **description** - The description of the parameter. Will be shown when the user has to enter the value.
+  - **default** - The default value for this parameter.
   - **type** - The type of the value. This will help validating the parameter and will provide new functionality based on the type. 
-  - **file-formats** - dd
+  - **file-formats** - The file format is only relevant if the type is `forrest_filename`. This field is also used for the reverse command search via `search:file`. 
