@@ -128,14 +128,6 @@ class RunCommand extends CommandCommand
         }
     }
 
-    private function handleRootUser(OutputInterface $output)
-    {
-        if (true || OSHelper::isRoot()) {
-            $this->renderErrorBox($output, 'You are running this command as root user. Be careful.');
-            $output->writeln('');
-        }
-    }
-
     /**
      * Run every single command in the executable command.
      */

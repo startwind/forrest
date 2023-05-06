@@ -1,0 +1,42 @@
+---
+name: CI
+
+on:
+  - push
+
+jobs:
+  phpunit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - run: echo "The ${{ github.repository }} repository has been cloned to the runner."
+      - uses: php-actions/composer@v6
+      - name: run phpunit tests
+        run: vendor/bin/phpunit tests --do-not-cache-result
+
+  phpstan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: php-actions/composer@v6
+      - uses: php-actions/phpstan@v3
+        with:
+          path: src tests bin
+          level: 5
+
+  php-cs-fixer:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: php-actions/composer@v6
+      - name: run php-cs-fixer
+        run: vendor/bin/php-cs-fixer fix --rules=@PSR12 .
+
+  validate-yaml:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Run yamllint
+        run: |
+          find . -path \*/vendor -prune -false -o -name \*.y\*ml |
+          xargs yamllint -d "{extends: relaxed, rules: {line-length: {max: 120}}}" || true

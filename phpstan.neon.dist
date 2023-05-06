@@ -1,0 +1,8 @@
+parameters:
+  level: 5
+  paths:
+    - bin
+    - src
+    - tests
+  ignoreErrors:
+    - '#Static method Startwind\\Forrest\\Util\\OutputHelper::getSpaces\(\) is unused\.#'
