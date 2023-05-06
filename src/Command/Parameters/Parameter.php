@@ -8,6 +8,8 @@ class Parameter
     private string $description = '';
     private string $defaultValue = '';
 
+    private array $values = [];
+
     public function setName(string $name): void
     {
         $this->name = $name;
@@ -36,5 +38,23 @@ class Parameter
     public function setDefaultValue(string $defaultValue): void
     {
         $this->defaultValue = $defaultValue;
+    }
+
+    public function getValues(): array
+    {
+        return $this->values;
+    }
+
+    /**
+     * @param array $values
+     */
+    public function setValues(array $values): void
+    {
+        $this->values = $values;
+    }
+
+    public function hasValues(): bool
+    {
+        return count($this->values) > 0;
     }
 }

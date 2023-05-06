@@ -45,6 +45,10 @@ class ParameterFactory
         if (array_key_exists('default', $config)) {
             $parameter->setDefaultValue($config['default']);
         }
+
+        if (array_key_exists('enum', $config)) {
+            $parameter->setValues($config['enum']);
+        }
     }
 
     private static function createMixedParameter(array $config): Parameter

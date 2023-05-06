@@ -11,6 +11,7 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Question\ChoiceQuestion;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
 use Symfony\Component\Console\Question\Question;
 
@@ -93,6 +94,7 @@ class RunCommand extends CommandCommand
         $values = [];
 
         foreach ($parameters as $identifier => $parameter) {
+
             if ($parameter->getName()) {
                 $name = $identifier . ' (' . $parameter->getName() . ')';
             } else {
@@ -107,7 +109,11 @@ class RunCommand extends CommandCommand
                 $defaultValue = '';
             }
 
-            $values[$identifier] = $questionHelper->ask($input, $output, new Question('  Select value for ' . $name . $defaultString . ': ', $defaultValue));
+            if ($parameter->hasValues()) {
+                $values[$identifier] = $questionHelper->ask($input, $output, new ChoiceQuestion('  Select value for ' . $name . $defaultString . ': ', $parameter->getValues(), $defaultValue));
+            } else {
+                $values[$identifier] = $questionHelper->ask($input, $output, new Question('  Select value for ' . $name . $defaultString . ': ', $defaultValue));
+            }
         }
 
         return $values;
