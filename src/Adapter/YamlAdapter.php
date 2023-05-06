@@ -84,6 +84,10 @@ class YamlAdapter extends BasicAdapter implements ClientAwareAdapter
                 $parameterConfig = [];
             }
 
+            if (is_string($parameterConfig)) {
+                throw new \RuntimeException('The configuration is malformed. Array expected but "' . $parameterConfig . '" found.');
+            }
+
             $command->setParameters($this->createParameters($prompt, $parameterConfig));
 
             if (array_key_exists(self::YAML_FIELD_RUNNABLE, $commandConfig)) {
