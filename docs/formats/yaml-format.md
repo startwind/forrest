@@ -19,6 +19,14 @@ commands:
     name: "run:memory:limit"
     description: "Run a php CLI command with a defined memory limit"
     prompt: "php -d memory_limit=${limit_in_megabyte}M ${filename}"
+    parameters:
+      limit_in_megabyte:
+        enum:
+          - 16
+          - 32
+          - 65
+          - 128
+          - 256
 
   worker-shell:
     name: 'docker:shell'
@@ -50,3 +58,4 @@ commands:
   - **default** - The default value for this parameter.
   - **type** - The type of the value. This will help validating the parameter and will provide new functionality based on the type. 
   - **file-formats** - The file format is only relevant if the type is `forrest_filename`. This field is also used for the reverse command search via `search:file`. 
+  - **enum** You can define a list of values the user has to chose one from. 

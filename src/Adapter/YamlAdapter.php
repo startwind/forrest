@@ -193,6 +193,9 @@ class YamlAdapter extends BasicAdapter implements ClientAwareAdapter
         return strtolower(str_replace(' ', '_', $name));
     }
 
+    /**
+     * @inheritDoc
+     */
     public function setClient(Client $client): void
     {
         $this->client = $client;
