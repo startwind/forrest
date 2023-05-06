@@ -16,7 +16,7 @@ class CommandCommand extends ForrestCommand
      */
     protected array $runWarning = [
         "Be careful. Please only run command that you understand. We only have limited control",
-        "of repositories that are not owned by this project."
+        "of repositories that are not owned by this project.",
     ];
 
     protected function showCommandInformation(OutputInterface $output, Command $command): void
@@ -53,21 +53,25 @@ class CommandCommand extends ForrestCommand
             } catch (\Exception $exception) {
                 unset($repositories[$repoIdentifier]);
                 $this->renderErrorBox($output, [
-                    'Unable to fetch commands from ' . $repoIdentifier . '. ' . $exception->getMessage()
+                    'Unable to fetch commands from ' . $repoIdentifier . '. ' . $exception->getMessage(),
                 ]);
                 $output->writeln('');
             }
         }
 
-        $output->writeln('<fg=yellow>Usage:</>');
-        $output->writeln('');
-        $output->writeln('  forrest run [command]');
-        $output->writeln('');
+        $output->writeln([
+            '<fg=yellow>Usage:</>',
+            '',
+            '  forrest run [command]',
+            '',
+        ]);
 
         foreach ($repositories as $repoIdentifier => $repository) {
-            $output->writeln('');
-            $output->writeln('<fg=yellow>' . $repository->getName() . '</> (' . $repoIdentifier . ')');
-            $output->writeln('');
+            $output->writeln([
+                '',
+                '<fg=yellow>' . $repository->getName() . '</> (' . $repoIdentifier . ')',
+                '',
+            ]);
 
             OutputHelper::renderCommands($output, $repository->getCommands(), $repoIdentifier, $maxLength);
         }

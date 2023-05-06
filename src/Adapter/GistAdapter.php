@@ -23,8 +23,7 @@ class GistAdapter implements Adapter, ClientAwareAdapter
     public function __construct(
         private readonly string $username,
         private readonly string $prefix
-    )
-    {
+    ) {
     }
 
     /**

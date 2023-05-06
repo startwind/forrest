@@ -56,6 +56,7 @@ official repositories visit our [directory documentation](docs/directory.md).
 ### Search Commands
 
 - `search:file` - Shows a list of commands that fit the given file. [More information](docs/commands/search_file.md)
+- `search:pattern` - Shows a list of commands that fit the given pattern.
 
 ### Repository Commands
 
