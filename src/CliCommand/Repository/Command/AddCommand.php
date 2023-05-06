@@ -27,15 +27,13 @@ class AddCommand extends RepositoryCommand
 
         $this->enrichRepositories();
 
-        $repositoryCollection = $this->getRepositoryCollection();
-
-        $repositories = $repositoryCollection->getRepositories();
+        $repositories = $this->getRepositoryCollection()->getRepositories();
 
         $rows = [];
         $editableRepositories = [];
         $count = 0;
 
-        foreach ($repositories as $key => $repository) {
+        foreach ($repositories as $repository) {
             if ($repository->isEditable()) {
                 $count++;
                 $editableRepositories[$count] = $repository;
@@ -47,14 +45,19 @@ class AddCommand extends RepositoryCommand
             }
         }
 
+        if ($count == 0) {
+            $this->renderErrorBox($output, 'No editable repository found. Please create one using the repository:create command.');
+            return SymfonyCommand::FAILURE;
+        }
+
         $this->renderTable($output, ['ID', 'Name', 'Description'], $rows);
 
         $output->writeln('');
 
         /** @var QuestionHelper $questionHelper */
         $questionHelper = $this->getHelper('question');
-        $repoId = $questionHelper->ask($input, $output, new Question('Which repository do you want to edit [1-' . $count . ']? '));
 
+        $repoId = $this->chooseRepository($output, $input, $questionHelper, $count);
         $repo = $editableRepositories[$repoId];
 
         $output->writeln('');
@@ -68,5 +71,23 @@ class AddCommand extends RepositoryCommand
         $this->renderInfoBox($output, 'Successfully added a new command.');
 
         return SymfonyCommand::SUCCESS;
+    }
+
+    /**
+     * Choose a repository that is editable.
+     */
+    private function chooseRepository(OutputInterface $output, InputInterface $input, QuestionHelper $questionHelper, int $count): int
+    {
+        $repoId = 0;
+
+        while ($repoId == 0) {
+            $repoId = $questionHelper->ask($input, $output, new Question('Which repository do you want to edit [1-' . $count . ']? '));
+            if ((int)$repoId < 0 || $repoId > $count) {
+                $output->writeln('The ID must be between 1 and ' . $count . '. Please chose again: ');
+                $repoId = 0;
+            }
+        }
+
+        return (int)$repoId;
     }
 }
