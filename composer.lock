@@ -1830,12 +1830,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/PHP-CS-Fixer/PHP-CS-Fixer.git",
-                "reference": "12792fa271ad216530a7916fca91e397f7fe1ff4"
+                "reference": "3bade9077e359c071ca749f06def8a327effb1e3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/PHP-CS-Fixer/PHP-CS-Fixer/zipball/12792fa271ad216530a7916fca91e397f7fe1ff4",
-                "reference": "12792fa271ad216530a7916fca91e397f7fe1ff4",
+                "url": "https://api.github.com/repos/PHP-CS-Fixer/PHP-CS-Fixer/zipball/3bade9077e359c071ca749f06def8a327effb1e3",
+                "reference": "3bade9077e359c071ca749f06def8a327effb1e3",
                 "shasum": ""
             },
             "require": {
@@ -1919,7 +1919,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2023-05-05T11:40:49+00:00"
+            "time": "2023-05-06T09:16:56+00:00"
         },
         {
             "name": "myclabs/deep-copy",
@@ -2164,12 +2164,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpstan/phpstan.git",
-                "reference": "5d2ef3c4e89d139f16b15b899f16ea1aab7ecee9"
+                "reference": "1e6ac85617254f8bb22f886c4eaa11820c6ce3e8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/5d2ef3c4e89d139f16b15b899f16ea1aab7ecee9",
-                "reference": "5d2ef3c4e89d139f16b15b899f16ea1aab7ecee9",
+                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/1e6ac85617254f8bb22f886c4eaa11820c6ce3e8",
+                "reference": "1e6ac85617254f8bb22f886c4eaa11820c6ce3e8",
                 "shasum": ""
             },
             "require": {
@@ -2219,7 +2219,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-05-04T13:50:23+00:00"
+            "time": "2023-05-05T14:21:59+00:00"
         },
         {
             "name": "phpunit/php-code-coverage",
@@ -2814,12 +2814,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/rectorphp/rector.git",
-                "reference": "2125ff71ea05b079562a8f59ca48a97eb78dc07f"
+                "reference": "8d0f018bc4a2af3160b0d64ddf59665164afc7d1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/rectorphp/rector/zipball/2125ff71ea05b079562a8f59ca48a97eb78dc07f",
-                "reference": "2125ff71ea05b079562a8f59ca48a97eb78dc07f",
+                "url": "https://api.github.com/repos/rectorphp/rector/zipball/8d0f018bc4a2af3160b0d64ddf59665164afc7d1",
+                "reference": "8d0f018bc4a2af3160b0d64ddf59665164afc7d1",
                 "shasum": ""
             },
             "require": {
@@ -2860,7 +2860,7 @@
             ],
             "support": {
                 "issues": "https://github.com/rectorphp/rector/issues",
-                "source": "https://github.com/rectorphp/rector/tree/0.16.0"
+                "source": "https://github.com/rectorphp/rector/tree/main"
             },
             "funding": [
                 {
@@ -2868,7 +2868,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2023-05-05T12:12:17+00:00"
+            "time": "2023-05-06T06:07:47+00:00"
         },
         {
             "name": "sebastian/cli-parser",
