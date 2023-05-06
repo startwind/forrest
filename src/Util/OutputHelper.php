@@ -11,7 +11,7 @@ abstract class OutputHelper
      */
     public static function writeInfoBox(OutputInterface $output, string|array $message): void
     {
-        self::writeMessage($output, $message, '<bg=cyan>', '</>');
+        self::writeMessage($output, $message, '<fg=black;bg=cyan>', '</></>');
     }
 
     /**
@@ -27,7 +27,7 @@ abstract class OutputHelper
      */
     public static function writeWarningBox(OutputInterface $output, string|array $message): void
     {
-        self::writeMessage($output, $message, '<bg=yellow>', '</>');
+        self::writeMessage($output, $message, '<fg=black;bg=yellow>', '</>');
     }
 
     private static function writeMessage(OutputInterface $output, string|array $message, string $prefix = '', string $postfix = ''): void
