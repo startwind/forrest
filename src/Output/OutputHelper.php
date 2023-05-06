@@ -8,6 +8,9 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class OutputHelper
 {
+    /**
+     * Render the header including version
+     */
     public static function renderHeader(OutputInterface $output): void
     {
         $output->writeln([
@@ -17,6 +20,9 @@ class OutputHelper
         ]);
     }
 
+    /**
+     * Render a collection of commands.
+     */
     public static function renderCommands(OutputInterface $output, array $commands, string $repoIdentifier = null, int $maxLength = -1): void
     {
         if ($maxLength == -1) {
@@ -43,5 +49,30 @@ class OutputHelper
             $spaces = str_repeat(' ', $maxLength - strlen($commandIdentifier) + 2);
             $output->writeln('  <fg=green>' . $commandIdentifier . '</>' . $spaces . $command->getDescription());
         }
+    }
+
+    public static function renderCommandWithExplanation(OutputInterface $output, Command $command): void
+    {
+        $output->writeln('');
+        $output->writeln('');
+
+        $prompt = $command->getPrompt();
+        $parameters = $command->getParameters();
+
+        $positions = [];
+
+        foreach ($parameters as $parameterName => $parameter) {
+            $positions[] = strpos($prompt, $parameterName);
+        }
+
+        for ($i)
+
+        foreach ($positions as $position) {
+            var_dump($position);
+        }
+        echo 'Hier';
+
+        $output->writeln('');
+        $output->writeln('');
     }
 }

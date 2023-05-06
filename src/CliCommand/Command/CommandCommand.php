@@ -27,6 +27,9 @@ class CommandCommand extends ForrestCommand
 
         $output->writeln('');
         $output->writeln('  Command to be run:');
+
+        OutputHelper::renderCommandWithExplanation($output, $command);
+
         $this->renderInfoBox($output, $commands);
         $output->writeln('');
 
