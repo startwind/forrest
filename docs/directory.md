@@ -5,7 +5,7 @@ The Forrest Directory is a constantly growing collection of command repositories
 To see the latest list of officially supported repositories, use the following command line command.
 
 ```shell
-./forrest.phar directory:list
+forrest directory:list
 ```
 The output should look similar to this screenshot.
 

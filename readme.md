@@ -38,7 +38,7 @@ Nevertheless there is the official Forrest directory where a lot of predefined c
 repositories run
 
 ```shell
-./forrest.phar directory:list
+./forrest directory:list
 ```
 
 Choose the repositories you want to use. Behind every of those there can be many commands. To learn more about the

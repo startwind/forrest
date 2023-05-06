@@ -13,7 +13,7 @@ In the beginning, you should always start with a local and therefore private rep
 For the creation, Forrest provides the appropriate commands.
 
 ```shell
-./forrest.phar repository:create ~/local-forrest.yml
+forrest repository:create ~/local-forrest.yml
 ```
 
 Once the repository is created, you can register it. Normally you will be asked if you want to add it right after the creation. In most cases this makes sense.
@@ -38,7 +38,7 @@ For adding new commands please have a look at the [yaml format description](form
 If you did not register the repository on creation you can use the `repository:register` command.
 
 ````shell
-./forrest.phar repository:create ~/local-forrest.yml
+forrest repository:create ~/local-forrest.yml
 ````
 
 ## Remote repository
@@ -53,7 +53,7 @@ This looks similar to this:
 In this case the command line to register that repository is:
 
 ```shell
-./forrest.phar repository:create https://raw.githubusercontent.com/startwind/forrest-directory/main/repositories/friends-of-linux.yml
+forrest repository:create https://raw.githubusercontent.com/startwind/forrest-directory/main/repositories/friends-of-linux.yml
 ```
 
 Afterwards everybody who know the URL can use the commands. 
