@@ -57,3 +57,24 @@ forrest repository:create https://raw.githubusercontent.com/startwind/forrest-di
 ```
 
 Afterwards everybody who know the URL can use the commands. 
+
+## Piggyback Repository
+
+Forrest is trying to become the standard for easy management and use of command line tools. For this reason there are the piggyback repositories.  Each open source project has the possibility to put a file named `.forrest.yml` in its root directory. As soon as Forrest is started in the same directory, the commands located there are immediately added to the list of all commands. Nothing has to be installed.
+
+![Piggyback repo](images/piggyback_repo.png)
+
+### Example
+
+
+```yaml
+repository:
+  identifier: "360-monitoring"
+  name: 360 Monitoring by WebPros
+  description: The most important commands to hand 360 Monitoring via CLI
+commands:
+  findInFiles:
+    name: "monitor:add"
+    description: "Add a new website to the 360 Monitoring"
+    prompt: "app"
+```
