@@ -16,6 +16,8 @@ use Symfony\Component\Console\Question\ChoiceQuestion;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
 use Symfony\Component\Console\Question\Question;
 
+use function PHPUnit\Framework\stringContains;
+
 class RunCommand extends CommandCommand
 {
     protected static $defaultName = 'commands:run';
@@ -119,7 +121,14 @@ class RunCommand extends CommandCommand
             if ($parameter->hasValues()) {
                 $values[$identifier] = $questionHelper->ask($input, $output, new ChoiceQuestion('  Select value for ' . $name . $defaultString . ': ', $parameter->getValues(), $defaultValue));
             } else {
-                $values[$identifier] = $questionHelper->ask($input, $output, new Question('  Select value for ' . $name . $defaultString . ': ', $defaultValue));
+                $question = new Question('  Select value for ' . $name . $defaultString . ': ', $defaultValue);
+
+                if (str_contains('password', strtolower($parameter->getName()))) {
+                    $question->setHidden(true);
+                    $question->setHiddenFallback(false);
+                }
+
+                $values[$identifier] = $questionHelper->ask($input, $output, $question);
             }
         }
 

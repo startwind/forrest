@@ -6,6 +6,7 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ClientException;
 use Startwind\Forrest\Adapter\Exception\RepositoryNotFoundException;
 use Startwind\Forrest\Command\Command;
+use Startwind\Forrest\Command\Parameters\Parameter;
 use Startwind\Forrest\Command\Parameters\ParameterFactory;
 use Symfony\Component\Yaml\Yaml;
 
@@ -103,7 +104,7 @@ class YamlAdapter extends BasicAdapter implements ClientAwareAdapter
     }
 
     /**
-     * @return \Startwind\Forrest\Command\Parameters\Parameter[]
+     * @return Parameter[]
      */
     protected function createParameters(string $prompt, array $parameterConfig): array
     {

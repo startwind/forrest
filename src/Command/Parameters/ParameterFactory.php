@@ -19,13 +19,10 @@ class ParameterFactory
             $type = self::TYPE_MIXED;
         }
 
-        switch ($type) {
-            case self::TYPE_FILENAME:
-                $parameter = self::createFileParameter($config);
-                break;
-            default:
-                $parameter = self::createMixedParameter($config);
-        }
+        $parameter = match ($type) {
+            self::TYPE_FILENAME => self::createFileParameter($config),
+            default => self::createMixedParameter($config),
+        };
 
         self::enrichParameters($parameter, $config);
 
