@@ -8,7 +8,7 @@ use Startwind\Forrest\Repository\Repository;
 use Startwind\Forrest\Repository\RepositoryCollection;
 use Symfony\Component\Yaml\Yaml;
 
-class YamlLoader
+class YamlLoader implements RepositoryLoader
 {
     public const CONFIG_ELEMENT_REPOSITORIES = 'repositories';
     public const CONFIG_ELEMENT_ADAPTER = 'adapter';
@@ -63,11 +63,17 @@ class YamlLoader
         }
     }
 
+    /**
+     * @inheritDoc
+     */
     public function getIdentifiers(): array
     {
         return array_keys($this->config[self::CONFIG_ELEMENT_REPOSITORIES]);
     }
 
+    /**
+     * @inheritDoc
+     */
     public function enrich(RepositoryCollection $repositoryCollection): void
     {
         $this->initRepositories();
