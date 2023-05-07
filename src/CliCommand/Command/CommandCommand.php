@@ -22,7 +22,7 @@ class CommandCommand extends ForrestCommand
 
     protected function showCommandInformation(OutputInterface $output, Command $command): void
     {
-        $this->renderWarningBox($output, $this->runWarning);
+        $this->renderWarningBox($this->runWarning);
 
         $commands = CommandRunner::stringToMultilinePrompt($command->getPrompt());
 
@@ -34,7 +34,7 @@ class CommandCommand extends ForrestCommand
 
         $output->writeln('  Command' . $plural . ' to be run:');
         $output->writeln('');
-        $this->renderInfoBox($output, $commands);
+        $this->renderInfoBox($commands);
         $output->writeln('');
 
     }
@@ -59,7 +59,7 @@ class CommandCommand extends ForrestCommand
                 }
             } catch (\Exception $exception) {
                 unset($repositories[$repoIdentifier]);
-                $this->renderErrorBox($output, [
+                $this->renderErrorBox([
                     'Unable to fetch commands from ' . $repoIdentifier . '. ' . $exception->getMessage(),
                 ]);
                 $output->writeln('');

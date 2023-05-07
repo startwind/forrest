@@ -2,6 +2,7 @@
 
 namespace Startwind\Forrest\CliCommand\Directory;
 
+use Startwind\Forrest\Output\OutputHelper;
 use Symfony\Component\Console\Command\Command as SymfonyCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -11,7 +12,7 @@ class ListCommand extends DirectoryCommand
     protected static $defaultName = 'directory:list';
     protected static $defaultDescription = 'List all repositories in the official Forrest directory.';
 
-    protected function execute(InputInterface $input, OutputInterface $output): int
+    protected function doExecute(InputInterface $input, OutputInterface $output): int
     {
         $this->initYamlLoader();
         $activeRepositories = $this->getYamlLoader()->getIdentifiers();
@@ -36,7 +37,7 @@ class ListCommand extends DirectoryCommand
             $rows [] = $row;
         }
 
-        $this->renderTable($output, ['Identifier', 'Name', 'Description', 'Installed'], $rows);
+        OutputHelper::renderTable($output, ['Identifier', 'Name', 'Description', 'Installed'], $rows);
 
         return SymfonyCommand::SUCCESS;
     }

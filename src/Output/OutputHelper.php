@@ -4,10 +4,19 @@ namespace Startwind\Forrest\Output;
 
 use Startwind\Forrest\Command\Command;
 use Startwind\Forrest\Repository\Repository;
+use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class OutputHelper
 {
+    public static function renderTable(OutputInterface $output, array $headers, array $rows): void
+    {
+        $table = new Table($output);
+        $table->setHeaders($headers);
+        $table->setRows($rows);
+        $table->render();
+    }
+
     public static function renderHeader(OutputInterface $output): void
     {
         $output->writeln([

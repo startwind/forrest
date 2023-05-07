@@ -19,7 +19,7 @@ class PatternCommand extends SearchCommand
         $this->addArgument('pattern', InputArgument::REQUIRED, 'The pattern you want to search for.');
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output): int
+    protected function doExecute(InputInterface $input, OutputInterface $output): int
     {
         OutputHelper::renderHeader($output);
 
@@ -27,7 +27,7 @@ class PatternCommand extends SearchCommand
 
         $pattern = $input->getArgument('pattern');
 
-        $this->renderInfoBox($output, 'This is a list of commands that match the given pattern.');
+        $this->renderInfoBox('This is a list of commands that match the given pattern.');
 
         $commands = $this->search(function (Command $command, $config) {
             $pattern = $config['pattern'];
@@ -46,7 +46,7 @@ class PatternCommand extends SearchCommand
         if (!empty($commands)) {
             OutputHelper::renderCommands($output, $commands);
         } else {
-            $this->renderErrorBox($output, 'No commands found that match this pattern.');
+            $this->renderErrorBox('No commands found that match this pattern.');
         }
 
         $output->writeln('');

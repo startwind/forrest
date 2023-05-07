@@ -17,7 +17,7 @@ class ShowCommand extends CommandCommand
         $this->addArgument('identifier', InputArgument::REQUIRED, 'The commands identifier.');
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output): int
+    protected function doExecute(InputInterface $input, OutputInterface $output): int
     {
         $this->enrichRepositories();
 

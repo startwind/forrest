@@ -23,7 +23,7 @@ class FileCommand extends SearchCommand
         $this->setAliases(['file']);
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output): int
+    protected function doExecute(InputInterface $input, OutputInterface $output): int
     {
         OutputHelper::renderHeader($output);
 
@@ -32,11 +32,11 @@ class FileCommand extends SearchCommand
         $filename = $input->getArgument('filename');
 
         if (!file_exists($filename)) {
-            $this->renderErrorBox($output, 'File not found.');
+            $this->renderErrorBox('File not found.');
             return SymfonyCommand::FAILURE;
         }
 
-        $this->renderInfoBox($output, 'This is a list of commands that are applicable to the given file or file type.');
+        $this->renderInfoBox('This is a list of commands that are applicable to the given file or file type.');
 
         $fileCommands = $this->search(function (Command $command, $config) {
             $parameters = $command->getParameters();
@@ -59,7 +59,7 @@ class FileCommand extends SearchCommand
         if (!empty($fileCommands)) {
             OutputHelper::renderCommands($output, $fileCommands);
         } else {
-            $this->renderErrorBox($output, 'No commands found that match this file type.');
+            $this->renderErrorBox('No commands found that match this file type.');
         }
 
         $output->writeln('');

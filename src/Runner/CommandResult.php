@@ -5,9 +5,9 @@ namespace Startwind\Forrest\Runner;
 class CommandResult
 {
     private array $output;
-    private string $resultCode;
+    private int $resultCode;
 
-    public function __construct(array $output, string $resultCode)
+    public function __construct(array $output, int $resultCode)
     {
         $this->output = $output;
         $this->resultCode = $resultCode;
@@ -18,7 +18,7 @@ class CommandResult
         return $this->output;
     }
 
-    public function getResultCode(): string
+    public function getResultCode(): int
     {
         return $this->resultCode;
     }

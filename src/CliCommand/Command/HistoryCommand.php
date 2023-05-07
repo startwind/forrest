@@ -16,7 +16,7 @@ class HistoryCommand extends CommandCommand
         $this->setAliases(['history']);
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output): int
+    protected function doExecute(InputInterface $input, OutputInterface $output): int
     {
         $historyHandler = $this->getHistoryHandler();
 

@@ -10,7 +10,7 @@ use Startwind\Forrest\Repository\Loader\YamlLoader;
 use Startwind\Forrest\Repository\RepositoryCollection;
 use Startwind\Forrest\Util\OutputHelper;
 use Symfony\Component\Console\Command\Command as SymfonyCommand;
-use Symfony\Component\Console\Helper\Table;
+use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 abstract class ForrestCommand extends SymfonyCommand
@@ -27,15 +27,30 @@ abstract class ForrestCommand extends SymfonyCommand
 
     private ?YamlLoader $yamlLoader = null;
 
-    /**
-     * Render a table with the statistics.
-     */
-    protected function renderTable(OutputInterface $output, array $headers, array $rows): void
+    private InputInterface $input;
+    private OutputInterface $output;
+
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $table = new Table($output);
-        $table->setHeaders($headers);
-        $table->setRows($rows);
-        $table->render();
+        $this->input = $input;
+        $this->output = $output;
+
+        return $this->doExecute($input, $output);
+    }
+
+    protected function doExecute(InputInterface $input, OutputInterface $output): int
+    {
+        return SymfonyCommand::SUCCESS;
+    }
+
+    protected function getInput(): InputInterface
+    {
+        return $this->input;
+    }
+
+    protected function getOutput(): OutputInterface
+    {
+        return $this->output;
     }
 
     protected function getYamlLoader(): YamlLoader
@@ -132,30 +147,30 @@ abstract class ForrestCommand extends SymfonyCommand
     /**
      * Write an error message in a beautiful box
      */
-    protected function renderErrorBox(OutputInterface $output, string|array $message): void
+    protected function renderErrorBox(string|array $message): void
     {
-        OutputHelper::writeErrorBox($output, $message);
+        OutputHelper::writeErrorBox($this->getOutput(), $message);
     }
-
 
     /**
      * Write an info message in a beautiful box
      */
-    protected function renderInfoBox(OutputInterface $output, string|array $message): void
+    protected function renderInfoBox(string|array $message): void
     {
-        OutputHelper::writeInfoBox($output, $message);
+        OutputHelper::writeInfoBox($this->getOutput(), $message);
     }
 
     /**
      * Write a warning message in a beautiful box
      */
-    protected function renderWarningBox(OutputInterface $output, string|array $message): void
+    protected function renderWarningBox(string|array $message): void
     {
-        OutputHelper::writeWarningBox($output, $message);
+        OutputHelper::writeWarningBox($this->getOutput(), $message);
     }
 
-    protected function renderInfo(OutputInterface $output, string|array $message): void
+    protected function renderInfo(string|array $message): void
     {
+        $output = $this->getOutput();
         $output->writeln('');
         $output->writeln('<fg=yellow>' . $message . '</>');
         $output->writeln('');
