@@ -141,11 +141,14 @@ class RunCommand extends CommandCommand
     {
         $commands = CommandRunner::stringToMultilinePrompt($prompt);
 
+        $commandRunner = new CommandRunner($this->getHistoryHandler());
+
         foreach ($commands as $command) {
-            $this->getHistoryHandler()->addEntry($command);
-            exec($command, $execOutput, $resultCode);
-            if ($resultCode != SymfonyCommand::SUCCESS) {
-                if (count($execOutput) > 0) {
+            $result = $commandRunner->execute($command);
+            $execOutput = $result->getOutput();
+
+            if ($execOutput != SymfonyCommand::SUCCESS) {
+                if (count($result->getOutput()) > 0) {
                     $this->renderErrorBox($output, 'Error executing prompt: ' . $execOutput[0]);
                 } else {
                     $this->renderErrorBox($output, 'Error executing prompt.');
