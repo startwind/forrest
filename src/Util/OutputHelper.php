@@ -68,12 +68,4 @@ abstract class OutputHelper
     {
         return $message . str_repeat(' ', $maxLength - strlen($message) + $additionalSpaces);
     }
-
-    /**
-     * Fill out the spaces in the trailing empty lines in the box.
-     */
-    private static function getSpaces(string $message): string
-    {
-        return str_repeat(' ', strlen($message) + 4);
-    }
 }
