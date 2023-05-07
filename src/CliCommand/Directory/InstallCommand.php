@@ -25,7 +25,7 @@ class InstallCommand extends DirectoryCommand
         return in_array($identifier, $installedIdentifiers);
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output): int
+    protected function doExecute(InputInterface $input, OutputInterface $output): int
     {
         $this->initYamlLoader();
 
@@ -34,21 +34,21 @@ class InstallCommand extends DirectoryCommand
         $repositories = $directory['repositories'];
 
         if (!array_key_exists($identifier, $repositories)) {
-            $this->renderErrorBox($output, 'No repository with identifier "' . $identifier . '" found.');
+            $this->renderErrorBox('No repository with identifier "' . $identifier . '" found.');
             return SymfonyCommand::FAILURE;
         }
 
         $repoToInstall = $repositories[$identifier];
 
         if ($this->isInstalled($identifier)) {
-            $this->renderErrorBox($output, 'The given repository "' . $identifier . '" is already installed.');
+            $this->renderErrorBox('The given repository "' . $identifier . '" is already installed.');
             return SymfonyCommand::FAILURE;
         }
 
         $userConfigFile = $this->getUserConfigFile();
 
         if (!file_exists($userConfigFile)) {
-            $this->renderErrorBox($output, 'Unable to create config file "' . $userConfigFile . '". This is needed for adding a new repository.');
+            $this->renderErrorBox('Unable to create config file "' . $userConfigFile . '". This is needed for adding a new repository.');
             return SymfonyCommand::FAILURE;
         }
 
@@ -58,7 +58,7 @@ class InstallCommand extends DirectoryCommand
         $config->addRepository($identifier, $repoToInstall);
         $configHandler->dumpConfig($config);
 
-        $this->renderInfoBox($output, 'Successfully installed new repository. Use commands:list to see new commands.');
+        $this->renderInfoBox('Successfully installed new repository. Use commands:list to see new commands.');
 
         return SymfonyCommand::SUCCESS;
     }

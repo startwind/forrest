@@ -18,7 +18,7 @@ class RemoveCommand extends RepositoryCommand
     protected static $defaultName = 'repository:command:remove';
     protected static $defaultDescription = 'Creates a boilerplate for a new command repository.';
 
-    protected function execute(InputInterface $input, OutputInterface $output): int
+    protected function doExecute(InputInterface $input, OutputInterface $output): int
     {
         // show local repos
         // select local repo

@@ -28,7 +28,7 @@ class RunCommand extends CommandCommand
         $this->addOption('force', null, InputOption::VALUE_OPTIONAL, 'Run the command without asking for permission.', false);
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output): int
+    protected function doExecute(InputInterface $input, OutputInterface $output): int
     {
         if (!$input->getArgument('identifier')) {
             $this->renderListCommand($input, $output);
@@ -57,12 +57,12 @@ class RunCommand extends CommandCommand
         if (count($values) > 0) {
             $output->writeln('');
             $output->writeln('  Final prompt: ');
-            $this->renderInfoBox($output, CommandRunner::stringToMultilinePrompt($prompt));
+            $this->renderInfoBox(CommandRunner::stringToMultilinePrompt($prompt));
         }
 
         if (!$command->isRunnable()) {
-            $this->renderWarningBox($output, [
-                'This command was marked as not callable from Forrest. Please copy the prompt and run it',
+            $this->renderWarningBox([
+                'This command was marked as not runnable from Forrest. Please copy the prompt and run it',
                 'on the command line.'
             ]);
             return SymfonyCommand::SUCCESS;
@@ -85,7 +85,7 @@ class RunCommand extends CommandCommand
         try {
             $this->executeCommand($output, $prompt);
         } catch (ToolNotFoundException $exception) {
-            $this->renderErrorBox($output, $exception->getMessage());
+            $this->renderErrorBox($exception->getMessage());
             return SymfonyCommand::FAILURE;
         }
 
@@ -156,16 +156,16 @@ class RunCommand extends CommandCommand
 
             if ($result->getResultCode() != SymfonyCommand::SUCCESS) {
                 if (count($result->getOutput()) > 0) {
-                    $this->renderErrorBox($output, 'Error executing prompt: ' . $execOutput[0]);
+                    $this->renderErrorBox('Error executing prompt: ' . $execOutput[0]);
                 } else {
-                    $this->renderErrorBox($output, 'Error executing prompt.');
+                    $this->renderErrorBox('Error executing prompt.');
                 }
             } else {
                 if (count($execOutput) > 0) {
-                    $this->renderInfoBox($output, 'Output: ');
+                    $this->renderInfoBox('Output: ');
                     $output->writeln($execOutput);
                 } else {
-                    $this->renderInfoBox($output, 'No output from command');
+                    $this->renderInfoBox('No output from command');
                 }
             }
         }

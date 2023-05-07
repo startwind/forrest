@@ -12,7 +12,7 @@ class ListCommand extends DirectoryCommand
     protected static $defaultName = 'directory:list';
     protected static $defaultDescription = 'List all repositories in the official Forrest directory.';
 
-    protected function execute(InputInterface $input, OutputInterface $output): int
+    protected function doExecute(InputInterface $input, OutputInterface $output): int
     {
         $this->initYamlLoader();
         $activeRepositories = $this->getYamlLoader()->getIdentifiers();

@@ -21,7 +21,7 @@ class CreateCommand extends RepositoryCommand
         $this->addArgument('repositoryFileName', InputArgument::REQUIRED, 'The filename of new repository.');
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output): int
+    protected function doExecute(InputInterface $input, OutputInterface $output): int
     {
         $content = [];
 
@@ -35,7 +35,7 @@ class CreateCommand extends RepositoryCommand
         if (file_exists($repositoryFileName)) {
             $overwrite = $questionHelper->ask($input, $output, new ConfirmationQuestion('File already exists. Do you want to overwrite it? [y/n] ', false));
             if (!$overwrite) {
-                $this->renderErrorBox($output, 'No repository created. File already exists.');
+                $this->renderErrorBox('No repository created. File already exists.');
                 return SymfonyCommand::FAILURE;
             }
         }
@@ -61,13 +61,13 @@ class CreateCommand extends RepositoryCommand
 
         $this->saveRepositoryFile($repositoryFileName, $content);
 
-        $this->renderInfoBox($output, 'Repository file "' . $repositoryFileName . '" successfully created.');
+        $this->renderInfoBox('Repository file "' . $repositoryFileName . '" successfully created.');
 
         $register = $questionHelper->ask($input, $output, new ConfirmationQuestion('Do you already want to register the repository? [y/n] ', false));
 
         if ($register) {
             $this->registerRepository($identifier, $name, $description, $repositoryFileName);
-            $this->renderInfoBox($output, 'Repository file "' . $repositoryFileName . '" successfully registered.');
+            $this->renderInfoBox('Repository file "' . $repositoryFileName . '" successfully registered.');
         }
 
         return SymfonyCommand::SUCCESS;

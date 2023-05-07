@@ -23,14 +23,14 @@ class RemoveCommand extends RepositoryCommand
         return in_array($identifier, $installedIdentifiers);
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output): int
+    protected function doExecute(InputInterface $input, OutputInterface $output): int
     {
         $this->initYamlLoader();
 
         $identifier = $input->getArgument('identifier');
 
         if (!$this->isInstalled($identifier)) {
-            $this->renderErrorBox($output, 'The given repository "' . $identifier . '" is not installed.');
+            $this->renderErrorBox('The given repository "' . $identifier . '" is not installed.');
             return SymfonyCommand::FAILURE;
         }
 
@@ -45,7 +45,7 @@ class RemoveCommand extends RepositoryCommand
         $config->removeRepository($identifier);
         $configHandler->dumpConfig($config);
 
-        $this->renderInfoBox($output, 'Successfully removed repository with identifier "' . $identifier . '".');
+        $this->renderInfoBox('Successfully removed repository with identifier "' . $identifier . '".');
 
         return SymfonyCommand::SUCCESS;
     }

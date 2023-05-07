@@ -12,7 +12,7 @@ class ListCommand extends RepositoryCommand
     protected static $defaultName = 'repository:list';
     protected static $defaultDescription = 'List all registered command repositories.';
 
-    protected function execute(InputInterface $input, OutputInterface $output): int
+    protected function doExecute(InputInterface $input, OutputInterface $output): int
     {
         $this->enrichRepositories();
 

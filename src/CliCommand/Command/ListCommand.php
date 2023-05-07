@@ -11,7 +11,7 @@ class ListCommand extends CommandCommand
     protected static $defaultName = 'commands:list';
     protected static $defaultDescription = 'List all command that are registered in the repositories.';
 
-    protected function execute(InputInterface $input, OutputInterface $output): int
+    protected function doExecute(InputInterface $input, OutputInterface $output): int
     {
         $this->renderListCommand($input, $output);
         return SymfonyCommand::SUCCESS;

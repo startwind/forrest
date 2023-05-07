@@ -36,12 +36,12 @@ class RegisterCommand extends RepositoryCommand
         }
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output): int
+    protected function doExecute(InputInterface $input, OutputInterface $output): int
     {
         $repositoryFileName = $input->getArgument('repositoryFileName');
 
         if (!$this->repositoryFileExists($repositoryFileName)) {
-            $this->renderErrorBox($output, 'File "' . $repositoryFileName . '" not found.');
+            $this->renderErrorBox('File "' . $repositoryFileName . '" not found.');
             return SymfonyCommand::FAILURE;
         }
 
@@ -76,7 +76,7 @@ class RegisterCommand extends RepositoryCommand
         $identifier = $questionHelper->ask($input, $output, new Question('Identifier of the repository [default: ' . $defaultIdentifier . ']: ', $defaultIdentifier));
 
         $this->registerRepository($identifier, $name, $description, $repositoryFileName);
-        $this->renderInfoBox($output, 'Repository file "' . $repositoryFileName . '" successfully registered.');
+        $this->renderInfoBox('Repository file "' . $repositoryFileName . '" successfully registered.');
 
         return SymfonyCommand::SUCCESS;
     }
