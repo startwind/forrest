@@ -8,7 +8,7 @@ use Startwind\Forrest\Repository\Repository;
 use Startwind\Forrest\Repository\RepositoryCollection;
 use Symfony\Component\Yaml\Yaml;
 
-class YamlLoader
+class YamlLoader implements RepositoryLoader
 {
     public const CONFIG_ELEMENT_REPOSITORIES = 'repositories';
     public const CONFIG_ELEMENT_ADAPTER = 'adapter';

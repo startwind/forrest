@@ -6,6 +6,8 @@ use GuzzleHttp\Client;
 use Startwind\Forrest\Command\Command;
 use Startwind\Forrest\Config\ConfigFileHandler;
 use Startwind\Forrest\History\HistoryHandler;
+use Startwind\Forrest\Repository\Loader\CompositeLoader;
+use Startwind\Forrest\Repository\Loader\RepositoryLoader;
 use Startwind\Forrest\Repository\Loader\YamlLoader;
 use Startwind\Forrest\Repository\RepositoryCollection;
 use Startwind\Forrest\Util\OutputHelper;
@@ -25,7 +27,7 @@ abstract class ForrestCommand extends SymfonyCommand
 
     private RepositoryCollection $repositoryCollection;
 
-    private ?YamlLoader $yamlLoader = null;
+    private ?RepositoryLoader $repositoryLoader = null;
 
     private InputInterface $input;
     private OutputInterface $output;
@@ -53,9 +55,9 @@ abstract class ForrestCommand extends SymfonyCommand
         return $this->output;
     }
 
-    protected function getYamlLoader(): YamlLoader
+    protected function getRepositoryLoader(): RepositoryLoader
     {
-        return $this->yamlLoader;
+        return $this->repositoryLoader;
     }
 
     protected function getUserConfigFile(): string
@@ -94,22 +96,24 @@ abstract class ForrestCommand extends SymfonyCommand
         }
     }
 
-    protected function initYamlLoader(): void
+    protected function initRepositoryLoader(): void
     {
         $this->createUserConfig();
 
-        if (!$this->yamlLoader) {
+        if (!$this->repositoryLoader) {
             $client = new Client();
-            $this->yamlLoader = new YamlLoader($this->getUserConfigFile(), self::DEFAULT_CONFIG_FILE, $client);
+
+            $repositoryLoader = new CompositeLoader();
+            $repositoryLoader->addLoader('defaultConfig', new YamlLoader($this->getUserConfigFile(), self::DEFAULT_CONFIG_FILE, $client));
+            $this->repositoryLoader = $repositoryLoader;
         }
     }
 
     protected function enrichRepositories(): void
     {
-        $this->initYamlLoader();
-
+        $this->initRepositoryLoader();
         $this->repositoryCollection = new RepositoryCollection();
-        $this->yamlLoader->enrich($this->repositoryCollection);
+        $this->repositoryLoader->enrich($this->repositoryCollection);
     }
 
     /**

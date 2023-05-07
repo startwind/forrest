@@ -14,8 +14,8 @@ class ListCommand extends DirectoryCommand
 
     protected function doExecute(InputInterface $input, OutputInterface $output): int
     {
-        $this->initYamlLoader();
-        $activeRepositories = $this->getYamlLoader()->getIdentifiers();
+        $this->initRepositoryLoader();
+        $activeRepositories = $this->getRepositoryLoader()->getIdentifiers();
 
         $directory = $this->getDirectory();
 
