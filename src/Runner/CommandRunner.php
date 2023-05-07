@@ -2,7 +2,6 @@
 
 namespace Startwind\Forrest\Runner;
 
-use Startwind\Forrest\Command\Command;
 use Startwind\Forrest\History\HistoryHandler;
 use Startwind\Forrest\Runner\Exception\ToolNotFoundException;
 use Symfony\Component\Console\Command\Command as SymfonyCommand;
@@ -40,7 +39,7 @@ class CommandRunner
      */
     public function execute(string $prompt, bool $checkForExistence = true): CommandResult
     {
-        if ($checkForExistence && !$this->toolExists($prompt, $tool)) {
+        if ($checkForExistence && !$this->toolInstalled($prompt, $tool)) {
             throw new ToolNotFoundException($tool);
         }
 
@@ -51,7 +50,10 @@ class CommandRunner
         return new CommandResult($execOutput, $resultCode);
     }
 
-    private function toolExists(string $prompt, &$command): bool
+    /**
+     * Return true if the tool is installed.
+     */
+    private function toolInstalled(string $prompt, &$command): bool
     {
         $parts = explode(' ', $prompt);
 

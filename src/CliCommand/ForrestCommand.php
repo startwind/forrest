@@ -27,17 +27,6 @@ abstract class ForrestCommand extends SymfonyCommand
 
     private ?YamlLoader $yamlLoader = null;
 
-    /**
-     * Render a table with the statistics.
-     */
-    protected function renderTable(OutputInterface $output, array $headers, array $rows): void
-    {
-        $table = new Table($output);
-        $table->setHeaders($headers);
-        $table->setRows($rows);
-        $table->render();
-    }
-
     protected function getYamlLoader(): YamlLoader
     {
         return $this->yamlLoader;

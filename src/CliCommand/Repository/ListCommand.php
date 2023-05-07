@@ -2,6 +2,7 @@
 
 namespace Startwind\Forrest\CliCommand\Repository;
 
+use Startwind\Forrest\Output\OutputHelper;
 use Symfony\Component\Console\Command\Command as SymfonyCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -27,7 +28,7 @@ class ListCommand extends RepositoryCommand
 
         $headlines = ['Name', 'Description', 'Type'];
 
-        $this->renderTable($output, $headlines, $rows);
+        OutputHelper::renderTable($output, $headlines, $rows);
 
         return SymfonyCommand::SUCCESS;
     }

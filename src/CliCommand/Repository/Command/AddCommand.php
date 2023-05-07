@@ -4,6 +4,7 @@ namespace Startwind\Forrest\CliCommand\Repository\Command;
 
 use Startwind\Forrest\CliCommand\Repository\RepositoryCommand;
 use Startwind\Forrest\Command\Command;
+use Startwind\Forrest\Output\OutputHelper;
 use Symfony\Component\Console\Command\Command as SymfonyCommand;
 use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Input\InputInterface;
@@ -50,7 +51,7 @@ class AddCommand extends RepositoryCommand
             return SymfonyCommand::FAILURE;
         }
 
-        $this->renderTable($output, ['ID', 'Name', 'Description'], $rows);
+        OutputHelper::renderTable($output, ['ID', 'Name', 'Description'], $rows);
 
         $output->writeln('');
 
