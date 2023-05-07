@@ -7,6 +7,7 @@ use Startwind\Forrest\Command\Command;
 use Startwind\Forrest\Config\ConfigFileHandler;
 use Startwind\Forrest\History\HistoryHandler;
 use Startwind\Forrest\Repository\Loader\CompositeLoader;
+use Startwind\Forrest\Repository\Loader\LocalComposerRepositoryLoader;
 use Startwind\Forrest\Repository\Loader\LocalRepositoryLoader;
 use Startwind\Forrest\Repository\Loader\RepositoryLoader;
 use Startwind\Forrest\Repository\Loader\YamlLoader;
@@ -112,6 +113,10 @@ abstract class ForrestCommand extends SymfonyCommand
 
             if (file_exists(self::DEFAULT_LOCAL_CONFIG_FILE)) {
                 $repositoryLoader->addLoader('localConfig', new LocalRepositoryLoader(self::DEFAULT_LOCAL_CONFIG_FILE));
+            }
+
+            if (file_exists(LocalComposerRepositoryLoader::COMPOSER_FILE)) {
+                $repositoryLoader->addLoader('localConfig', new LocalComposerRepositoryLoader());
             }
 
             $this->repositoryLoader = $repositoryLoader;
