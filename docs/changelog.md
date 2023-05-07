@@ -5,7 +5,7 @@ Forrest is constantly evolving. Sometimes so fast that you might not even get ar
 - **1.0.4** - If a composer file is found in the current directory, the attached scripts will also be shown via Forrest and can run the same way as Forrest commands. [read more](friends.md)
 
 
-- **1.0.3** - We introduces piggyback repositories. Every project now can have its own `forrest.yml` file. When Forrest finds that file it automatically shows the commands. This way nothing has to be installed. [read more](creating-repository.md#piggyback-repository)
+- **1.0.3** - We introduced piggyback repositories. Every project now can have its own `forrest.yml` file. When Forrest finds that file it automatically shows the commands. This way nothing has to be installed. [read more](creating-repository.md#piggyback-repository)
 
 
 - **1.0.2** - Commands can now be multi-line commands. Each command will run after the other.
