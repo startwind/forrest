@@ -14,6 +14,7 @@ and thus simplify the use of the command line by a lot.
 - ... [secure by design](docs/secure-by-design.md)
 - ... easy to extend with custom commands
 - ... easy to extend with custom sources
+- ... [friends with everyone](docs/friends.md)
 - ... [open source](LICENSE)
 
 ## Installation
