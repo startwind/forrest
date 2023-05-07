@@ -47,7 +47,7 @@ class CommandRunner
 
         exec($prompt . ' 2>&1', $execOutput, $resultCode);
 
-        return new CommandResult($execOutput, $resultCode);
+        return new CommandResult($execOutput, (int)$resultCode);
     }
 
     /**

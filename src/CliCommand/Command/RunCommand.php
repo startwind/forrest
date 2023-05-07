@@ -154,7 +154,7 @@ class RunCommand extends CommandCommand
             $result = $commandRunner->execute($command);
             $execOutput = $result->getOutput();
 
-            if ($execOutput != SymfonyCommand::SUCCESS) {
+            if ($result->getResultCode() != SymfonyCommand::SUCCESS) {
                 if (count($result->getOutput()) > 0) {
                     $this->renderErrorBox($output, 'Error executing prompt: ' . $execOutput[0]);
                 } else {
