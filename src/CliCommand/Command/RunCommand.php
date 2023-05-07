@@ -4,7 +4,7 @@ namespace Startwind\Forrest\CliCommand\Command;
 
 use Startwind\Forrest\Command\Command;
 use Startwind\Forrest\Command\Parameters\Parameter;
-use Startwind\Forrest\Util\OSHelper;
+use Startwind\Forrest\Runner\CommandRunner;
 use Symfony\Component\Console\Command\Command as SymfonyCommand;
 use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Input\InputArgument;
@@ -56,7 +56,7 @@ class RunCommand extends CommandCommand
         if (count($values) > 0) {
             $output->writeln('');
             $output->writeln('  Final prompt: ');
-            $this->renderInfoBox($output, $prompt);
+            $this->renderInfoBox($output, CommandRunner::stringToMultilinePrompt($prompt));
         }
 
         if (!$command->isRunnable()) {
@@ -139,7 +139,7 @@ class RunCommand extends CommandCommand
      */
     private function executeCommand(OutputInterface $output, string $prompt): void
     {
-        $commands = explode("\n", $prompt);
+        $commands = CommandRunner::stringToMultilinePrompt($prompt);
 
         foreach ($commands as $command) {
             $this->getHistoryHandler()->addEntry($command);

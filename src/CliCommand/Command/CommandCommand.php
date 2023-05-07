@@ -6,6 +6,7 @@ use Startwind\Forrest\CliCommand\ForrestCommand;
 use Startwind\Forrest\Command\Command;
 use Startwind\Forrest\Output\OutputHelper;
 use Startwind\Forrest\Repository\Repository;
+use Startwind\Forrest\Runner\CommandRunner;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -21,12 +22,18 @@ class CommandCommand extends ForrestCommand
 
     protected function showCommandInformation(OutputInterface $output, Command $command): void
     {
-        $commands = explode("\n", $command->getPrompt());
-
         $this->renderWarningBox($output, $this->runWarning);
 
+        $commands = CommandRunner::stringToMultilinePrompt($command->getPrompt());
+
+        if (count($commands) > 1) {
+            $plural = 's';
+        } else {
+            $plural = '';
+        }
+
+        $output->writeln('  Command' . $plural . ' to be run:');
         $output->writeln('');
-        $output->writeln('  Command to be run:');
         $this->renderInfoBox($output, $commands);
         $output->writeln('');
 
