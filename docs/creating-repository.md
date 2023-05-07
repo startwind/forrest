@@ -64,6 +64,8 @@ Forrest is trying to become the standard for easy management and use of command 
 
 ![Piggyback repo](images/piggyback_repo.png)
 
+If you have an open source project your own and want the use Forrest just [create a ticket](https://github.com/startwind/forrest/issues) and we will help you with your piggyback file.
+
 ### Example
 
 
