@@ -7,6 +7,7 @@ use Startwind\Forrest\Command\Command;
 use Startwind\Forrest\Config\ConfigFileHandler;
 use Startwind\Forrest\History\HistoryHandler;
 use Startwind\Forrest\Repository\Loader\CompositeLoader;
+use Startwind\Forrest\Repository\Loader\LocalRepositoryLoader;
 use Startwind\Forrest\Repository\Loader\RepositoryLoader;
 use Startwind\Forrest\Repository\Loader\YamlLoader;
 use Startwind\Forrest\Repository\RepositoryCollection;
@@ -20,6 +21,8 @@ abstract class ForrestCommand extends SymfonyCommand
     public const COMMAND_SEPARATOR = ':';
 
     public const DEFAULT_CONFIG_FILE = __DIR__ . '/../../config/repository.yml';
+
+    public const DEFAULT_LOCAL_CONFIG_FILE = '.forrest.yml';
     public const USER_CONFIG_DIR = '.forrest';
     public const USER_CONFIG_FILE = self::USER_CONFIG_DIR . '/config.yml';
     public const USER_CHECKSUM_FILE = self::USER_CONFIG_DIR . '/checksum.json';
@@ -104,7 +107,13 @@ abstract class ForrestCommand extends SymfonyCommand
             $client = new Client();
 
             $repositoryLoader = new CompositeLoader();
+
             $repositoryLoader->addLoader('defaultConfig', new YamlLoader($this->getUserConfigFile(), self::DEFAULT_CONFIG_FILE, $client));
+
+            if (file_exists(self::DEFAULT_LOCAL_CONFIG_FILE)) {
+                $repositoryLoader->addLoader('localConfig', new LocalRepositoryLoader(self::DEFAULT_LOCAL_CONFIG_FILE));
+            }
+
             $this->repositoryLoader = $repositoryLoader;
         }
     }

@@ -63,11 +63,17 @@ class YamlLoader implements RepositoryLoader
         }
     }
 
+    /**
+     * @inheritDoc
+     */
     public function getIdentifiers(): array
     {
         return array_keys($this->config[self::CONFIG_ELEMENT_REPOSITORIES]);
     }
 
+    /**
+     * @inheritDoc
+     */
     public function enrich(RepositoryCollection $repositoryCollection): void
     {
         $this->initRepositories();

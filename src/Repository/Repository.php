@@ -10,7 +10,8 @@ class Repository
     public function __construct(
         private readonly Adapter $adapter,
         private readonly string $name,
-        private readonly string $description
+        private readonly string $description,
+        private readonly bool $isSpecialRepo = false,
     ) {
     }
 
@@ -48,6 +49,14 @@ class Repository
     public function addCommand(Command $command): void
     {
         $this->adapter->addCommand($command);
+    }
+
+    /**
+     * @return bool
+     */
+    public function isSpecial(): bool
+    {
+        return $this->isSpecialRepo;
     }
 
     public static function createUniqueCommandName(string $repositoryIdentifier, Command $command): string

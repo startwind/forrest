@@ -31,7 +31,7 @@ class RunCommand extends CommandCommand
     protected function doExecute(InputInterface $input, OutputInterface $output): int
     {
         if (!$input->getArgument('identifier')) {
-            $this->renderListCommand($input, $output);
+            $this->renderListCommand();
             return SymfonyCommand::SUCCESS;
         }
 

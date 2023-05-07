@@ -13,7 +13,7 @@ class ListCommand extends CommandCommand
 
     protected function doExecute(InputInterface $input, OutputInterface $output): int
     {
-        $this->renderListCommand($input, $output);
+        $this->renderListCommand();
         return SymfonyCommand::SUCCESS;
     }
 }
