@@ -5,6 +5,7 @@ namespace Startwind\Forrest\CliCommand\Command;
 use Startwind\Forrest\Command\Command;
 use Startwind\Forrest\Command\Parameters\Parameter;
 use Startwind\Forrest\Runner\CommandRunner;
+use Startwind\Forrest\Runner\Exception\ToolNotFoundException;
 use Symfony\Component\Console\Command\Command as SymfonyCommand;
 use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Input\InputArgument;
@@ -80,7 +81,13 @@ class RunCommand extends CommandCommand
         $this->getConfigHandler()->persistChecksum($command, $repositoryIdentifier);
 
         $output->writeln('');
-        $this->executeCommand($output, $prompt);
+
+        try {
+            $this->executeCommand($output, $prompt);
+        } catch (ToolNotFoundException $exception) {
+            $this->renderErrorBox($output, $exception->getMessage());
+            return SymfonyCommand::FAILURE;
+        }
 
         return SymfonyCommand::SUCCESS;
     }
