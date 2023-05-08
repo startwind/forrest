@@ -30,6 +30,15 @@ class RecentParameterMemory
         return array_key_exists($parameterIdentifier, $this->memories);
     }
 
+    public function getParameter(string $parameterIdentifier): string
+    {
+        if (!$this->hasParameter($parameterIdentifier)) {
+            throw new \RuntimeException('No parameter with identifier "' . $parameterIdentifier . '" found. Please use hasParameter before using this method.');
+        }
+
+        return $this->memories[$parameterIdentifier];
+    }
+
     public function dump(): void
     {
         file_put_contents($this->memoryFile, json_encode($this->memories));
