@@ -8,7 +8,7 @@ use Symfony\Component\Console\Command\Command as SymfonyCommand;
 
 class CommandRunner
 {
-    private array $prefixCommands = [
+    private static array $prefixCommands = [
         'sudo'
     ];
 
@@ -55,16 +55,26 @@ class CommandRunner
      */
     private function toolInstalled(string $prompt, &$command): bool
     {
+        $command = self::extractToolFromPrompt($prompt);
+        exec('which ' . $command, $output, $resultCode);
+        return $resultCode == SymfonyCommand::SUCCESS;
+    }
+
+    /**
+     * Get the tool name from a prompt.
+     *
+     * It also removes sudo and other "prefix" tools.
+     */
+    public static function extractToolFromPrompt(string $prompt): string
+    {
         $parts = explode(' ', $prompt);
 
         $command = array_shift($parts);
 
-        while (in_array($command, $this->prefixCommands) && !empty($parts)) {
+        while (in_array($command, self::$prefixCommands) && !empty($parts)) {
             $command = array_shift($parts);
         }
 
-        exec('which ' . $command, $output, $resultCode);
-
-        return $resultCode == SymfonyCommand::SUCCESS;
+        return $command;
     }
 }
