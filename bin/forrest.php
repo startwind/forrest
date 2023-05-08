@@ -37,6 +37,7 @@ $application->add(new \Startwind\Forrest\CliCommand\Directory\InstallCommand());
 # Search
 $application->add(new \Startwind\Forrest\CliCommand\Search\FileCommand());
 $application->add(new \Startwind\Forrest\CliCommand\Search\PatternCommand());
+$application->add(new \Startwind\Forrest\CliCommand\Search\ToolCommand());
 
 # Others
 if (!str_contains(FORREST_VERSION, '##FORREST_VERSION')) {
