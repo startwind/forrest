@@ -27,7 +27,7 @@ class CommandCommand extends ForrestCommand
 
         $prompt = new Prompt($command->getPrompt());
 
-        $commands = CommandRunner::stringToMultilinePrompt($prompt);
+        $commands = CommandRunner::promptToMultilinePrompt($prompt);
 
         $plural = (count($commands) > 1) ? 's' : '';
 

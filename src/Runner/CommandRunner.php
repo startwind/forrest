@@ -23,8 +23,10 @@ class CommandRunner
     /**
      * Return a string array with all the commands. This is needed for multi line
      * commands.
+     *
+     * @return Prompt[]
      */
-    public static function stringToMultilinePrompt(Prompt $prompt): array
+    public static function promptToMultilinePrompt(Prompt $prompt): array
     {
         $commands = explode("\n", $prompt->getPromptForExecute());
 
@@ -32,23 +34,29 @@ class CommandRunner
             unset($commands[count($commands) - 1]);
         }
 
-        return $commands;
+        $prompts = [];
+
+        foreach ($commands as $command) {
+            $prompts[] = new Prompt($command, $prompt->getValues());
+        }
+
+        return $prompts;
     }
 
     /**
      * Run a single command line.
      */
-    public function execute(string $prompt, bool $checkForExistence = true): CommandResult
+    public function execute(Prompt $prompt, bool $checkForExistence = true): CommandResult
     {
-        if ($checkForExistence && !$this->toolInstalled($prompt, $tool)) {
+        if ($checkForExistence && !$this->toolInstalled($prompt->getPromptForExecute(), $tool)) {
             throw new ToolNotFoundException($tool);
         }
 
-        $this->historyHandler->addEntry($prompt);
+        $this->historyHandler->addEntry($prompt->getPromptForOutput());
 
-        exec($prompt . ' 2>&1', $execOutput, $resultCode);
+        exec($prompt->getPromptForExecute() . ' 2>&1', $execOutput, $resultCode);
 
-        return new CommandResult($execOutput, (int)$resultCode);
+        return new CommandResult($execOutput, $resultCode);
     }
 
     /**

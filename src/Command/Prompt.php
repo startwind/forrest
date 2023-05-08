@@ -15,6 +15,11 @@ class Prompt
     ) {
     }
 
+    public function getValues(): array
+    {
+        return $this->values;
+    }
+
     public function getPromptForExecute(): string
     {
         return $this->replaceParameters($this->prompt);

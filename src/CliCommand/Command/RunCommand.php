@@ -156,12 +156,12 @@ class RunCommand extends CommandCommand
      */
     private function executeCommand(OutputInterface $output, Prompt $prompt): void
     {
-        $commands = CommandRunner::stringToMultilinePrompt($prompt);
+        $commands = CommandRunner::promptToMultilinePrompt($prompt);
 
         $commandRunner = new CommandRunner($this->getHistoryHandler());
 
-        foreach ($commands as $command) {
-            $result = $commandRunner->execute($command);
+        foreach ($commands as $commandPrompt) {
+            $result = $commandRunner->execute($commandPrompt);
             $execOutput = $result->getOutput();
 
             if ($result->getResultCode() != SymfonyCommand::SUCCESS) {
