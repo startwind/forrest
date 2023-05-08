@@ -6,7 +6,7 @@ Forrest is constantly evolving. Sometimes so fast that you might not even get ar
 
 
 - **1.0.5** - In addition to the composer files we can now also read `package.json` files from npm. [read more](friends.md)
-- 
+
 
 - **1.0.4** - If a composer file is found in the current directory, the attached scripts will also be shown via Forrest and can run the same way as Forrest commands. [read more](friends.md)
 

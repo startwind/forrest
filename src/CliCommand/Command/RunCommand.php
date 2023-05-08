@@ -133,7 +133,6 @@ class RunCommand extends CommandCommand
         return $values;
     }
 
-
     /**
      * Handle default and recent values for the current parameter.
      */
