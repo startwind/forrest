@@ -8,6 +8,7 @@ use Startwind\Forrest\Config\ConfigFileHandler;
 use Startwind\Forrest\History\HistoryHandler;
 use Startwind\Forrest\Repository\Loader\CompositeLoader;
 use Startwind\Forrest\Repository\Loader\LocalComposerRepositoryLoader;
+use Startwind\Forrest\Repository\Loader\LocalPackageRepositoryLoader;
 use Startwind\Forrest\Repository\Loader\LocalRepositoryLoader;
 use Startwind\Forrest\Repository\Loader\RepositoryLoader;
 use Startwind\Forrest\Repository\Loader\YamlLoader;
@@ -115,8 +116,12 @@ abstract class ForrestCommand extends SymfonyCommand
                 $repositoryLoader->addLoader('localConfig', new LocalRepositoryLoader(self::DEFAULT_LOCAL_CONFIG_FILE));
             }
 
-            if (file_exists(LocalComposerRepositoryLoader::COMPOSER_FILE)) {
-                $repositoryLoader->addLoader('localConfig', new LocalComposerRepositoryLoader());
+            if (LocalComposerRepositoryLoader::isApplicable()) {
+                $repositoryLoader->addLoader('localComposer', new LocalComposerRepositoryLoader());
+            }
+
+            if (LocalPackageRepositoryLoader::isApplicable()) {
+                $repositoryLoader->addLoader('localPackagist', new LocalPackageRepositoryLoader());
             }
 
             $this->repositoryLoader = $repositoryLoader;

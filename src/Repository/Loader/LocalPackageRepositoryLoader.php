@@ -4,14 +4,14 @@ namespace Startwind\Forrest\Repository\Loader;
 
 use Startwind\Forrest\Repository\RepositoryCollection;
 
-class LocalComposerRepositoryLoader extends LocalJsonRepositoryLoader implements RepositoryLoader
+class LocalPackageRepositoryLoader extends LocalJsonRepositoryLoader implements RepositoryLoader
 {
-    public const COMPOSER_FILE = 'composer.json';
+    public const PACKAGE_FILE = 'package.json';
 
-    private const LOCAL_REPOSITORY_IDENTIFIER = 'local-composer';
+    private const LOCAL_REPOSITORY_IDENTIFIER = 'local-package-json';
 
-    private const DEFAULT_LOCAL_REPOSITORY_NAME = 'Local Composer File';
-    private const DEFAULT_LOCAL_DESCRIPTION = 'Commands from the local composer file.';
+    private const DEFAULT_LOCAL_REPOSITORY_NAME = 'Local package.json File';
+    private const DEFAULT_LOCAL_DESCRIPTION = 'Commands from the local package.json file.';
 
     /**
      * @inheritDoc
@@ -28,8 +28,8 @@ class LocalComposerRepositoryLoader extends LocalJsonRepositoryLoader implements
     {
         $this->enrichWithFile(
             $repositoryCollection,
-            self::COMPOSER_FILE,
-            'composer run ',
+            self::PACKAGE_FILE,
+            'npm run ',
             self::DEFAULT_LOCAL_REPOSITORY_NAME,
             self::DEFAULT_LOCAL_DESCRIPTION,
             self::LOCAL_REPOSITORY_IDENTIFIER
@@ -38,6 +38,6 @@ class LocalComposerRepositoryLoader extends LocalJsonRepositoryLoader implements
 
     public static function isApplicable(): bool
     {
-        return (file_exists(LocalComposerRepositoryLoader::COMPOSER_FILE));
+        return (file_exists(LocalPackageRepositoryLoader::PACKAGE_FILE));
     }
 }
