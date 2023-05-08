@@ -50,7 +50,7 @@ class RunCommand extends CommandCommand
 
         $parameters = $command->getParameters();
 
-        $values = $this->handleParameters($questionHelper, $input, $output, $parameters);
+        $values = $this->handleParameters($questionHelper, $commandIdentifier, $parameters);
 
         $prompt = $command->getPrompt($values);
 
@@ -78,8 +78,6 @@ class RunCommand extends CommandCommand
             }
         }
 
-        $this->getConfigHandler()->persistChecksum($command, $repositoryIdentifier);
-
         $output->writeln('');
 
         try {
@@ -89,6 +87,9 @@ class RunCommand extends CommandCommand
             return SymfonyCommand::FAILURE;
         }
 
+        $this->getConfigHandler()->persistChecksum($command, $repositoryIdentifier);
+        $this->getRecentParameterMemory()->dump();
+
         return SymfonyCommand::SUCCESS;
     }
 
@@ -96,12 +97,16 @@ class RunCommand extends CommandCommand
      * @param Parameter[] $parameters
      * @return array<string, mixed>
      */
-    private function handleParameters(QuestionHelper $questionHelper, InputInterface $input, OutputInterface $output, array $parameters): array
+    private function handleParameters(QuestionHelper $questionHelper, string $commandIdentifier, array $parameters): array
     {
+        $input = $this->getInput();
+        $output = $this->getOutput();
+
         $values = [];
 
-        foreach ($parameters as $identifier => $parameter) {
+        $memory = $this->getRecentParameterMemory();
 
+        foreach ($parameters as $identifier => $parameter) {
             if ($parameter->getName()) {
                 $name = $identifier . ' (' . $parameter->getName() . ')';
             } else {
@@ -121,6 +126,8 @@ class RunCommand extends CommandCommand
             } else {
                 $values[$identifier] = $questionHelper->ask($input, $output, new Question('  Select value for ' . $name . $defaultString . ': ', $defaultValue));
             }
+
+            $memory->addParameter($commandIdentifier . ':' . $identifier, $values[$identifier]);
         }
 
         return $values;
