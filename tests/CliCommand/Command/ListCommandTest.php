@@ -9,7 +9,7 @@ use Symfony\Component\Console\Tester\CommandTester;
 
 define('FORREST_VERSION', '0.0.0-phpunit');
 
-class ListCommandTest extends TestCase
+final class ListCommandTest extends TestCase
 {
     private ?CommandTester $commandTester = null;
 

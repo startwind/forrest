@@ -2,7 +2,7 @@
 
 namespace Startwind\Forrest\Command\Parameters;
 
-class Parameter
+class Parameter implements ParameterInterface
 {
     private string $name = '';
     private string $description = '';
