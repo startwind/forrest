@@ -5,6 +5,7 @@ namespace Startwind\Forrest\CliCommand;
 use GuzzleHttp\Client;
 use Startwind\Forrest\Command\Command;
 use Startwind\Forrest\Config\ConfigFileHandler;
+use Startwind\Forrest\Config\RecentParameterMemory;
 use Startwind\Forrest\History\HistoryHandler;
 use Startwind\Forrest\Repository\Loader\CompositeLoader;
 use Startwind\Forrest\Repository\Loader\LocalComposerRepositoryLoader;
@@ -28,6 +29,8 @@ abstract class ForrestCommand extends SymfonyCommand
     public const USER_CONFIG_DIR = '.forrest';
     public const USER_CONFIG_FILE = self::USER_CONFIG_DIR . '/config.yml';
     public const USER_CHECKSUM_FILE = self::USER_CONFIG_DIR . '/checksum.json';
+
+    public const USER_RECENT_FILE = self::USER_CONFIG_DIR . '/recent.json';
     public const USER_HISTORY_FILE = self::USER_CONFIG_DIR . '/history';
 
     private RepositoryCollection $repositoryCollection;
@@ -36,13 +39,23 @@ abstract class ForrestCommand extends SymfonyCommand
 
     private InputInterface $input;
     private OutputInterface $output;
+    private RecentParameterMemory $recentParameterMemory;
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $this->input = $input;
         $this->output = $output;
 
+        $home = getenv("HOME");
+
+        $this->recentParameterMemory = new RecentParameterMemory($home . DIRECTORY_SEPARATOR . self::USER_RECENT_FILE);
+
         return $this->doExecute($input, $output);
+    }
+
+    protected function getRecentParameterMemory(): RecentParameterMemory
+    {
+        return $this->recentParameterMemory;
     }
 
     protected function doExecute(InputInterface $input, OutputInterface $output): int
