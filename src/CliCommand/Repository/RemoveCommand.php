@@ -19,13 +19,13 @@ class RemoveCommand extends RepositoryCommand
 
     protected function isInstalled(string $identifier): bool
     {
-        $installedIdentifiers = $this->getYamlLoader()->getIdentifiers();
+        $installedIdentifiers = $this->getRepositoryLoader()->getIdentifiers();
         return in_array($identifier, $installedIdentifiers);
     }
 
     protected function doExecute(InputInterface $input, OutputInterface $output): int
     {
-        $this->initYamlLoader();
+        $this->initRepositoryLoader();
 
         $identifier = $input->getArgument('identifier');
 

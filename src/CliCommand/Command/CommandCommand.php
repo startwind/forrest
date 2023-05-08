@@ -41,8 +41,10 @@ class CommandCommand extends ForrestCommand
     /**
      * Render the list output
      */
-    protected function renderListCommand(InputInterface $input, OutputInterface $output): void
+    protected function renderListCommand(): void
     {
+        $output = $this->getOutput();
+
         OutputHelper::renderHeader($output);
 
         $this->enrichRepositories();
@@ -73,11 +75,17 @@ class CommandCommand extends ForrestCommand
         ]);
 
         foreach ($repositories as $repoIdentifier => $repository) {
-            $output->writeln([
-                '',
-                '<fg=yellow>' . $repository->getName() . '</> (' . $repoIdentifier . ')',
-                '',
-            ]);
+            if ($repository->isSpecial()) {
+                $this->renderWarningBox($repository->getName() . ' (' . $repoIdentifier . ')');
+                $output->writeln(['  ' . $repository->getDescription(), '']);
+
+            } else {
+                $output->writeln([
+                    '',
+                    '<fg=yellow>' . $repository->getName() . '</> (' . $repoIdentifier . ')',
+                    '',
+                ]);
+            }
 
             OutputHelper::renderCommands($output, $repository->getCommands(), $repoIdentifier, $maxLength);
         }

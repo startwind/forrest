@@ -1,4 +1,4 @@
-# Creating a custom repository
+# Creating a custom Repository
 
 Commands are divided into repositories in Forrest. We recommend that these are structured thematically and thus also grouped. This facilitates later administration and use.
 
@@ -6,7 +6,7 @@ When creating local repositories we recommend to choose our [YAML format](format
 
 If you want to see examples of YAML file please visit the [official Forrest GitHub Repository](https://github.com/startwind/forrest-directory/tree/main/repositories) and browse through the files.
 
-## Local repository
+## Local Repository
 
 In the beginning, you should always start with a local and therefore private repository. Here, you can create and manage your own commands without affecting other users.
 
@@ -41,7 +41,7 @@ If you did not register the repository on creation you can use the `repository:r
 forrest repository:create ~/local-forrest.yml
 ````
 
-## Remote repository
+## Remote Repository
 
 If you want to share a repository with the commands it contains with colleagues and others, it makes sense to store this repository on a server that is accessible to everyone.
 
@@ -57,3 +57,25 @@ forrest repository:create https://raw.githubusercontent.com/startwind/forrest-di
 ```
 
 Afterwards everybody who know the URL can use the commands. 
+
+## Piggyback Repository
+
+Forrest is trying to become the standard for easy management and use of command line tools. For this reason there are the piggyback repositories.  Each open source project has the possibility to put a file named `.forrest.yml` in its root directory. As soon as Forrest is started in the same directory, the commands located there are immediately added to the list of all commands. Nothing has to be installed.
+
+![Piggyback repo](images/piggyback_repo.png)
+
+If you have an open source project your own and want the use Forrest just [create a ticket](https://github.com/startwind/forrest/issues) and we will help you with your piggyback file.
+
+### Example
+
+```yaml
+repository:
+  identifier: "360-monitoring"
+  name: 360 Monitoring by WebPros
+  description: The most important commands to hand 360 Monitoring via CLI
+commands:
+  findInFiles:
+    name: "monitor:add"
+    description: "Add a new website to the 360 Monitoring"
+    prompt: "app"
+```

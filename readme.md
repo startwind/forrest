@@ -12,8 +12,10 @@ and thus simplify the use of the command line by a lot.
 
 **Forrest is ...**
 - ... [secure by design](docs/secure-by-design.md)
+- ... [constantly in development](docs/changelog.md)
 - ... easy to extend with custom commands
 - ... easy to extend with custom sources
+- ... [friends with everyone](docs/friends.md)
 - ... [open source](LICENSE)
 
 ## Installation

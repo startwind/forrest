@@ -5,7 +5,13 @@ namespace Startwind\Forrest\CliCommand;
 use GuzzleHttp\Client;
 use Startwind\Forrest\Command\Command;
 use Startwind\Forrest\Config\ConfigFileHandler;
+use Startwind\Forrest\Config\RecentParameterMemory;
 use Startwind\Forrest\History\HistoryHandler;
+use Startwind\Forrest\Repository\Loader\CompositeLoader;
+use Startwind\Forrest\Repository\Loader\LocalComposerRepositoryLoader;
+use Startwind\Forrest\Repository\Loader\LocalPackageRepositoryLoader;
+use Startwind\Forrest\Repository\Loader\LocalRepositoryLoader;
+use Startwind\Forrest\Repository\Loader\RepositoryLoader;
 use Startwind\Forrest\Repository\Loader\YamlLoader;
 use Startwind\Forrest\Repository\RepositoryCollection;
 use Startwind\Forrest\Util\OutputHelper;
@@ -18,24 +24,38 @@ abstract class ForrestCommand extends SymfonyCommand
     public const COMMAND_SEPARATOR = ':';
 
     public const DEFAULT_CONFIG_FILE = __DIR__ . '/../../config/repository.yml';
+
+    public const DEFAULT_LOCAL_CONFIG_FILE = '.forrest.yml';
     public const USER_CONFIG_DIR = '.forrest';
     public const USER_CONFIG_FILE = self::USER_CONFIG_DIR . '/config.yml';
     public const USER_CHECKSUM_FILE = self::USER_CONFIG_DIR . '/checksum.json';
+
+    public const USER_RECENT_FILE = self::USER_CONFIG_DIR . '/recent.json';
     public const USER_HISTORY_FILE = self::USER_CONFIG_DIR . '/history';
 
     private RepositoryCollection $repositoryCollection;
 
-    private ?YamlLoader $yamlLoader = null;
+    private ?RepositoryLoader $repositoryLoader = null;
 
     private InputInterface $input;
     private OutputInterface $output;
+    private RecentParameterMemory $recentParameterMemory;
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $this->input = $input;
         $this->output = $output;
 
+        $home = getenv("HOME");
+
+        $this->recentParameterMemory = new RecentParameterMemory($home . DIRECTORY_SEPARATOR . self::USER_RECENT_FILE);
+
         return $this->doExecute($input, $output);
+    }
+
+    protected function getRecentParameterMemory(): RecentParameterMemory
+    {
+        return $this->recentParameterMemory;
     }
 
     protected function doExecute(InputInterface $input, OutputInterface $output): int
@@ -53,9 +73,9 @@ abstract class ForrestCommand extends SymfonyCommand
         return $this->output;
     }
 
-    protected function getYamlLoader(): YamlLoader
+    protected function getRepositoryLoader(): RepositoryLoader
     {
-        return $this->yamlLoader;
+        return $this->repositoryLoader;
     }
 
     protected function getUserConfigFile(): string
@@ -94,22 +114,38 @@ abstract class ForrestCommand extends SymfonyCommand
         }
     }
 
-    protected function initYamlLoader(): void
+    protected function initRepositoryLoader(): void
     {
         $this->createUserConfig();
 
-        if (!$this->yamlLoader) {
+        if (!$this->repositoryLoader) {
             $client = new Client();
-            $this->yamlLoader = new YamlLoader($this->getUserConfigFile(), self::DEFAULT_CONFIG_FILE, $client);
+
+            $repositoryLoader = new CompositeLoader();
+
+            $repositoryLoader->addLoader('defaultConfig', new YamlLoader($this->getUserConfigFile(), self::DEFAULT_CONFIG_FILE, $client));
+
+            if (file_exists(self::DEFAULT_LOCAL_CONFIG_FILE)) {
+                $repositoryLoader->addLoader('localConfig', new LocalRepositoryLoader(self::DEFAULT_LOCAL_CONFIG_FILE));
+            }
+
+            if (LocalComposerRepositoryLoader::isApplicable()) {
+                $repositoryLoader->addLoader('localComposer', new LocalComposerRepositoryLoader());
+            }
+
+            if (LocalPackageRepositoryLoader::isApplicable()) {
+                $repositoryLoader->addLoader('localPackagist', new LocalPackageRepositoryLoader());
+            }
+
+            $this->repositoryLoader = $repositoryLoader;
         }
     }
 
     protected function enrichRepositories(): void
     {
-        $this->initYamlLoader();
-
+        $this->initRepositoryLoader();
         $this->repositoryCollection = new RepositoryCollection();
-        $this->yamlLoader->enrich($this->repositoryCollection);
+        $this->repositoryLoader->enrich($this->repositoryCollection);
     }
 
     /**

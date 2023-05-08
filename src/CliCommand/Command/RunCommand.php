@@ -5,6 +5,7 @@ namespace Startwind\Forrest\CliCommand\Command;
 use Startwind\Forrest\Command\Command;
 use Startwind\Forrest\Command\Parameters\Parameter;
 use Startwind\Forrest\Command\Prompt;
+use Startwind\Forrest\Config\RecentParameterMemory;
 use Startwind\Forrest\Runner\CommandRunner;
 use Startwind\Forrest\Runner\Exception\ToolNotFoundException;
 use Symfony\Component\Console\Command\Command as SymfonyCommand;
@@ -16,8 +17,6 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ChoiceQuestion;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
 use Symfony\Component\Console\Question\Question;
-
-use function PHPUnit\Framework\stringContains;
 
 class RunCommand extends CommandCommand
 {
@@ -34,7 +33,7 @@ class RunCommand extends CommandCommand
     protected function doExecute(InputInterface $input, OutputInterface $output): int
     {
         if (!$input->getArgument('identifier')) {
-            $this->renderListCommand($input, $output);
+            $this->renderListCommand();
             return SymfonyCommand::SUCCESS;
         }
 
@@ -53,7 +52,7 @@ class RunCommand extends CommandCommand
 
         $parameters = $command->getParameters();
 
-        $values = $this->handleParameters($questionHelper, $input, $output, $parameters);
+        $values = $this->handleParameters($questionHelper, $commandIdentifier, $parameters);
 
         $prompt = $command->getPrompt($values);
 
@@ -81,8 +80,6 @@ class RunCommand extends CommandCommand
             }
         }
 
-        $this->getConfigHandler()->persistChecksum($command, $repositoryIdentifier);
-
         $output->writeln('');
 
         try {
@@ -92,6 +89,9 @@ class RunCommand extends CommandCommand
             return SymfonyCommand::FAILURE;
         }
 
+        $this->getConfigHandler()->persistChecksum($command, $repositoryIdentifier);
+        $this->getRecentParameterMemory()->dump();
+
         return SymfonyCommand::SUCCESS;
     }
 
@@ -99,11 +99,20 @@ class RunCommand extends CommandCommand
      * @param Parameter[] $parameters
      * @return array<string, mixed>
      */
-    private function handleParameters(QuestionHelper $questionHelper, InputInterface $input, OutputInterface $output, array $parameters): array
+    private function handleParameters(QuestionHelper $questionHelper, string $commandIdentifier, array $parameters): array
     {
+        $input = $this->getInput();
+        $output = $this->getOutput();
+
         $values = [];
 
+        $memory = $this->getRecentParameterMemory();
+
         foreach ($parameters as $identifier => $parameter) {
+
+            $fullParameterIdentifier = $commandIdentifier . ':' . $identifier;
+
+            $additional = $this->getAdditionalInfo($memory, $fullParameterIdentifier, $parameter);
 
             if ($parameter->getName()) {
                 $name = $identifier . ' (' . $parameter->getName() . ')';
@@ -111,29 +120,63 @@ class RunCommand extends CommandCommand
                 $name = $identifier;
             }
 
-            if ($parameter->getDefaultValue()) {
-                $defaultString = ' [default: ' . $parameter->getDefaultValue() . ']';
-                $defaultValue = $parameter->getDefaultValue();
-            } else {
-                $defaultString = '';
-                $defaultValue = '';
-            }
-
             if ($parameter->hasValues()) {
-                $values[$identifier] = $questionHelper->ask($input, $output, new ChoiceQuestion('  Select value for ' . $name . $defaultString . ': ', $parameter->getValues(), $defaultValue));
+                $values[$identifier] = $questionHelper->ask($input, $output, new ChoiceQuestion('  Select value for ' . $name . $additional['string'] . ': ', $parameter->getValues()));
             } else {
-                $question = new Question('  Select value for ' . $name . $defaultString . ': ', $defaultValue);
+                $question = new Question('  Select value for ' . $name . $additional['string'] . ': ', $additional['value']);
 
-                if (str_contains('password', strtolower($parameter->getName()))) {
+                if (
+                    str_contains('password', strtolower($parameter->getName())) ||
+                    str_contains('secret', strtolower($parameter->getName()))
+                ) {
                     $question->setHidden(true);
                     $question->setHiddenFallback(false);
                 }
 
                 $values[$identifier] = $questionHelper->ask($input, $output, $question);
             }
+
+            if ($values[$identifier]) {
+                $memory->addParameter($fullParameterIdentifier, $values[$identifier]);
+            }
         }
 
         return $values;
+    }
+
+    /**
+     * Handle default and recent values for the current parameter.
+     */
+    private function getAdditionalInfo(RecentParameterMemory $memory, string $fullParameterIdentifier, Parameter $parameter): array
+    {
+        if ($memory->hasParameter($fullParameterIdentifier)) {
+            $recentValue = $memory->getParameter($fullParameterIdentifier);
+        } else {
+            $recentValue = '';
+        }
+
+        if ($parameter->getDefaultValue()) {
+            if ($recentValue != '' && $recentValue != $parameter->getDefaultValue()) {
+                $recentOutput = ', recent: ' . $recentValue;
+            } else {
+                $recentOutput = '';
+            }
+            $defaultString = ' [default: ' . $parameter->getDefaultValue() . $recentOutput . ']';
+            $defaultValue = $parameter->getDefaultValue();
+        } else {
+            if ($recentValue) {
+                $defaultString = ' [default: ' . $recentValue . ']';
+                $defaultValue = $recentValue;
+            } else {
+                $defaultString = '';
+                $defaultValue = '';
+            }
+        }
+
+        return [
+            'string' => $defaultString,
+            'value' => $defaultValue
+        ];
     }
 
     /**
