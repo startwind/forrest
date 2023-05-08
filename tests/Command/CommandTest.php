@@ -8,6 +8,7 @@ namespace Tests\Startwind\Forrest\Command;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Startwind\Forrest\Command\Command;
+use Startwind\Forrest\Command\Prompt;
 
 final class CommandTest extends TestCase
 {
@@ -17,11 +18,13 @@ final class CommandTest extends TestCase
         $command = new Command(
             'name',
             'description',
-            $prompt
+            new Prompt($prompt, $values)
         );
 
-        $this->assertEquals($expected, $command->getPrompt($values));
-        $this->assertEquals(md5($prompt), $command->getChecksum());
+        $prompt = $command->getPrompt();
+
+        $this->assertEquals($expected, $prompt->getPromptForExecute());
+        $this->assertEquals(md5($prompt->getPromptForExecute()), $command->getChecksum());
     }
 
     public function testGetter(): void
@@ -29,7 +32,7 @@ final class CommandTest extends TestCase
         $command = new Command(
             'name',
             'description',
-            'prompt'
+            new Prompt('prompt')
         );
 
         $this->assertEquals('name', $command->getName());

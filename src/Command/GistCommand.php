@@ -12,15 +12,15 @@ class GistCommand extends Command
         private readonly string $rawUrl,
         private readonly Client $client
     ) {
-        parent::__construct($name, $description, '');
+        parent::__construct($name, $description, new Prompt(''));
     }
 
     /**
      * @inheritDoc
      */
-    public function getPrompt(array $values = []): string
+    public function getPrompt(array $values = []): Prompt
     {
         $response = $this->client->get($this->rawUrl);
-        return (string)$response->getBody();
+        return new Prompt((string)$response->getBody());
     }
 }

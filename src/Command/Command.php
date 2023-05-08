@@ -19,7 +19,7 @@ class Command
     public function __construct(
         private readonly string $name,
         private readonly string $description,
-        private readonly string $prompt
+        private readonly Prompt $prompt
     ) {
     }
 
@@ -43,15 +43,9 @@ class Command
      * Return the prompt. If the values are set the parameters will be set and the
      * prompt completed.
      */
-    public function getPrompt(array $values = []): string
+    public function getPrompt(array $values = []): Prompt
     {
-        $prompt = $this->prompt;
-
-        foreach ($values as $key => $value) {
-            $prompt = str_replace(self::PARAMETER_PREFIX . $key . self::PARAMETER_POSTFIX, (string)$value, $prompt);
-        }
-
-        return $prompt;
+        return new Prompt($this->prompt, $values);
     }
 
     /**

@@ -32,7 +32,8 @@ final class GistCommandTest extends TestCase
         );
 
         $prompt = $gistCommand->getPrompt();
-        $this->assertJson($prompt);
+
+        $this->assertJson($prompt->getPromptForExecute());
 
         $request = $mock->getLastRequest();
         $this->assertEquals('https://some.raw.gist.url/forrest', (string)$request->getUri());

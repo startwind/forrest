@@ -4,6 +4,7 @@ namespace Startwind\Forrest\CliCommand\Command;
 
 use Startwind\Forrest\CliCommand\ForrestCommand;
 use Startwind\Forrest\Command\Command;
+use Startwind\Forrest\Command\Prompt;
 use Startwind\Forrest\Output\OutputHelper;
 use Startwind\Forrest\Repository\Repository;
 use Startwind\Forrest\Runner\CommandRunner;
@@ -24,17 +25,15 @@ class CommandCommand extends ForrestCommand
     {
         $this->renderWarningBox($this->runWarning);
 
-        $commands = CommandRunner::stringToMultilinePrompt($command->getPrompt());
+        $prompt = new Prompt($command->getPrompt());
 
-        if (count($commands) > 1) {
-            $plural = 's';
-        } else {
-            $plural = '';
-        }
+        $commands = CommandRunner::stringToMultilinePrompt($prompt);
+
+        $plural = (count($commands) > 1) ? 's' : '';
 
         $output->writeln('  Command' . $plural . ' to be run:');
         $output->writeln('');
-        $this->renderInfoBox($commands);
+        $this->renderInfoBox((string)$prompt);
         $output->writeln('');
 
     }

@@ -2,6 +2,7 @@
 
 namespace Startwind\Forrest\Runner;
 
+use Startwind\Forrest\Command\Prompt;
 use Startwind\Forrest\History\HistoryHandler;
 use Startwind\Forrest\Runner\Exception\ToolNotFoundException;
 use Symfony\Component\Console\Command\Command as SymfonyCommand;
@@ -23,9 +24,9 @@ class CommandRunner
      * Return a string array with all the commands. This is needed for multi line
      * commands.
      */
-    public static function stringToMultilinePrompt(string $string): array
+    public static function stringToMultilinePrompt(Prompt $prompt): array
     {
-        $commands = explode("\n", $string);
+        $commands = explode("\n", $prompt->getPromptForExecute());
 
         if ($commands[count($commands) - 1] == '') {
             unset($commands[count($commands) - 1]);

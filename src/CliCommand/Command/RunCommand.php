@@ -4,6 +4,7 @@ namespace Startwind\Forrest\CliCommand\Command;
 
 use Startwind\Forrest\Command\Command;
 use Startwind\Forrest\Command\Parameters\Parameter;
+use Startwind\Forrest\Command\Prompt;
 use Startwind\Forrest\Runner\CommandRunner;
 use Startwind\Forrest\Runner\Exception\ToolNotFoundException;
 use Symfony\Component\Console\Command\Command as SymfonyCommand;
@@ -59,7 +60,7 @@ class RunCommand extends CommandCommand
         if (count($values) > 0) {
             $output->writeln('');
             $output->writeln('  Final prompt: ');
-            $this->renderInfoBox(CommandRunner::stringToMultilinePrompt($prompt));
+            $this->renderInfoBox($prompt);
         }
 
         if (!$command->isRunnable()) {
@@ -153,7 +154,7 @@ class RunCommand extends CommandCommand
     /**
      * Run every single command in the executable command.
      */
-    private function executeCommand(OutputInterface $output, string $prompt): void
+    private function executeCommand(OutputInterface $output, Prompt $prompt): void
     {
         $commands = CommandRunner::stringToMultilinePrompt($prompt);
 

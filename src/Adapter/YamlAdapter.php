@@ -8,6 +8,7 @@ use Startwind\Forrest\Adapter\Exception\RepositoryNotFoundException;
 use Startwind\Forrest\Command\Command;
 use Startwind\Forrest\Command\Parameters\Parameter;
 use Startwind\Forrest\Command\Parameters\ParameterFactory;
+use Startwind\Forrest\Command\Prompt;
 use Symfony\Component\Yaml\Yaml;
 
 class YamlAdapter extends BasicAdapter implements ClientAwareAdapter
@@ -75,7 +76,7 @@ class YamlAdapter extends BasicAdapter implements ClientAwareAdapter
                 throw new \RuntimeException('The mandatory field ' . self::YAML_FIELD_DESCRIPTION . ' is not set for identifier "' . $identifier . '" (file: ' . $this->yamlFile . ').');
             }
 
-            $prompt = $commandConfig[self::YAML_FIELD_PROMPT];
+            $prompt = new Prompt($commandConfig[self::YAML_FIELD_PROMPT]);
 
             $command = new Command($commandConfig[self::YAML_FIELD_NAME], $commandConfig[self::YAML_FIELD_DESCRIPTION], $prompt);
 

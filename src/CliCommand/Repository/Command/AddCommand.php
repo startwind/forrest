@@ -4,6 +4,7 @@ namespace Startwind\Forrest\CliCommand\Repository\Command;
 
 use Startwind\Forrest\CliCommand\Repository\RepositoryCommand;
 use Startwind\Forrest\Command\Command;
+use Startwind\Forrest\Command\Prompt;
 use Startwind\Forrest\Output\OutputHelper;
 use Symfony\Component\Console\Command\Command as SymfonyCommand;
 use Symfony\Component\Console\Helper\QuestionHelper;
@@ -67,7 +68,7 @@ class AddCommand extends RepositoryCommand
         $commandDescription = $questionHelper->ask($input, $output, new Question('Command description: '));
         $commandPrompt = $questionHelper->ask($input, $output, new Question('Command prompt: '));
 
-        $repo->addCommand(new Command($commandName, $commandDescription, $commandPrompt));
+        $repo->addCommand(new Command($commandName, $commandDescription, new Prompt($commandPrompt)));
 
         $this->renderInfoBox('Successfully added a new command.');
 
