@@ -1,6 +1,6 @@
 # Awesome
 
-Forrest seems to be a complex tool and very technical. That is wrong. But the easiest way to explain the awesomeness of this tool is by providing some ream world and every day examples. 
+Forrest seems to be a complex tool and very technical. That is wrong. But the easiest way to explain the awesomeness of this tool is by providing some real world and every day examples. 
 
 ## Remember **your** commands
 
@@ -39,3 +39,7 @@ forrest search:file archive.tar
 ````
 
 The tool will list all registered commands for this file. Including decompressing it. 
+
+## Future ready
+
+These examples are already pretty awesome. [But the future will bring more](roadmap.md).
