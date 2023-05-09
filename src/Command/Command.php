@@ -2,6 +2,7 @@
 
 namespace Startwind\Forrest\Command;
 
+use Startwind\Forrest\Command\Functions\DateFunction;
 use Startwind\Forrest\Command\Parameters\Parameter;
 
 class Command
@@ -20,7 +21,9 @@ class Command
         private readonly string $name,
         private readonly string $description,
         private readonly string $prompt
-    ) {
+    )
+    {
+
     }
 
     /**
