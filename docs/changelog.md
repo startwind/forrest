@@ -2,7 +2,9 @@
 
 Forrest is constantly evolving. Sometimes so fast that you might not even get around to trying out the new features. For this reason, we have introduced a changelog.
 
-- **1.0.6** - We store the recent parameters of a function call and suggest the same value the next time a command is called.
+- **1.0.6** 
+  - We store the recent parameters of a function call and suggest the same value the next time a command is called.
+  - Bugfix: Empty repositories are not shown in the list.
 
 
 - **1.0.5** - In addition to the composer files we can now also read `package.json` files from npm. [read more](friends.md)
