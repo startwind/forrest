@@ -37,13 +37,15 @@ class CommandRunner
     /**
      * Run a single command line.
      */
-    public function execute(string $prompt, bool $checkForExistence = true): CommandResult
+    public function execute(string $prompt, bool $checkForExistence = true, $storeInHistory = true): CommandResult
     {
         if ($checkForExistence && !$this->toolInstalled($prompt, $tool)) {
             throw new ToolNotFoundException($tool);
         }
 
-        $this->historyHandler->addEntry($prompt);
+        if ($storeInHistory) {
+            $this->historyHandler->addEntry($prompt);
+        }
 
         exec($prompt . ' 2>&1', $execOutput, $resultCode);
 

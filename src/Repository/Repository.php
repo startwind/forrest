@@ -7,12 +7,15 @@ use Startwind\Forrest\Command\Command;
 
 class Repository
 {
+    private array $commands = [];
+
     public function __construct(
         private readonly Adapter $adapter,
-        private readonly string $name,
-        private readonly string $description,
-        private readonly bool $isSpecialRepo = false,
-    ) {
+        private readonly string  $name,
+        private readonly string  $description,
+        private readonly bool    $isSpecialRepo = false,
+    )
+    {
     }
 
     public function getAdapter(): Adapter
@@ -35,7 +38,16 @@ class Repository
      */
     public function getCommands(): array
     {
-        return $this->adapter->getCommands();
+        if (!$this->commands) {
+            $this->commands = $this->adapter->getCommands();
+        }
+
+        return $this->commands;
+    }
+
+    public function hasCommands(): bool
+    {
+        return count($this->getCommands()) > 0;
     }
 
     /**

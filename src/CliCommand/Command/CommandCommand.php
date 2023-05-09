@@ -76,6 +76,9 @@ class CommandCommand extends ForrestCommand
         ]);
 
         foreach ($repositories as $repoIdentifier => $repository) {
+            if(!$repository->hasCommands()) {
+                continue;
+            }
             if ($repository->isSpecial()) {
                 $this->renderWarningBox($repository->getName() . ' (' . $repoIdentifier . ')');
                 $output->writeln(['  ' . $repository->getDescription(), '']);
