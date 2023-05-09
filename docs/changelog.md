@@ -2,6 +2,10 @@
 
 Forrest is constantly evolving. Sometimes so fast that you might not even get around to trying out the new features. For this reason, we have introduced a changelog.
 
+- **1.0.7** 
+  - `commands:list` has now the repository as optional argument. This way you can filter a long commands list to see only the needed ones.
+
+
 - **1.0.6** 
   - We store the recent parameters of a function call and suggest the same value the next time a command is called.
   - Prefill the commands parameters via command line to be able to run the command without "questions". [read more](commands/commands_run.md)
