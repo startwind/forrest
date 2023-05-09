@@ -11,10 +11,10 @@ and thus simplify the use of the command line by a lot.
 ![commands:show](docs/images/commands_list.png)
 
 **Forrest is ...**
-- ... [secure by design](docs/secure-by-design.md)
+- ... [awesome](docs/awesome.md)
 - ... [constantly in development](docs/changelog.md)
-- ... easy to extend with custom commands
-- ... easy to extend with custom sources
+- ... [secure by design](docs/secure-by-design.md)
+- ... [easy to extend with custom commands](docs/creating-repository.md)
 - ... [friends with everyone](docs/friends.md)
 - ... [open source](LICENSE)
 
