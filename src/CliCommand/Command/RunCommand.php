@@ -27,6 +27,7 @@ class RunCommand extends CommandCommand
         $this->setAliases(['run']);
         $this->addArgument('identifier', InputArgument::OPTIONAL, 'The commands identifier.', false);
         $this->addOption('force', null, InputOption::VALUE_OPTIONAL, 'Run the command without asking for permission.', false);
+        $this->addOption('parameters', 'p', InputOption::VALUE_OPTIONAL, 'Parameters as json string. E.g:  -p \'{"dir_to_search_in":".", "number_on_days":"12"}\'', "{}");
     }
 
     protected function doExecute(InputInterface $input, OutputInterface $output): int
@@ -35,6 +36,8 @@ class RunCommand extends CommandCommand
             $this->renderListCommand();
             return SymfonyCommand::SUCCESS;
         }
+
+        $userParameters = json_decode($input->getOption('parameters'), true);
 
         $this->enrichRepositories();
 
@@ -51,7 +54,7 @@ class RunCommand extends CommandCommand
 
         $parameters = $command->getParameters();
 
-        $values = $this->handleParameters($questionHelper, $commandIdentifier, $parameters);
+        $values = $this->handleParameters($questionHelper, $commandIdentifier, $parameters, $userParameters);
 
         $prompt = $command->getPrompt($values);
 
@@ -98,7 +101,7 @@ class RunCommand extends CommandCommand
      * @param Parameter[] $parameters
      * @return array<string, mixed>
      */
-    private function handleParameters(QuestionHelper $questionHelper, string $commandIdentifier, array $parameters): array
+    private function handleParameters(QuestionHelper $questionHelper, string $commandIdentifier, array $parameters, array $userParameters = []): array
     {
         $input = $this->getInput();
         $output = $this->getOutput();
@@ -108,6 +111,11 @@ class RunCommand extends CommandCommand
         $memory = $this->getRecentParameterMemory();
 
         foreach ($parameters as $identifier => $parameter) {
+
+            if (array_key_exists($identifier, $userParameters)) {
+                $values[$identifier] = $userParameters[$identifier];
+                continue;
+            }
 
             $fullParameterIdentifier = $commandIdentifier . ':' . $identifier;
 

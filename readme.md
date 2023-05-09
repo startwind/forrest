@@ -51,8 +51,8 @@ official repositories visit our [directory documentation](docs/directory.md).
 ### Commands
 
 - `commands:list` - List all registered commands that can be run.
+- `commands:run` - Run a single command.  [More information](docs/commands/commands_run.md)
 - `commands:show` - Show a single command with all its details and steps that will be executed.
-- `commands:run` - Run a single command.
 - `commands:history` - Show the recent commands that were executed.
 
 ### Search Commands

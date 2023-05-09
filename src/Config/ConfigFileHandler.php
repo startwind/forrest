@@ -35,10 +35,6 @@ class ConfigFileHandler
         }
 
         $checksums = json_decode(file_get_contents($this->checksumFilename), true);
-        if (!array_key_exists($command->getName(), $checksums)) {
-            return true;
-        }
-
         $checksumIdentifier = $this->getChecksumIdentifier($command, $repositoryIdentifier);
 
         if (!array_key_exists($checksumIdentifier, $checksums)) {
