@@ -6,6 +6,6 @@ class DateFunction implements PromptFunction
 {
     public function applyFunction($prompt): string
     {
-        return $prompt;
+        return str_replace('${date(Y-m-d)}', date('Y-m-d'), $prompt);
     }
 }
