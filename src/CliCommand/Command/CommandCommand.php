@@ -42,7 +42,7 @@ class CommandCommand extends ForrestCommand
     /**
      * Render the list output
      */
-    protected function renderListCommand(): void
+    protected function renderListCommand(string $repository = ''): void
     {
         $output = $this->getOutput();
 
@@ -52,7 +52,11 @@ class CommandCommand extends ForrestCommand
 
         $maxLength = 0;
 
-        $repositories = $this->getRepositoryCollection()->getRepositories();
+        if ($repository) {
+            $repositories = [$repository => $this->getRepositoryCollection()->getRepository($repository)];
+        } else {
+            $repositories = $this->getRepositoryCollection()->getRepositories();
+        }
 
         foreach ($repositories as $repoIdentifier => $repository) {
             try {
@@ -76,7 +80,7 @@ class CommandCommand extends ForrestCommand
         ]);
 
         foreach ($repositories as $repoIdentifier => $repository) {
-            if(!$repository->hasCommands()) {
+            if (!$repository->hasCommands()) {
                 continue;
             }
             if ($repository->isSpecial()) {
