@@ -4,6 +4,7 @@ Forrest is constantly evolving. Sometimes so fast that you might not even get ar
 
 - **1.0.6** 
   - We store the recent parameters of a function call and suggest the same value the next time a command is called.
+  - Prefill the commands parameters via command line to be able to run the command without "questions". [read more](commands/commands_run.md)
   - Bugfix: Empty repositories are not shown in the list.
 
 

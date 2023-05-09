@@ -8,6 +8,8 @@ This command runs the actual scripts.
 
 Commands in Forrest can have placeholders in it. Those are used to be more flexible when creating and using them. Parameters are escaped like this `php -S localhost:${port}`. If you want to learn more about parameters please have a look at our [`Yaml format`](../formats/yaml-format.md). 
 
+When running a command again we will suggest the recent parameter. This way it is easier to use the tool repeatedly. 
+
 ## Options
 
 - `--force`: If this parameter is added Forrest will not ask for confirmation before running the command. As this can be very insecure (some commands come directly from the cloud) the force option can only be applied if the command did not change since the last run. 
