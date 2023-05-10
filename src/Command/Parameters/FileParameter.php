@@ -7,15 +7,36 @@ namespace Startwind\Forrest\Command\Parameters;
  */
 class FileParameter extends Parameter
 {
-    private array $fileFormats = [];
+    public const DIRECTORY = 'directory';
 
-    public function getFileFormats(): array
-    {
-        return $this->fileFormats;
-    }
+    private array $fileFormats = [];
 
     public function setFileFormats(array $fileFormats): void
     {
         $this->fileFormats = $fileFormats;
+    }
+
+    /**
+     * Return true if the given filename is compatible with this parameters
+     * file formats.
+     *
+     * @var string[] $compatibleFilenames
+     */
+    public function isCompatibleWithFiles(array $compatibleFilenames): bool
+    {
+        $normalizedCompatibleFilenames = [];
+
+        foreach ($compatibleFilenames as $compatibleFilename) {
+            $normalizedCompatibleFilenames[] = strtolower($compatibleFilename);
+        }
+
+        foreach ($this->fileFormats as $fileFormat) {
+            foreach ($normalizedCompatibleFilenames as $normalizedCompatibleFilename) {
+                if (str_contains($normalizedCompatibleFilename, $fileFormat)) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 }

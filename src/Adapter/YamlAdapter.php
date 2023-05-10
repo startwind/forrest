@@ -67,8 +67,6 @@ class YamlAdapter extends BasicAdapter implements ClientAwareAdapter
         $commands = [];
 
         if (!array_key_exists(self::YAML_FIELD_COMMANDS, $config)) {
-            var_dump(array_keys($config));
-            var_dump($this->yamlFile);
             throw new \RuntimeException('The given YAML file does not contain a section named "' . self::YAML_FIELD_COMMANDS . '".');
         }
 

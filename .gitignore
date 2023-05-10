@@ -12,3 +12,5 @@ tmp/custom.yml
 *.phar
 bin/forrest.phar
 *.tar
+
+__MACOSX
