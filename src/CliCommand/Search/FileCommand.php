@@ -33,6 +33,9 @@ class FileCommand extends SearchCommand
 
         $filename = $input->getArgument('filename');
 
+        /** @var \Symfony\Component\Console\Helper\QuestionHelper $questionHelper */
+        $questionHelper = $this->getHelper('question');
+
         if (!file_exists($filename)) {
             $this->renderErrorBox('File not found.');
             return SymfonyCommand::FAILURE;
@@ -69,11 +72,11 @@ class FileCommand extends SearchCommand
         if (count($fileCommands) == 1) {
             $commandIdentifier = array_key_first($fileCommands);
             $command = array_pop($fileCommands);
-            if (!$this->getHelper('question')->ask($input, $output, new ConfirmationQuestion('  Do you want to run "' . $command->getName() . '" (y/n)? '), false)) {
+            if (!$questionHelper->ask($input, $output, new ConfirmationQuestion('  Do you want to run "' . $command->getName() . '" (y/n)? '), false)) {
                 return SymfonyCommand::FAILURE;
             }
         } else {
-            $commandNumber = (int)$this->getHelper('question')->ask($input, $output, new Question('  Which command do you want to run [1-' . count($fileCommands) . ']? '));
+            $commandNumber = (int)$questionHelper->ask($input, $output, new Question('  Which command do you want to run [1-' . count($fileCommands) . ']? '));
 
             $commandIdentifier = array_keys($fileCommands)[count($fileCommands) - $commandNumber];
             $command = $fileCommands[$commandIdentifier];

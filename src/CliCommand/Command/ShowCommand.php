@@ -25,7 +25,10 @@ class ShowCommand extends CommandCommand
         $commandIdentifier = $input->getArgument('identifier');
         $repositoryIdentifier = $this->getRepositoryIdentifier($commandIdentifier);
 
-        $promptHelper = new PromptHelper($this->getInput(), $this->getOutput(), $this->getHelper('question'), $this->getRecentParameterMemory());
+        /** @var \Symfony\Component\Console\Helper\QuestionHelper $questionHelper */
+        $questionHelper = $this->getHelper('question');
+
+        $promptHelper = new PromptHelper($this->getInput(), $this->getOutput(), $questionHelper, $this->getRecentParameterMemory());
 
         $command = $this->getCommand($commandIdentifier);
 
