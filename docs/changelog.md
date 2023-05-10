@@ -2,7 +2,7 @@
 
 Forrest is constantly evolving. Sometimes so fast that you might not even get around to trying out the new features. For this reason, we have introduced a changelog.
 
-- **1.0.7** 
+- **1.1.0** 
   - Introducing function. It is now possible to use dynamic content within a prompt like the current date in all format variation. [read more](commands/functions/functions.md)
   - `commands:list` has now the repository as optional argument. This way you can filter a long commands list to see only the needed ones.
   - Immediately run commands from the search command. This removed one step from the workflow.
