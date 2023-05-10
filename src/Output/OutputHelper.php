@@ -26,7 +26,7 @@ class OutputHelper
         ]);
     }
 
-    public static function renderCommands(OutputInterface $output, array $commands, string $repoIdentifier = null, int $maxLength = -1): void
+    public static function renderCommands(OutputInterface $output, array $commands, ?string $repoIdentifier = null, int $maxLength = -1, $withNumber = false): void
     {
         if ($maxLength == -1) {
             foreach ($commands as $commandId => $command) {
@@ -43,6 +43,9 @@ class OutputHelper
             return $a->getName() <=> $b->getName();
         });
 
+        $number = 1;
+        $numberPrefix = '';
+
         foreach ($commands as $commandId => $command) {
             if ($repoIdentifier) {
                 $commandIdentifier = Repository::createUniqueCommandName($repoIdentifier, $command);
@@ -50,7 +53,12 @@ class OutputHelper
                 $commandIdentifier = $commandId;
             }
             $spaces = str_repeat(' ', $maxLength - strlen($commandIdentifier) + 2);
-            $output->writeln('  <fg=green>' . $commandIdentifier . '</>' . $spaces . $command->getDescription());
+
+            if ($withNumber) {
+                $numberPrefix = '  ' . $number;
+                $number++;
+            }
+            $output->writeln($numberPrefix . '  <fg=green>' . $commandIdentifier . '</>' . $spaces . $command->getDescription());
         }
     }
 }

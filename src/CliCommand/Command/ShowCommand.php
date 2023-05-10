@@ -2,6 +2,7 @@
 
 namespace Startwind\Forrest\CliCommand\Command;
 
+use Startwind\Forrest\Output\PromptHelper;
 use Symfony\Component\Console\Command\Command as SymfonyCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -21,9 +22,16 @@ class ShowCommand extends CommandCommand
     {
         $this->enrichRepositories();
 
-        $command = $this->getCommand($input->getArgument('identifier'));
+        $commandIdentifier = $input->getArgument('identifier');
+        $repositoryIdentifier = $this->getRepositoryIdentifier($commandIdentifier);
 
-        $this->showCommandInformation($output, $command);
+        $promptHelper = new PromptHelper($this->getInput(), $this->getOutput(), $this->getHelper('question'), $this->getRecentParameterMemory());
+
+        $command = $this->getCommand($commandIdentifier);
+
+        $prompt = $promptHelper->askForPrompt($repositoryIdentifier, $command, []);
+
+        $promptHelper->showFinalPrompt($prompt);
 
         return SymfonyCommand::SUCCESS;
     }

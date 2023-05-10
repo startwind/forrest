@@ -23,6 +23,8 @@ abstract class LocalJsonRepositoryLoader implements RepositoryLoader
 
         $manualAdapter = new ManualAdapter();
 
+        $repository = new Repository($manualAdapter, $repositoryName, $repositoryDescription, true);
+
         foreach ($jsonConfig['scripts'] as $name => $script) {
             if (is_string($script)) {
                 $command = new Command($name, $script, $commandPrefix . $name);
@@ -30,7 +32,6 @@ abstract class LocalJsonRepositoryLoader implements RepositoryLoader
             }
         }
 
-        $repository = new Repository($manualAdapter, $repositoryName, $repositoryDescription, true);
 
         $repositoryCollection->addRepository($repositoryInventory, $repository);
     }

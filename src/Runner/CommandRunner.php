@@ -39,7 +39,7 @@ class CommandRunner
      */
     public function execute(string $prompt, bool $checkForExistence = true, $storeInHistory = true): CommandResult
     {
-        if ($checkForExistence && !$this->toolInstalled($prompt, $tool)) {
+        if ($checkForExistence && !$this->isToolInstalled($prompt, $tool)) {
             throw new ToolNotFoundException($tool);
         }
 
@@ -55,7 +55,7 @@ class CommandRunner
     /**
      * Return true if the tool is installed.
      */
-    private function toolInstalled(string $prompt, &$command): bool
+    private function isToolInstalled(string $prompt, &$command): bool
     {
         $command = self::extractToolFromPrompt($prompt);
         exec('which ' . $command, $output, $resultCode);

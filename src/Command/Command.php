@@ -5,6 +5,7 @@ namespace Startwind\Forrest\Command;
 use Startwind\Forrest\Command\Functions\DateFunction;
 use Startwind\Forrest\Command\Functions\PromptFunction;
 use Startwind\Forrest\Command\Parameters\Parameter;
+use Startwind\Forrest\Repository\Repository;
 
 class Command
 {
@@ -21,13 +22,9 @@ class Command
     /**
      * @var PromptFunction[]
      */
-    private array $functions = [];
+    private array $functions;
 
-    public function __construct(
-        private readonly string $name,
-        private readonly string $description,
-        private readonly string $prompt
-    )
+    public function __construct(private readonly string $name, private readonly string $description, private readonly string $prompt)
     {
         $this->functions = [
             new DateFunction()
@@ -109,6 +106,16 @@ class Command
     public function getParameters(): array
     {
         return $this->parameters;
+    }
+
+    public function isParameterMissing(array $values): bool
+    {
+        foreach (array_keys($this->getParameters()) as $identifier) {
+            if (!array_key_exists($identifier, $values)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**

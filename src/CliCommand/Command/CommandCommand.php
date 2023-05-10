@@ -2,43 +2,11 @@
 
 namespace Startwind\Forrest\CliCommand\Command;
 
-use Startwind\Forrest\CliCommand\ForrestCommand;
-use Startwind\Forrest\Command\Command;
 use Startwind\Forrest\Output\OutputHelper;
 use Startwind\Forrest\Repository\Repository;
-use Startwind\Forrest\Runner\CommandRunner;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\OutputInterface;
 
-class CommandCommand extends ForrestCommand
+class CommandCommand extends \Startwind\Forrest\CliCommand\RunCommand
 {
-    /**
-     * @var string[]
-     */
-    protected array $runWarning = [
-        "Be careful. Please only run command that you understand. We only have limited control",
-        "of repositories that are not owned by this project.",
-    ];
-
-    protected function showCommandInformation(OutputInterface $output, Command $command): void
-    {
-        $this->renderWarningBox($this->runWarning);
-
-        $commands = CommandRunner::stringToMultilinePrompt($command->getPrompt());
-
-        if (count($commands) > 1) {
-            $plural = 's';
-        } else {
-            $plural = '';
-        }
-
-        $output->writeln('  Command' . $plural . ' to be run:');
-        $output->writeln('');
-        $this->renderInfoBox($commands);
-        $output->writeln('');
-
-    }
-
     /**
      * Render the list output
      */

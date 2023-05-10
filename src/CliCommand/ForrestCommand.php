@@ -176,8 +176,7 @@ abstract class ForrestCommand extends SymfonyCommand
      */
     protected function getRepositoryIdentifier(string $identifier): string
     {
-        $repositoryIdentifier = substr($identifier, 0, strpos($identifier, self::COMMAND_SEPARATOR));
-        return $repositoryIdentifier;
+        return substr($identifier, 0, strpos($identifier, self::COMMAND_SEPARATOR));
     }
 
     /**
@@ -202,14 +201,6 @@ abstract class ForrestCommand extends SymfonyCommand
     protected function renderWarningBox(string|array $message): void
     {
         OutputHelper::writeWarningBox($this->getOutput(), $message);
-    }
-
-    protected function renderInfo(string|array $message): void
-    {
-        $output = $this->getOutput();
-        $output->writeln('');
-        $output->writeln('<fg=yellow>' . $message . '</>');
-        $output->writeln('');
     }
 
     protected function getRepositoryCollection(): RepositoryCollection
