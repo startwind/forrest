@@ -12,6 +12,8 @@ abstract class RunCommand extends ForrestCommand
     protected function runCommand(string $commandIdentifier, array $userParameters): int
     {
         $repositoryIdentifier = $this->getRepositoryIdentifier($commandIdentifier);
+
+        /** @var \Symfony\Component\Console\Helper\QuestionHelper $questionHelper */
         $questionHelper = $this->getHelper('question');
 
         $promptHelper = new PromptHelper($this->getInput(), $this->getOutput(), $questionHelper, $this->getRecentParameterMemory());

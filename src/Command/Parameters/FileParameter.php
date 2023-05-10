@@ -19,8 +19,6 @@ class FileParameter extends Parameter
     /**
      * Return true if the given filename is compatible with this parameters
      * file formats.
-     *
-     * @var string[] $compatibleFilenames
      */
     public function isCompatibleWithFiles(array $compatibleFilenames): bool
     {

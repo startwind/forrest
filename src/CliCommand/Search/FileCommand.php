@@ -72,7 +72,7 @@ class FileCommand extends SearchCommand
         if (count($fileCommands) == 1) {
             $commandIdentifier = array_key_first($fileCommands);
             $command = array_pop($fileCommands);
-            if (!$questionHelper->ask($input, $output, new ConfirmationQuestion('  Do you want to run "' . $command->getName() . '" (y/n)? '), false)) {
+            if (!$questionHelper->ask($input, $output, new ConfirmationQuestion('  Do you want to run "' . $command->getName() . '" (y/n)? ', false))) {
                 return SymfonyCommand::FAILURE;
             }
         } else {
