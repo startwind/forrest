@@ -50,7 +50,11 @@ commands:
 
 ## Command fields
 
+- **prompt** [required] The prompt is the most important and only required field. Basically it is the string that gets executed. There are many [possibilities to enrich the string](prompt.md).
+
+
 - **runnable** [default: true] - if set to false Forrest will only show the command and not run it. This is the case if a command can be harmful or it does not return. *IMPORTANT: the parameters identifier must correspond to the parameter in the prompt.*
+
 
 - **parameters** [optional] - The parameter field helps specifying and validating the parameter. It can also help predefine values or define enums. 
   - **name** - The name of the parameter.

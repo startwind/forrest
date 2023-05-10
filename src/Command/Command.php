@@ -2,6 +2,8 @@
 
 namespace Startwind\Forrest\Command;
 
+use Startwind\Forrest\Command\Functions\DateFunction;
+use Startwind\Forrest\Command\Functions\PromptFunction;
 use Startwind\Forrest\Command\Parameters\Parameter;
 
 class Command
@@ -16,11 +18,20 @@ class Command
      */
     private array $parameters = [];
 
+    /**
+     * @var PromptFunction[]
+     */
+    private array $functions = [];
+
     public function __construct(
         private readonly string $name,
         private readonly string $description,
         private readonly string $prompt
-    ) {
+    )
+    {
+        $this->functions = [
+            new DateFunction()
+        ];
     }
 
     /**
@@ -49,6 +60,10 @@ class Command
 
         foreach ($values as $key => $value) {
             $prompt = str_replace(self::PARAMETER_PREFIX . $key . self::PARAMETER_POSTFIX, (string)$value, $prompt);
+        }
+
+        foreach ($this->functions as $function) {
+            $prompt = $function->applyFunction($prompt);
         }
 
         return $prompt;
