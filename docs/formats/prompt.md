@@ -1,5 +1,10 @@
 # The prompt
 
+```yaml
+prompt: "php -d memory_limit=${limit_in_megabyte}M ${filename}"
+prompt: echo ${date(Y-m-d)}
+```
+
 ## Parameters
 
 Prompts can be enriched with parameters for better re-usability. A parameter is basically a placeholder for a single argument or options. 
