@@ -24,15 +24,17 @@ abstract class RunCommand extends ForrestCommand
 
         $runHelper = new RunHelper($this->getInput(), $this->getOutput(), $questionHelper, $this->getConfigHandler(), $this->getHistoryHandler());
 
+        $force = !$this->getInput()->getOption('force') === false;
+
         if (!$runHelper->handleRunnable($command)) {
             return SymfonyCommand::SUCCESS;
         }
 
-        if (!$runHelper->handleForceOption($this->getInput()->getOption('force'), $command, $repositoryIdentifier)) {
+        if (!$runHelper->handleForceOption($force, $command, $repositoryIdentifier)) {
             return SymfonyCommand::FAILURE;
         }
 
-        if (!$runHelper->confirmRun($this->getInput()->getOption('force'))) {
+        if (!$runHelper->confirmRun($force)) {
             return SymfonyCommand::FAILURE;
         }
 
