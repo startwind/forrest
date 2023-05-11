@@ -44,7 +44,9 @@ class PatternCommand extends SearchCommand
         }, ['pattern' => $pattern]);
 
         if (!empty($commands)) {
-            OutputHelper::renderCommands($output, $input, $this->getHelper('question'), $commands);
+            /** @var \Symfony\Component\Console\Helper\QuestionHelper $questionHelper */
+            $questionHelper = $this->getHelper('question');
+            OutputHelper::renderCommands($output, $input, $questionHelper, $commands);
         } else {
             $this->renderErrorBox('No commands found that match this pattern.');
         }

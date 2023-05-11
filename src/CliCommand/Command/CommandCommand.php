@@ -63,7 +63,10 @@ class CommandCommand extends \Startwind\Forrest\CliCommand\RunCommand
                 ]);
             }
 
-            OutputHelper::renderCommands($output, $this->getInput(), $this->getHelper('question'), $repository->getCommands(), $repoIdentifier, $maxLength);
+            /** @var \Symfony\Component\Console\Helper\QuestionHelper $questionHelper */
+            $questionHelper = $this->getHelper('question');
+
+            OutputHelper::renderCommands($output, $this->getInput(), $questionHelper, $repository->getCommands(), $repoIdentifier, $maxLength);
         }
 
         $output->writeln('');
