@@ -2,10 +2,9 @@
 
 namespace Startwind\Forrest\Command;
 
-use Startwind\Forrest\Command\Functions\DateFunction;
-use Startwind\Forrest\Command\Functions\PromptFunction;
 use Startwind\Forrest\Command\Parameters\Parameter;
-use Startwind\Forrest\Repository\Repository;
+use Startwind\Forrest\Enrichment\Function\EnrichFunction;
+use Startwind\Forrest\Enrichment\Function\FunctionComposite;
 
 class Command
 {
@@ -20,14 +19,14 @@ class Command
     private array $parameters = [];
 
     /**
-     * @var PromptFunction[]
+     * @var EnrichFunction[]
      */
     private array $functions;
 
     public function __construct(private readonly string $name, private readonly string $description, private readonly string $prompt)
     {
         $this->functions = [
-            new DateFunction()
+            new FunctionComposite()
         ];
     }
 

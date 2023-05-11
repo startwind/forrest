@@ -2,11 +2,15 @@
 
 namespace Startwind\Forrest\Command\Parameters;
 
+use Startwind\Forrest\Enrichment\Function\FunctionComposite;
+
 class ParameterFactory
 {
     public const TYPE_MIXED = 'forrest_mixed';
     public const TYPE_FILENAME = 'forrest_filename';
     public const FIELD_TYPE = 'type';
+
+    public const DEFAULT_ENV_PATTERN = '^\${ENV\((.*)\)}^';
 
     /**
      * Create a Parameter configuration object from the given config array.
@@ -43,12 +47,38 @@ class ParameterFactory
         }
 
         if (array_key_exists('default', $config)) {
-            $parameter->setDefaultValue($config['default']);
+            $defaultValue = self::getDefaultValue($config['default']);
+            if ($defaultValue !== '') {
+                $parameter->setDefaultValue($defaultValue);
+            }
         }
 
         if (array_key_exists('enum', $config)) {
             $parameter->setValues($config['enum']);
         }
+    }
+
+    /**
+     * Get the default value. This also handles ENV variables
+     */
+    private static function getDefaultValue($configElement): string
+    {
+        $functionComposite = new FunctionComposite();
+        return $functionComposite->applyFunction($configElement);
+
+        $functionComposite = new FunctionComposite();
+        preg_match_all(self::DEFAULT_ENV_PATTERN, $configElement, $matches);
+
+        foreach ($matches[1] as $match) {
+            $envVars = getenv();
+            if (array_key_exists($match, $envVars)) {
+                return $envVars[$match];
+            } else {
+                return '';
+            }
+        }
+
+        return $configElement;
     }
 
     private static function createMixedParameter(array $config): Parameter
