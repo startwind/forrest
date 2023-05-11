@@ -17,6 +17,7 @@ class PatternCommand extends SearchCommand
     protected function configure(): void
     {
         $this->addArgument('pattern', InputArgument::REQUIRED, 'The pattern you want to search for.');
+        $this->setAliases(['pattern']);
     }
 
     protected function doExecute(InputInterface $input, OutputInterface $output): int
