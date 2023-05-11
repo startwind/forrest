@@ -35,11 +35,19 @@ class Repository
 
     /**
      * @return Command[]
+     * @throws \Exception
      */
     public function getCommands(): array
     {
+        $exceptions = [];
+
         if (!$this->commands) {
-            $this->commands = $this->adapter->getCommands();
+            try {
+                $this->commands = $this->adapter->getCommands();
+            } catch (\Exception $exception) {
+                $exceptions[] = $exception;
+                throw  $exception;
+            }
         }
 
         return $this->commands;

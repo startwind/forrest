@@ -4,8 +4,12 @@ namespace Startwind\Forrest\Output;
 
 use Startwind\Forrest\Command\Command;
 use Startwind\Forrest\Repository\Repository;
+use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Helper\Table;
+use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Question\ConfirmationQuestion;
+use Symfony\Component\Console\Question\Question;
 
 class OutputHelper
 {
@@ -26,10 +30,14 @@ class OutputHelper
         ]);
     }
 
-    public static function renderCommands(OutputInterface $output, array $commands, ?string $repoIdentifier = null, int $maxLength = -1, $withNumber = false): void
+    /**
+     * @param Command[] $commands
+     */
+    public static function renderCommands(OutputInterface $output, InputInterface $input, QuestionHelper $questionHelper, array $commands, ?string $repoIdentifier = null, int $maxLength = -1, $askForCommand = false): bool|Command
     {
         if ($maxLength == -1) {
             foreach ($commands as $commandId => $command) {
+                $command->setFullyQualifiedIdentifier($commandId);
                 if ($repoIdentifier) {
                     $commandIdentifier = Repository::createUniqueCommandName($repoIdentifier, $command);
                 } else {
@@ -40,7 +48,7 @@ class OutputHelper
         }
 
         uasort($commands, function (Command $a, Command $b) {
-            return $a->getName() <=> $b->getName();
+            return $a->getFullyQualifiedIdentifier() <=> $b->getFullyQualifiedIdentifier();
         });
 
         $number = 1;
@@ -54,11 +62,44 @@ class OutputHelper
             }
             $spaces = str_repeat(' ', $maxLength - strlen($commandIdentifier) + 2);
 
-            if ($withNumber) {
+            if ($askForCommand) {
                 $numberPrefix = '  ' . $number;
                 $number++;
             }
             $output->writeln($numberPrefix . '  <fg=green>' . $commandIdentifier . '</>' . $spaces . $command->getDescription());
         }
+
+        if ($askForCommand) {
+            return self::askForCommand($output, $input, $questionHelper, $commands);
+        }
+
+        return false;
+    }
+
+    /**
+     * @param Command[] $commands
+     */
+    private static function askForCommand(OutputInterface $output, InputInterface $input, QuestionHelper $questionHelper, array $commands): bool|Command
+    {
+        $output->writeln('');
+
+        if (count($commands) == 1) {
+            $commandIdentifier = array_key_first($commands);
+            $command = array_pop($commands);
+            if (!$questionHelper->ask($input, $output, new ConfirmationQuestion('  Do you want to run "' . $command->getName() . '" (y/n)? ', false))) {
+                return false;
+            }
+        } else {
+            $commandNumber = 0;
+            while ($commandNumber < 1 || $commandNumber > count($commands)) {
+                $commandNumber = (int)$questionHelper->ask($input, $output, new Question('  Which command do you want to run [1-' . count($commands) . ']? '));
+            }
+
+            $commandIdentifier = array_keys($commands)[$commandNumber - 1];
+            $command = $commands[$commandIdentifier];
+        }
+        $command->setFullyQualifiedIdentifier($commandIdentifier);
+
+        return $command;
     }
 }

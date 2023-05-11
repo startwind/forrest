@@ -65,28 +65,21 @@ class FileCommand extends SearchCommand
             return SymfonyCommand::FAILURE;
         }
 
-        OutputHelper::renderCommands($output, $fileCommands, null, -1, count($fileCommands) > 1);
-
-        $output->writeln('');
-
-        if (count($fileCommands) == 1) {
-            $commandIdentifier = array_key_first($fileCommands);
-            $command = array_pop($fileCommands);
-            if (!$questionHelper->ask($input, $output, new ConfirmationQuestion('  Do you want to run "' . $command->getName() . '" (y/n)? ', false))) {
-                return SymfonyCommand::FAILURE;
-            }
-        } else {
-            $commandNumber = (int)$questionHelper->ask($input, $output, new Question('  Which command do you want to run [1-' . count($fileCommands) . ']? '));
-
-            $commandIdentifier = array_keys($fileCommands)[count($fileCommands) - $commandNumber];
-            $command = $fileCommands[$commandIdentifier];
-        }
+        $command = OutputHelper::renderCommands(
+            $output,
+            $input,
+            $questionHelper,
+            $fileCommands,
+            null,
+            -1,
+            count($fileCommands) > 1
+        );
 
         $output->writeln('');
 
         $values = [$this->getParameterIdentifier($command, $filenames) => $filename];
 
-        return $this->runCommand($commandIdentifier, $values);
+        return $this->runCommand($command->getFullyQualifiedIdentifier(), $values);
     }
 
     /**

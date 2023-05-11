@@ -63,7 +63,7 @@ class CommandCommand extends \Startwind\Forrest\CliCommand\RunCommand
                 ]);
             }
 
-            OutputHelper::renderCommands($output, $repository->getCommands(), $repoIdentifier, $maxLength);
+            OutputHelper::renderCommands($output, $this->getInput(), $this->getHelper('question'), $repository->getCommands(), $repoIdentifier, $maxLength);
         }
 
         $output->writeln('');

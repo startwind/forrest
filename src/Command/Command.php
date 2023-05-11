@@ -13,6 +13,8 @@ class Command
 
     private bool $isRunnable = true;
 
+    private string $fullyQualifiedIdentifier = '';
+
     /**
      * @var Parameter[]
      */
@@ -124,5 +126,15 @@ class Command
     public function getChecksum(): string
     {
         return md5($this->getPrompt());
+    }
+
+    public function getFullyQualifiedIdentifier(): string
+    {
+        return $this->fullyQualifiedIdentifier;
+    }
+
+    public function setFullyQualifiedIdentifier(string $fullyQualifiedIdentifier): void
+    {
+        $this->fullyQualifiedIdentifier = $fullyQualifiedIdentifier;
     }
 }

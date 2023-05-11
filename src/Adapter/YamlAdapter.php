@@ -4,7 +4,9 @@ namespace Startwind\Forrest\Adapter;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ClientException;
+use GuzzleHttp\Exception\ServerException;
 use Startwind\Forrest\Adapter\Exception\RepositoryNotFoundException;
+use Startwind\Forrest\Adapter\Exception\UnableToFetchRepositoryException;
 use Startwind\Forrest\Command\Command;
 use Startwind\Forrest\Command\Parameters\ParameterFactory;
 use Symfony\Component\Yaml\Yaml;
@@ -45,6 +47,8 @@ class YamlAdapter extends BasicAdapter implements ClientAwareAdapter
                 } else {
                     throw $exception;
                 }
+            } catch (ServerException $exception) {
+                throw new UnableToFetchRepositoryException('Unable to fetch data from repository due to server errors.');
             }
             $content = (string)$response->getBody();
         } else {

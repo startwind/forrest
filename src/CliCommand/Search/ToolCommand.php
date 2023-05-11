@@ -35,7 +35,7 @@ class ToolCommand extends SearchCommand
         }, ['tool' => $tool]);
 
         if (!empty($commands)) {
-            OutputHelper::renderCommands($output, $commands);
+            OutputHelper::renderCommands($output, $input, $this->getHelper('question'), $commands);
         } else {
             $this->renderErrorBox('No commands found that match this tool.');
         }
