@@ -6,6 +6,8 @@ Forrest is constantly evolving. Sometimes so fast that you might not even get ar
   - Introducing function. It is now possible to use dynamic content within a prompt like the current date in all format variation. [read more](commands/functions/functions.md)
   - `commands:list` has now the repository as optional argument. This way you can filter a long commands list to see only the needed ones.
   - Immediately run commands from the search command. This removed one step from the workflow.
+  - [Functions](commands/enrichment/functions.md) can now also be used for the default value. 
+  - We added `env()` as a new function. [read more](commands/enrichment/functions.md)
 
   
 - **1.0.6** 
