@@ -3,7 +3,10 @@
 Forrest is constantly evolving. Sometimes so fast that you might not even get around to trying out the new features. For this reason, we have introduced a changelog.
 
 - **develop** 
- 
+  - fixed a bug with directory name that includes the word `function`.
+  - Added `pattern` as shortcut for `search:pattern`. 
+
+
 - **1.1.0**
   - Introducing function. It is now possible to use dynamic content within a prompt like the current date in all format variation. [read more](commands/functions/functions.md)
   - `commands:list` has now the repository as optional argument. This way you can filter a long commands list to see only the needed ones.

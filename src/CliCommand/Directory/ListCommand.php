@@ -12,6 +12,12 @@ class ListCommand extends DirectoryCommand
     protected static $defaultName = 'directory:list';
     protected static $defaultDescription = 'List all repositories in the official Forrest directory.';
 
+    protected function configure()
+    {
+        // @todo only show official repositories
+    }
+
+
     protected function doExecute(InputInterface $input, OutputInterface $output): int
     {
         $this->initRepositoryLoader();
@@ -19,9 +25,12 @@ class ListCommand extends DirectoryCommand
 
         $directory = $this->getDirectory();
 
+        $repositories = $directory['repositories'];
+        ksort($repositories);
+
         $rows = [];
 
-        foreach ($directory['repositories'] as $identifier => $repository) {
+        foreach ($repositories as $identifier => $repository) {
             $row = [
                 $identifier,
                 $repository['name'],
@@ -34,10 +43,16 @@ class ListCommand extends DirectoryCommand
                 $row[] = '';
             }
 
+            if (array_key_exists('official', $repository) && $repository['official'] === true) {
+                $row[] = 'x';
+            } else {
+                $row[] = '';
+            }
+
             $rows [] = $row;
         }
 
-        OutputHelper::renderTable($output, ['Identifier', 'Name', 'Description', 'Installed'], $rows);
+        OutputHelper::renderTable($output, ['Identifier', 'Name', 'Description', 'Installed', 'Official'], $rows);
 
         return SymfonyCommand::SUCCESS;
     }
