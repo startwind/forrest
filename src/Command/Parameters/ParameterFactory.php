@@ -65,20 +65,6 @@ class ParameterFactory
     {
         $functionComposite = new FunctionComposite();
         return $functionComposite->applyFunction($configElement);
-
-        $functionComposite = new FunctionComposite();
-        preg_match_all(self::DEFAULT_ENV_PATTERN, $configElement, $matches);
-
-        foreach ($matches[1] as $match) {
-            $envVars = getenv();
-            if (array_key_exists($match, $envVars)) {
-                return $envVars[$match];
-            } else {
-                return '';
-            }
-        }
-
-        return $configElement;
     }
 
     private static function createMixedParameter(array $config): Parameter
