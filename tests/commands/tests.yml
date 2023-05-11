@@ -6,7 +6,7 @@ commands:
 
   test-yaml-default-fromEnv:
     name: 'test:yaml:default:fromEnv'
-    description: 'Check the handling if a tool is not installed'
+    description: 'Use an env variable as default value'
     prompt: 'ls -lah ${user_name}'
     parameters:
       user_name:
@@ -14,10 +14,10 @@ commands:
 
   test-tool-not-exists:
     name: 'test:tool:not-exists'
-    description: 'Check the handling if a tool is not installed'
+    description: 'Run a tool that is not installed on the machine'
     prompt: 'sls -lah'
 
   test_date_function:
     name: 'test:command:with-date'
-    description: 'Check if the date function is working'
+    description: 'Use a date in the prompt'
     prompt: echo ${date(Y-m-d)}
