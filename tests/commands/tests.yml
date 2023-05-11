@@ -1,0 +1,23 @@
+repository:
+  name: 'test commands'
+  description: 'For tests'
+  identifier: forrest-dev-tests
+commands:
+
+  test-yaml-default-fromEnv:
+    name: 'test:yaml:default:fromEnv'
+    description: 'Check the handling if a tool is not installed'
+    prompt: 'ls -lah ${user_name}'
+    parameters:
+      user_name:
+        default: ${env(LOGNAME)}
+
+  test-tool-not-exists:
+    name: 'test:tool:not-exists'
+    description: 'Check the handling if a tool is not installed'
+    prompt: 'sls -lah'
+
+  test_date_function:
+    name: 'test:command:with-date'
+    description: 'Check if the date function is working'
+    prompt: echo ${date(Y-m-d)}
