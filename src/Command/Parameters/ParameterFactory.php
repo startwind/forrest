@@ -2,7 +2,7 @@
 
 namespace Startwind\Forrest\Command\Parameters;
 
-use Startwind\Forrest\Enrichment\Function\FunctionComposite;
+use Startwind\Forrest\Enrichment\EnrichFunction\FunctionComposite;
 
 class ParameterFactory
 {

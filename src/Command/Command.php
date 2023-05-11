@@ -3,8 +3,8 @@
 namespace Startwind\Forrest\Command;
 
 use Startwind\Forrest\Command\Parameters\Parameter;
-use Startwind\Forrest\Enrichment\Function\EnrichFunction;
-use Startwind\Forrest\Enrichment\Function\FunctionComposite;
+use Startwind\Forrest\Enrichment\EnrichFunction\EnrichFunction;
+use Startwind\Forrest\Enrichment\EnrichFunction\FunctionComposite;
 
 class Command
 {

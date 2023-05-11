@@ -1,6 +1,6 @@
 <?php
 
-namespace Startwind\Forrest\Enrichment\Function;
+namespace Startwind\Forrest\Enrichment\EnrichFunction;
 
 class EnvFunction extends BasicFunction
 {
