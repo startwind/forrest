@@ -5,12 +5,7 @@ namespace Startwind\Forrest\Adapter\Loader;
 interface WritableLoader
 {
     /**
-     * Add a command to the given file.
+     * Write a configuration to a file or stream or whatever.
      */
-    public function addCommand(string $commandName, array $command): void;
-
-    /**
-     * Remove a command from the given file
-     */
-    public function removeCommand(string $commandName): void;
+    public function write(string $content);
 }
