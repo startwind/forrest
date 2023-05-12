@@ -71,6 +71,11 @@ class Repository
         $this->adapter->addCommand($command);
     }
 
+    public function removeCommand(string $commandName): void
+    {
+        $this->adapter->removeCommand($commandName);
+    }
+
     /**
      * @return bool
      */

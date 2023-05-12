@@ -171,7 +171,7 @@ class YamlAdapter extends BasicAdapter implements ClientAwareAdapter
 
         $config[YamlAdapter::YAML_FIELD_COMMANDS][$commandName] = $commandArray;
 
-        $this->loader->write(Yaml::dump($config, 2));
+        $this->loader->write(Yaml::dump($config, 4));
     }
 
     /**
@@ -185,13 +185,20 @@ class YamlAdapter extends BasicAdapter implements ClientAwareAdapter
 
         $config = Yaml::parse($this->loader->load());
 
+        $changed = false;
+
         foreach ($config[self::YAML_FIELD_COMMANDS] as $key => $commandConfig) {
             if ($commandConfig[self::YAML_FIELD_NAME] == $commandName) {
                 unset($config[self::YAML_FIELD_COMMANDS][$key]);
+                $changed = true;
             }
         }
 
-        $this->loader->write(Yaml::dump($config, 2));
+        if (!$changed) {
+            throw  new \RuntimeException('No command with nane "' . $commandName . '" found.');
+        }
+
+        $this->loader->write(Yaml::dump($config, 4));
     }
 
     /**

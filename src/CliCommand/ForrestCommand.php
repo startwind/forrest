@@ -154,7 +154,7 @@ abstract class ForrestCommand extends SymfonyCommand
     protected function getCommand(string $identifier): Command
     {
         $repositoryIdentifier = $this->getRepositoryIdentifier($identifier);
-        $commandName = substr($identifier, strpos($identifier, self::COMMAND_SEPARATOR) + 1);
+        $commandName = $this->getCommandName($identifier);
 
         $this->enrichRepositories();
 
@@ -169,6 +169,11 @@ abstract class ForrestCommand extends SymfonyCommand
         }
 
         throw new \RuntimeException('No command found with name ' . $identifier . '.');
+    }
+
+    protected function getCommandName(string $fullyQualifiedCommandName): string
+    {
+        return substr($fullyQualifiedCommandName, strpos($fullyQualifiedCommandName, self::COMMAND_SEPARATOR) + 1);
     }
 
     /**

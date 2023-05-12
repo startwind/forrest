@@ -4,15 +4,20 @@ namespace Startwind\Forrest\Adapter\Loader;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ClientException;
+use GuzzleHttp\RequestOptions;
 
-class PrivateGitHubLoader implements Loader, HttpAwareLoader
+class PrivateGitHubLoader implements Loader, HttpAwareLoader, WritableLoader
 {
+    private const GIT_HUB_API_ENDPOINT = 'https://api.github.com/repos/%s/%s/contents/%s';
+
     private string $file;
     private string $token;
 
     private ?Client $client;
     private string $user;
     private string $repository;
+
+    private array $fileInformation = [];
 
     public function __construct(string $user, string $repository, string $file, string $token)
     {
@@ -46,20 +51,31 @@ class PrivateGitHubLoader implements Loader, HttpAwareLoader
         return new self($config['user'], $config['repository'], $config['file'], $config['token']);
     }
 
+    private function getHeaders(): array
+    {
+        return [
+            'Authorization' => ' token ' . $this->token,
+            'Accept' => 'application/vnd.github+json'
+        ];
+    }
+
+    private function getUrl(): string
+    {
+        return sprintf(self::GIT_HUB_API_ENDPOINT, $this->user, $this->repository, $this->file);
+    }
+
     /**
      * @inheritDoc
      */
     public function load(): string
     {
-        // curl -H "Authorization: token DEIN_TOKEN_HIER" -H 'Accept: application/vnd.github.v3.raw' -L https://api.github.com/repos/USER/REPO/contents/PATH_TO_FILE
-        $url = sprintf('https://api.github.com/repos/%s/%s/contents/%s', $this->user, $this->repository, $this->file);
+        if (!empty($this->fileInformation)) {
+            return base64_decode($this->fileInformation['content']);
+        }
 
         try {
-            $response = $this->client->request('GET', $url, [
-                'headers' => [
-                    'Authorization' => ' token ' . $this->token,
-                    'Accept' => 'application/vnd.github.v3.raw'
-                ]
+            $response = $this->client->request('GET', $this->getUrl(), [
+                'headers' => $this->getHeaders()
             ]);
         } catch (ClientException $exception) {
             if (str_contains($exception->getMessage(), 'Bad credentials')) {
@@ -71,7 +87,25 @@ class PrivateGitHubLoader implements Loader, HttpAwareLoader
             }
         }
 
-        return (string)$response->getBody();
+        $this->fileInformation = json_decode((string)$response->getBody(), true);
+
+        return base64_decode($this->fileInformation['content']);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function write(string $content)
+    {
+        $this->load();
+        $this->client->request('PUT', $this->getUrl(), [
+            'headers' => $this->getHeaders(),
+            RequestOptions::JSON => [
+                'message' => 'updated repository via Forrest CLI',
+                'content' => base64_encode($content),
+                'sha' => $this->fileInformation['sha']
+            ]
+        ]);
     }
 
     /**
