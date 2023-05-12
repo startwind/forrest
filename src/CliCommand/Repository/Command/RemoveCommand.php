@@ -5,6 +5,7 @@ namespace Startwind\Forrest\CliCommand\Repository\Command;
 use Startwind\Forrest\CliCommand\Repository\RepositoryCommand;
 use Startwind\Forrest\Util\OutputHelper;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -32,7 +33,10 @@ class RemoveCommand extends RepositoryCommand
 
         OutputHelper::writeWarningBox($output, 'Removing ' . $identifier . '. Please notice that this removing can not be undone.');
 
-        $remove = $this->getHelper('question')->ask($input, $output, new ConfirmationQuestion('  Are you sure you want to remove the command? (y/n) ', false));
+        /** @var QuestionHelper $questionHelper */
+        $questionHelper = $this->getHelper('question');
+
+        $remove = $questionHelper->ask($input, $output, new ConfirmationQuestion('  Are you sure you want to remove the command? (y/n) ', false));
 
         if (!$remove) {
             return Command::FAILURE;
