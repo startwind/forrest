@@ -58,6 +58,30 @@ forrest repository:create https://raw.githubusercontent.com/startwind/forrest-di
 
 Afterwards everybody who know the URL can use the commands. 
 
+## Private Remote Repository (GitHub)
+
+Most of the commands we use on a daily basis are not private, but in most jobs there are some that are. This is why we introduced the private repositories that are stored in the users GitHub account. Creating those repos it pretty straight forward. Just create a `private` GitHub repository and put a [repository yaml file](formats/yaml-format.md) in there. 
+
+Afterwards you have to add your repository to the Forrest config file which is located in your home dir. 
+
+```yaml
+# ~/.forrest/config.yml
+
+repositories:
+    gist-private:
+        adapter: yaml
+        name: 'private gist commands'
+        description: 'Commands for local usage'
+        config:
+            loader:
+                type: github
+                config:
+                    repository: forrest-directory
+                    user: startwind
+                    file: monitoring-repo.yml
+                    token: ghp_************************************
+```
+
 ## Piggyback Repository
 
 Forrest is trying to become the standard for easy management and use of command line tools. For this reason there are the piggyback repositories.  Each open source project has the possibility to put a file named `.forrest.yml` in its root directory. As soon as Forrest is started in the same directory, the commands located there are immediately added to the list of all commands. Nothing has to be installed.
