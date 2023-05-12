@@ -2,7 +2,8 @@
 
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/startwind/forrest/badges/quality-score.png?b=main&s=579fbe045436392cced69014e18889609b7d2b1a)](https://scrutinizer-ci.com/g/startwind/forrest/?branch=main)
 
-Forrest is an easier way to execute and share commands on your command line. They are easily parameterized and searchable by name, description, or command arguments.
+Forrest is an easier way to execute and share commands on your command line. They are easily parameterized and
+searchable by name, description, or command arguments.
 
 Often there are only a handful of commands that are used in everyday life, also many command line tools have a lot of
 possible options, but only a few of them are used. We have designed Forrest to store exactly these commands centrally
@@ -11,6 +12,7 @@ and thus simplify the use of the command line by a lot.
 ![commands:show](docs/images/commands_list.png)
 
 **Forrest is ...**
+
 - ... [awesome](docs/awesome.md)
 - ... [constantly in development](docs/changelog.md)
 - ... [secure by design](docs/secure-by-design.md)
@@ -27,7 +29,8 @@ wget https://github.com/startwind/forrest/releases/latest/download/forrest.phar
 chmod +x forrest.phar
 ```
 
-Most likely, you want to put the forrest.phar into a directory on your PATH, so you can simply call forrest from any directory (global install), using for example:
+Most likely, you want to put the forrest.phar into a directory on your PATH, so you can simply call forrest from any
+directory (global install), using for example:
 
 ```shell
 sudo mv forrest.phar /usr/local/bin/forrest
@@ -48,31 +51,28 @@ official repositories visit our [directory documentation](docs/directory.md).
 
 ## Commands
 
-### Commands
+Forrest can do a lot of things. For every major task there is a command that can be used.
 
-- `commands:list` - List all registered commands that can be run. [More information](docs/commands/commands_list.md)
-- `commands:run` - Run a single command.  [More information](docs/commands/commands_run.md)
-- `commands:show` - Show a single command with all its details and steps that will be executed.
-- `commands:history` - Show the recent commands that were executed.
+- [List of all Forrest CLI commands](docs/commands/commands.md).
 
-### Search Commands
+### Most important commands
 
-- `search:file` - Shows a list of commands that fit the given file. [More information](docs/commands/search_file.md)
-- `search:pattern` - Shows a list of commands that fit the given pattern.
-- `search:tool` - Shows a list of commands that fit the given tool.
+Like in all extensive tools there are only a few commands that you will use on a daily basis. This includes:
 
+```shell
+forrest run
+```
+Show all registered commands.
 
-### Repository Commands
+```shell
+forrest run forrest-linux:files:find:older
+```
+Run command with name `forrest-linux:files:find:older` which will search for files that a older than a given number of days.
 
-- `repository:list` - Shows a list of all registered repositories.
-- `repository:create` - Creates a new repository and adds it (optional).
-- `repository:register` - Add an existing repository to Forrest.
-- `repository:remove` - Remove a specified installed repository.
-
-### Directory Commands
-
-- `directory:list` - List all repositories from the Forrest directory.
-- `directory:install` - Install a specified repository from the Forrest directory.
+```shell
+forrest file WordPress.zip
+```
+Show all commands that are connected to a `zip` file or the `WordPress-zip` file. This would for example show the unzip command archives.
 
 ## How to support
 
@@ -87,7 +87,8 @@ extend the tool. But even without the experience can help. Here are several ways
 - **Pull requests** - If you are able to code, feel free to send us
   your [pull requests](https://github.com/startwind/forrest/pulls). If you have no idea for your own enhancements please
   have a look at our tracker. Easy to start tasks are marked
-  as ["good first issue"](https://github.com/startwind/forrest/issues?q=is%3Aissue+is%3Aopen+label%3A"good+first+issue"). Please also have a look at our [developer guidelines](docs/development/index.md).
+  as ["good first issue"](https://github.com/startwind/forrest/issues?q=is%3Aissue+is%3Aopen+label%3A"good+first+issue").
+  Please also have a look at our [developer guidelines](docs/development/index.md).
 
 
 - **Add repositories** - Everybody is an expert in something. That means you can add your own repositories about your
@@ -101,6 +102,6 @@ as well. Command line scripts.
 
 ## How to add your custom repository
 
-It is very easy and straight forward to create new repositories, that can be used with Forrest. 
+It is very easy and straight forward to create new repositories, that can be used with Forrest.
 
 - [How to create custom repository](docs/creating-repository.md)
