@@ -5,6 +5,7 @@ Forrest is constantly evolving. Sometimes so fast that you might not even get ar
 - **develop** 
   - fixed a bug with directory name that includes the word `function`.
   - Added `pattern` as shortcut for `search:pattern`. 
+  - Fixed sort order when listing commands
 
 
 - **1.1.0**

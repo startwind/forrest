@@ -35,15 +35,17 @@ class OutputHelper
      */
     public static function renderCommands(OutputInterface $output, InputInterface $input, QuestionHelper $questionHelper, array $commands, ?string $repoIdentifier = null, int $maxLength = -1, $askForCommand = false): bool|Command
     {
-        if ($maxLength == -1) {
-            foreach ($commands as $commandId => $command) {
-                $command->setFullyQualifiedIdentifier($commandId);
-                if ($repoIdentifier) {
-                    $commandIdentifier = Repository::createUniqueCommandName($repoIdentifier, $command);
-                } else {
-                    $commandIdentifier = $commandId;
-                }
-                $maxLength = max($maxLength, strlen($commandIdentifier));
+        $identifierMaxLength = $maxLength;
+
+        foreach ($commands as $commandId => $command) {
+            if ($repoIdentifier) {
+                $commandIdentifier = Repository::createUniqueCommandName($repoIdentifier, $command);
+            } else {
+                $commandIdentifier = $commandId;
+            }
+            $command->setFullyQualifiedIdentifier($commandIdentifier);
+            if ($maxLength == -1) {
+                $identifierMaxLength = max($identifierMaxLength, strlen($commandIdentifier));
             }
         }
 
@@ -60,7 +62,8 @@ class OutputHelper
             } else {
                 $commandIdentifier = $commandId;
             }
-            $spaces = str_repeat(' ', $maxLength - strlen($commandIdentifier) + 2);
+
+            $spaces = str_repeat(' ', $identifierMaxLength - strlen($commandIdentifier) + 2);
 
             if ($askForCommand) {
                 $numberPrefix = '  ' . $number;
