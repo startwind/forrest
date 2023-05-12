@@ -18,6 +18,7 @@ class ToolCommand extends SearchCommand
     protected function configure(): void
     {
         $this->addArgument('tool', InputArgument::REQUIRED, 'The tool name you want to search for.');
+        $this->setAliases(['tool']);
     }
 
     protected function doExecute(InputInterface $input, OutputInterface $output): int

@@ -33,11 +33,11 @@ class PatternCommand extends SearchCommand
         $commands = $this->search(function (Command $command, $config) {
             $pattern = $config['pattern'];
 
-            if (str_contains($command->getName(), $pattern)) {
+            if (str_contains(strtolower($command->getName()), strtolower($pattern))) {
                 return true;
             }
 
-            if (str_contains($command->getDescription(), $pattern)) {
+            if (str_contains(strtolower($command->getDescription()), strtolower($pattern))) {
                 return true;
             }
 
