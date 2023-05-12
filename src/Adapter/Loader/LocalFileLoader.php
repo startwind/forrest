@@ -30,10 +30,30 @@ class LocalFileLoader implements Loader, WritableLoader
         return new self($config['file']);
     }
 
+    /**
+     * @inheritDoc
+     */
     public function addCommand(string $commandName, array $command): void
     {
         $config = Yaml::parse(file_get_contents($this->filename));
         $config[YamlAdapter::YAML_FIELD_COMMANDS][$commandName] = $command;
         file_put_contents($this->filename, Yaml::dump($config, 2));
     }
+
+    /**
+     * @inheritDoc
+     */
+    public function removeCommand(string $commandName): void
+    {
+        $config = Yaml::parse($this->filename);
+
+        foreach ($config[YamlAdapter::YAML_FIELD_COMMANDS] as $key => $commandConfig) {
+            if ($commandConfig[YamlAdapter::YAML_FIELD_NAME] == $commandName) {
+                unset($config[YamlAdapter::YAML_FIELD_COMMANDS][$key]);
+            }
+        }
+
+        file_put_contents($this->filename, Yaml::dump($config, 2));
+    }
+
 }

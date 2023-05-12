@@ -175,19 +175,11 @@ class YamlAdapter extends BasicAdapter implements ClientAwareAdapter
      */
     public function removeCommand(string $commandName): void
     {
-        if (!$this->isEditable()) {
+        if (!($this->loader instanceof WritableLoader)) {
             throw new \RuntimeException('This repository is not editable.');
         }
 
-        $config = Yaml::parse(file_get_contents($this->yamlFile));
-
-        foreach ($config[self::YAML_FIELD_COMMANDS] as $key => $commandConfig) {
-            if ($commandConfig[self::YAML_FIELD_NAME] == $commandName) {
-                unset($config[self::YAML_FIELD_COMMANDS][$key]);
-            }
-        }
-
-        file_put_contents($this->yamlFile, Yaml::dump($config, 2));
+        $this->loader->removeCommand($commandName);
     }
 
     /**
