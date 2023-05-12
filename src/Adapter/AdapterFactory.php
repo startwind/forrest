@@ -10,6 +10,7 @@ class AdapterFactory
     private static array $adapters = [
         GistAdapter::TYPE => GistAdapter::class,
         YamlAdapter::TYPE => YamlAdapter::class,
+        PrivateGistAdapter::TYPE => PrivateGistAdapter::class
     ];
 
     public static function getAdapter(string $adapterType, array $config, Client $client): Adapter
@@ -30,3 +31,4 @@ class AdapterFactory
         return $adapter;
     }
 }
+

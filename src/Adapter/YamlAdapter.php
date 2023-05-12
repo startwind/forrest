@@ -7,6 +7,12 @@ use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\ServerException;
 use Startwind\Forrest\Adapter\Exception\RepositoryNotFoundException;
 use Startwind\Forrest\Adapter\Exception\UnableToFetchRepositoryException;
+use Startwind\Forrest\Adapter\Loader\HttpAwareLoader;
+use Startwind\Forrest\Adapter\Loader\HttpFileLoader;
+use Startwind\Forrest\Adapter\Loader\Loader;
+use Startwind\Forrest\Adapter\Loader\LoaderFactory;
+use Startwind\Forrest\Adapter\Loader\LocalFileLoader;
+use Startwind\Forrest\Adapter\Loader\PrivateGitHubLoader;
 use Startwind\Forrest\Command\Command;
 use Startwind\Forrest\Command\Parameters\ParameterFactory;
 use Symfony\Component\Yaml\Yaml;
@@ -24,8 +30,9 @@ class YamlAdapter extends BasicAdapter implements ClientAwareAdapter
 
     private Client $client;
 
-    public function __construct(private readonly string $yamlFile)
+    public function __construct(private readonly Loader $loader)
     {
+
     }
 
     /**
@@ -38,26 +45,10 @@ class YamlAdapter extends BasicAdapter implements ClientAwareAdapter
 
     private function getConfig(): array
     {
-        if (str_contains($this->yamlFile, '://')) {
-            try {
-                $response = $this->client->get($this->yamlFile);
-            } catch (ClientException $exception) {
-                if ($exception->getResponse()->getStatusCode() === 404) {
-                    throw new RepositoryNotFoundException("The given repository can't be found.");
-                } else {
-                    throw $exception;
-                }
-            } catch (ServerException $exception) {
-                throw new UnableToFetchRepositoryException('Unable to fetch data from repository due to server errors.');
-            }
-            $content = (string)$response->getBody();
-        } else {
-            if (!file_exists($this->yamlFile)) {
-                throw new RepositoryNotFoundException('Unable to open ' . $this->yamlFile . '. File not found.');
-            }
-            $content = file_get_contents($this->yamlFile);
+        $content = $this->loader->load();
+        if (!$content) {
+            return [];
         }
-
         return Yaml::parse($content);
     }
 
@@ -136,7 +127,19 @@ class YamlAdapter extends BasicAdapter implements ClientAwareAdapter
      */
     public static function fromConfigArray(array $config): Adapter
     {
-        return new self($config['file']);
+        if (array_key_exists('file', $config)) {
+            $yamlFile = $config['file'];
+            if (str_contains($yamlFile, '://')) {
+                $loader = new HttpFileLoader($yamlFile);
+            } else {
+                $loader = new LocalFileLoader($yamlFile);
+            }
+        } elseif (array_key_exists('loader', $config)) {
+            $loader = LoaderFactory::create($config['loader']);
+        } else {
+            throw new \RuntimeException('Configuration not applicable.');
+        }
+        return new self($loader);
     }
 
     /**
@@ -206,6 +209,9 @@ class YamlAdapter extends BasicAdapter implements ClientAwareAdapter
      */
     public function setClient(Client $client): void
     {
+        if ($this->loader instanceof HttpAwareLoader) {
+            $this->loader->setClient($client);
+        }
         $this->client = $client;
     }
 }
