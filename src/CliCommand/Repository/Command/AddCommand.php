@@ -59,13 +59,14 @@ class AddCommand extends RepositoryCommand
         $questionHelper = $this->getHelper('question');
 
         $repoId = $this->chooseRepository($output, $input, $questionHelper, $count);
+
         $repo = $editableRepositories[$repoId];
 
         $output->writeln('');
 
-        $commandName = $questionHelper->ask($input, $output, new Question('Command name [example: "files:find"]: '));
-        $commandDescription = $questionHelper->ask($input, $output, new Question('Command description: '));
-        $commandPrompt = $questionHelper->ask($input, $output, new Question('Command prompt: '));
+        $commandName = $this->askQuestion('Command name [example: "files:find"]: ');
+        $commandDescription = $this->askQuestion('Command description: ');
+        $commandPrompt = $this->askQuestion('Command prompt: ');
 
         $repo->addCommand(new Command($commandName, $commandDescription, $commandPrompt));
 

@@ -16,8 +16,10 @@ use Startwind\Forrest\Repository\Loader\YamlLoader;
 use Startwind\Forrest\Repository\RepositoryCollection;
 use Startwind\Forrest\Util\OutputHelper;
 use Symfony\Component\Console\Command\Command as SymfonyCommand;
+use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Question\Question;
 
 abstract class ForrestCommand extends SymfonyCommand
 {
@@ -211,5 +213,19 @@ abstract class ForrestCommand extends SymfonyCommand
     protected function getRepositoryCollection(): RepositoryCollection
     {
         return $this->repositoryCollection;
+    }
+
+    protected function askQuestion($questionToAsk, bool $notEmpty = true): string
+    {
+        /** @var QuestionHelper $questionHelper */
+        $questionHelper = $this->getHelper('question');
+        $answer = $questionHelper->ask($this->getInput(), $this->getOutput(), new Question($questionToAsk));
+
+        if ($notEmpty && !$answer) {
+            $this->getOutput()->writeln('The value must not be empty.');
+            return $this->askQuestion($questionToAsk, $notEmpty);
+        }
+
+        return $answer;
     }
 }
