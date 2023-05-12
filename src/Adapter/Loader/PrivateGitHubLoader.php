@@ -4,7 +4,6 @@ namespace Startwind\Forrest\Adapter\Loader;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ClientException;
-
 use GuzzleHttp\RequestOptions;
 
 class PrivateGitHubLoader implements Loader, HttpAwareLoader, WritableLoader
@@ -76,10 +75,7 @@ class PrivateGitHubLoader implements Loader, HttpAwareLoader, WritableLoader
 
         try {
             $response = $this->client->request('GET', $this->getUrl(), [
-                'headers' => [
-                    'Authorization' => ' token ' . $this->token,
-                    'Accept' => 'application/vnd.github.v3.raw'
-                ]
+                'headers' => $this->getHeaders()
             ]);
         } catch (ClientException $exception) {
             if (str_contains($exception->getMessage(), 'Bad credentials')) {
@@ -91,11 +87,7 @@ class PrivateGitHubLoader implements Loader, HttpAwareLoader, WritableLoader
             }
         }
 
-        $gitHubContent = (string)$response->getBody();
-
-        var_dump($gitHubContent);
-
-        $this->fileInformation = json_decode($gitHubContent, true);
+        $this->fileInformation = json_decode((string)$response->getBody(), true);
 
         return base64_decode($this->fileInformation['content']);
     }
