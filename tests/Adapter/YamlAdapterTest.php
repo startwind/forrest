@@ -7,6 +7,7 @@ namespace Tests\Startwind\Forrest\Adapter;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
+use Startwind\Forrest\Adapter\Loader\LocalFileLoader;
 use Startwind\Forrest\Adapter\YamlAdapter;
 
 final class YamlAdapterTest extends TestCase
@@ -15,7 +16,7 @@ final class YamlAdapterTest extends TestCase
 
     public function setup(): void
     {
-        $this->subject = new YamlAdapter('file.yaml');
+        $this->subject = new YamlAdapter(new LocalFileLoader('file.yaml'));
     }
 
     public function testGetType(): void
