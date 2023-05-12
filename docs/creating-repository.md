@@ -70,8 +70,8 @@ Afterwards you have to add your repository to the Forrest config file which is l
 repositories:
     gist-private:
         adapter: yaml
-        name: 'private gist commands'
-        description: 'Commands for local usage'
+        name: 'private commands'
+        description: 'Commands that contain private/secret information'
         config:
             loader:
                 type: github
