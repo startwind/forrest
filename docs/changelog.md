@@ -3,6 +3,7 @@
 Forrest is constantly evolving. Sometimes so fast that you might not even get around to trying out the new features. For this reason, we have introduced a changelog.
 
 - **develop** 
+  - Repositories can now be on private GitHub repositories. This way it is easier to store internal/secret commands.  
   - fixed a bug with directory name that includes the word `function`.
   - Added `pattern` as shortcut for `search:pattern` and `tool` for `search:tool`. 
   - Fixed sort order when listing commands

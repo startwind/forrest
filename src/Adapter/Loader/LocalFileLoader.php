@@ -24,7 +24,7 @@ class LocalFileLoader implements Loader
      */
     public static function fromConfigArray(array $config): Loader
     {
-        return self($config['file']);
+        return new self($config['file']);
     }
 
     /**

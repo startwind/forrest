@@ -2,6 +2,7 @@
 
 namespace Startwind\Forrest\Repository\Loader;
 
+use Startwind\Forrest\Adapter\Loader\LocalFileLoader;
 use Startwind\Forrest\Adapter\YamlAdapter;
 use Startwind\Forrest\Repository\Repository;
 use Startwind\Forrest\Repository\RepositoryCollection;
@@ -66,7 +67,7 @@ class LocalRepositoryLoader implements RepositoryLoader
      */
     public function enrich(RepositoryCollection $repositoryCollection)
     {
-        $adapter = new YamlAdapter($this->localCommandsFile);
+        $adapter = new YamlAdapter(new LocalFileLoader($this->localCommandsFile));
 
         $repository = new Repository($adapter, $this->name, $this->description, true);
 

@@ -50,7 +50,7 @@ class HttpFileLoader implements Loader, HttpAwareLoader
      */
     public static function fromConfigArray(array $config): Loader
     {
-        return self($config['file']);
+        return new self($config['file']);
     }
 
     /**

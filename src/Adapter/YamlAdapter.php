@@ -28,8 +28,6 @@ class YamlAdapter extends BasicAdapter implements ClientAwareAdapter
     public const YAML_FIELD_RUNNABLE = 'runnable';
     public const YAML_FIELD_PARAMETERS = 'parameters';
 
-    private Client $client;
-
     public function __construct(private readonly Loader $loader)
     {
 
@@ -67,10 +65,10 @@ class YamlAdapter extends BasicAdapter implements ClientAwareAdapter
 
         foreach ($config[self::YAML_FIELD_COMMANDS] as $identifier => $commandConfig) {
             if (!array_key_exists(self::YAML_FIELD_PROMPT, $commandConfig)) {
-                throw new \RuntimeException('The mandatory field ' . self::YAML_FIELD_PROMPT . ' is not set for identifier "' . $identifier . '" (file: ' . $this->yamlFile . ').');
+                throw new \RuntimeException('The mandatory field ' . self::YAML_FIELD_PROMPT . ' is not set for identifier "' . $identifier  . '".');
             }
             if (!array_key_exists(self::YAML_FIELD_DESCRIPTION, $commandConfig)) {
-                throw new \RuntimeException('The mandatory field ' . self::YAML_FIELD_DESCRIPTION . ' is not set for identifier "' . $identifier . '" (file: ' . $this->yamlFile . ').');
+                throw new \RuntimeException('The mandatory field ' . self::YAML_FIELD_DESCRIPTION . ' is not set for identifier "' . $identifier . '".');
             }
 
             $prompt = $commandConfig[self::YAML_FIELD_PROMPT];
@@ -147,7 +145,7 @@ class YamlAdapter extends BasicAdapter implements ClientAwareAdapter
      */
     public function isEditable(): bool
     {
-        return !str_contains($this->yamlFile, '://');
+        return $this->loader->isWriteable();
     }
 
     /**
@@ -212,6 +210,5 @@ class YamlAdapter extends BasicAdapter implements ClientAwareAdapter
         if ($this->loader instanceof HttpAwareLoader) {
             $this->loader->setClient($client);
         }
-        $this->client = $client;
     }
 }

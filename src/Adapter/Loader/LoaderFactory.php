@@ -14,7 +14,7 @@ class LoaderFactory
     public static function create($config): Loader
     {
         if (!array_key_exists($config['type'], self::$loaders)) {
-            throw new \RuntimeException('No YAML loader found with the identifier "' . $config['loader']['type'] . '". Known types are ' . explode(array_keys(self::$loaders)));
+            throw new \RuntimeException('No YAML loader found with the identifier "' . $config['loader']['type'] . '". Known types are ' . implode(', ', array_keys(self::$loaders)) . '.');
         }
 
         $loaderClass = self::$loaders[$config['type']];
