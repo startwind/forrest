@@ -2,7 +2,10 @@
 
 namespace Startwind\Forrest\Adapter\Loader;
 
-class LocalFileLoader implements Loader
+use Startwind\Forrest\Adapter\YamlAdapter;
+use Symfony\Component\Yaml\Yaml;
+
+class LocalFileLoader implements Loader, WritableLoader
 {
     private string $filename;
 
@@ -27,11 +30,10 @@ class LocalFileLoader implements Loader
         return new self($config['file']);
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function isWriteable(): bool
+    public function addCommand(string $commandName, array $command): void
     {
-        return true;
+        $config = Yaml::parse(file_get_contents($this->filename));
+        $config[YamlAdapter::YAML_FIELD_COMMANDS][$commandName] = $command;
+        file_put_contents($this->filename, Yaml::dump($config, 2));
     }
 }

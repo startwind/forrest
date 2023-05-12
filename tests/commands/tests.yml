@@ -1,23 +1,9 @@
 repository:
-  name: 'test commands'
-  description: 'For tests'
-  identifier: forrest-dev-tests
+    name: 'test commands'
+    description: 'For tests'
+    identifier: forrest-dev-tests
 commands:
-
-  test-yaml-default-fromEnv:
-    name: 'test:yaml:default:fromEnv'
-    description: 'Use an env variable as default value'
-    prompt: 'ls -lah ${user_name}'
-    parameters:
-      user_name:
-        default: ${env(LOGNAME)}
-
-  test-tool-not-exists:
-    name: 'test:tool:not-exists'
-    description: 'Run a tool that is not installed on the machine'
-    prompt: 'sls -lah'
-
-  test_date_function:
-    name: 'test:command:with-date'
-    description: 'Use a date in the prompt'
-    prompt: echo ${date(Y-m-d)}
+    test-yaml-default-fromEnv: { name: 'test:yaml:default:fromEnv', description: 'Use an env variable as default value', prompt: 'ls -lah ${user_name}', parameters: { user_name: { default: '${env(LOGNAME)}' } } }
+    test-tool-not-exists: { name: 'test:tool:not-exists', description: 'Run a tool that is not installed on the machine', prompt: 'sls -lah' }
+    test_date_function: { name: 'test:command:with-date', description: 'Use a date in the prompt', prompt: 'echo ${date(Y-m-d)}' }
+    'nils:langner': { name: 'nils:langner', description: sjfnsg, prompt: 'ls -lah' }

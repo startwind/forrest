@@ -3,16 +3,12 @@
 namespace Startwind\Forrest\Adapter;
 
 use GuzzleHttp\Client;
-use GuzzleHttp\Exception\ClientException;
-use GuzzleHttp\Exception\ServerException;
-use Startwind\Forrest\Adapter\Exception\RepositoryNotFoundException;
-use Startwind\Forrest\Adapter\Exception\UnableToFetchRepositoryException;
 use Startwind\Forrest\Adapter\Loader\HttpAwareLoader;
 use Startwind\Forrest\Adapter\Loader\HttpFileLoader;
 use Startwind\Forrest\Adapter\Loader\Loader;
 use Startwind\Forrest\Adapter\Loader\LoaderFactory;
 use Startwind\Forrest\Adapter\Loader\LocalFileLoader;
-use Startwind\Forrest\Adapter\Loader\PrivateGitHubLoader;
+use Startwind\Forrest\Adapter\Loader\WritableLoader;
 use Startwind\Forrest\Command\Command;
 use Startwind\Forrest\Command\Parameters\ParameterFactory;
 use Symfony\Component\Yaml\Yaml;
@@ -65,7 +61,7 @@ class YamlAdapter extends BasicAdapter implements ClientAwareAdapter
 
         foreach ($config[self::YAML_FIELD_COMMANDS] as $identifier => $commandConfig) {
             if (!array_key_exists(self::YAML_FIELD_PROMPT, $commandConfig)) {
-                throw new \RuntimeException('The mandatory field ' . self::YAML_FIELD_PROMPT . ' is not set for identifier "' . $identifier  . '".');
+                throw new \RuntimeException('The mandatory field ' . self::YAML_FIELD_PROMPT . ' is not set for identifier "' . $identifier . '".');
             }
             if (!array_key_exists(self::YAML_FIELD_DESCRIPTION, $commandConfig)) {
                 throw new \RuntimeException('The mandatory field ' . self::YAML_FIELD_DESCRIPTION . ' is not set for identifier "' . $identifier . '".');
@@ -145,7 +141,7 @@ class YamlAdapter extends BasicAdapter implements ClientAwareAdapter
      */
     public function isEditable(): bool
     {
-        return $this->loader->isWriteable();
+        return $this->loader instanceof WritableLoader;
     }
 
     /**
@@ -153,11 +149,11 @@ class YamlAdapter extends BasicAdapter implements ClientAwareAdapter
      */
     public function addCommand(Command $command): void
     {
-        if (!$this->isEditable()) {
-            throw new \RuntimeException('This repository is not editable.');
+        if (!$this->loader instanceof WritableLoader) {
+            throw new \RuntimeException('This repository is not writable.');
         }
 
-        $config = Yaml::parse(file_get_contents($this->yamlFile));
+        $config = Yaml::parse($this->loader->load());
 
         foreach ($config[self::YAML_FIELD_COMMANDS] as $commandConfig) {
             if ($commandConfig[self::YAML_FIELD_NAME] == $command->getName()) {
@@ -165,13 +161,13 @@ class YamlAdapter extends BasicAdapter implements ClientAwareAdapter
             }
         }
 
-        $config[self::YAML_FIELD_COMMANDS][$command->getName()] = [
-            self::YAML_FIELD_NAME => $this->convertNameToIdentifier($command->getName()),
+        $commandArray = [
+            self::YAML_FIELD_NAME => $command->getName(),
             self::YAML_FIELD_DESCRIPTION => $command->getDescription(),
             self::YAML_FIELD_PROMPT => $command->getPrompt(),
         ];
 
-        file_put_contents($this->yamlFile, Yaml::dump($config, 2));
+        $this->loader->addCommand($this->convertNameToIdentifier($command->getName()), $commandArray);
     }
 
     /**

@@ -81,12 +81,4 @@ class PrivateGitHubLoader implements Loader, HttpAwareLoader
     {
         $this->client = $client;
     }
-
-    /**
-     * @inheritDoc
-     */
-    public function isWriteable(): bool
-    {
-        return false;
-    }
 }

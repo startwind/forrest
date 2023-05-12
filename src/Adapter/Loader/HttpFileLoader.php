@@ -52,12 +52,4 @@ class HttpFileLoader implements Loader, HttpAwareLoader
     {
         return new self($config['file']);
     }
-
-    /**
-     * @inheritDoc
-     */
-    public function isWriteable(): bool
-    {
-        return false;
-    }
 }

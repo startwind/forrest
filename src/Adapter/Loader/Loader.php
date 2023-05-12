@@ -13,11 +13,4 @@ interface Loader
      * Create a loader via a config array.
      */
     public static function fromConfigArray(array $config): Loader;
-
-    /**
-     * Return true if the loader is also able to write date
-     *
-     * @todo could be done via an Interface
-     */
-    public function isWriteable(): bool;
 }
