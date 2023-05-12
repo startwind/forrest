@@ -6,6 +6,9 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\RequestOptions;
 
+/**
+ * @see https://docs.github.com/de/rest/repos/contents?apiVersion=2022-11-28#create-a-file
+ */
 class PrivateGitHubLoader implements Loader, HttpAwareLoader, WritableLoader
 {
     private const GIT_HUB_API_ENDPOINT = 'https://api.github.com/repos/%s/%s/contents/%s';
