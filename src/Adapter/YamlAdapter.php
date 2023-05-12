@@ -167,7 +167,11 @@ class YamlAdapter extends BasicAdapter implements ClientAwareAdapter
             self::YAML_FIELD_PROMPT => $command->getPrompt(),
         ];
 
-        $this->loader->addCommand($this->convertNameToIdentifier($command->getName()), $commandArray);
+        $commandName = $this->convertNameToIdentifier($command->getName());
+
+        $config[YamlAdapter::YAML_FIELD_COMMANDS][$commandName] = $commandArray;
+
+        $this->loader->write(Yaml::dump($config, 2));
     }
 
     /**
@@ -179,7 +183,15 @@ class YamlAdapter extends BasicAdapter implements ClientAwareAdapter
             throw new \RuntimeException('This repository is not editable.');
         }
 
-        $this->loader->removeCommand($commandName);
+        $config = Yaml::parse($this->loader->load());
+
+        foreach ($config[self::YAML_FIELD_COMMANDS] as $key => $commandConfig) {
+            if ($commandConfig[self::YAML_FIELD_NAME] == $commandName) {
+                unset($config[self::YAML_FIELD_COMMANDS][$key]);
+            }
+        }
+
+        $this->loader->write(Yaml::dump($config, 2));
     }
 
     /**
