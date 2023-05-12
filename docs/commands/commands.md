@@ -21,6 +21,10 @@
 - `repository:register` - Add an existing repository to Forrest.
 - `repository:remove` - Remove a specified installed repository.
 
+
+- `repository:command:add` - Add a new command to the given repository.
+- `repository:command:remoce` - Remove a command from the given repository. 
+
 ## Directory Commands
 
 - `directory:list` - List all repositories from the Forrest directory.
