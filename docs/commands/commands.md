@@ -2,14 +2,14 @@
 
 ## Commands
 
-- `commands:list` - List all registered commands that can be run. [More information](docs/commands/commands_list.md)
-- `commands:run` - Run a single command.  [More information](docs/commands/commands_run.md)
+- `commands:list` - List all registered commands that can be run. [More information](commands_list.md)
+- `commands:run` - Run a single command.  [More information](commands_run.md)
 - `commands:show` - Show a single command with all its details and steps that will be executed.
 - `commands:history` - Show the recent commands that were executed.
 
 ## Search Commands
 
-- `search:file` - Shows a list of commands that fit the given file. [More information](docs/commands/search_file.md)
+- `search:file` - Shows a list of commands that fit the given file. [More information](search_file.md)
 - `search:pattern` - Shows a list of commands that fit the given pattern.
 - `search:tool` - Shows a list of commands that fit the given tool.
 
@@ -20,6 +20,7 @@
 - `repository:create` - Creates a new repository and adds it (optional).
 - `repository:register` - Add an existing repository to Forrest.
 - `repository:remove` - Remove a specified installed repository.
+
 
 
 - `repository:command:add` - Add a new command to the given repository.
