@@ -56,6 +56,8 @@ class OutputHelper
         $number = 1;
         $numberPrefix = '';
 
+        $commandIdentifier = '';
+
         foreach ($commands as $commandId => $command) {
             if ($repoIdentifier) {
                 $commandIdentifier = Repository::createUniqueCommandName($repoIdentifier, $command);
@@ -73,7 +75,7 @@ class OutputHelper
         }
 
         if ($askForCommand) {
-            return self::askForCommand($output, $input, $questionHelper, $commands);
+            return self::askForCommand($output, $input, $questionHelper, $commands, $commandIdentifier);
         }
 
         return false;
@@ -82,14 +84,14 @@ class OutputHelper
     /**
      * @param Command[] $commands
      */
-    private static function askForCommand(OutputInterface $output, InputInterface $input, QuestionHelper $questionHelper, array $commands): bool|Command
+    private static function askForCommand(OutputInterface $output, InputInterface $input, QuestionHelper $questionHelper, array $commands, string $commandIdentifier): bool|Command
     {
         $output->writeln('');
 
         if (count($commands) == 1) {
             $commandIdentifier = array_key_first($commands);
             $command = array_pop($commands);
-            if (!$questionHelper->ask($input, $output, new ConfirmationQuestion('  Do you want to run "' . $command->getName() . '" (y/n)? ', false))) {
+            if (!$questionHelper->ask($input, $output, new ConfirmationQuestion('  Do you want to run "' . $commandIdentifier . '" (y/n)? ', false))) {
                 return false;
             }
         } else {
@@ -101,6 +103,7 @@ class OutputHelper
             $commandIdentifier = array_keys($commands)[$commandNumber - 1];
             $command = $commands[$commandIdentifier];
         }
+
         $command->setFullyQualifiedIdentifier($commandIdentifier);
 
         return $command;

@@ -10,8 +10,6 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Question\ConfirmationQuestion;
-use Symfony\Component\Console\Question\Question;
 
 class FileCommand extends SearchCommand
 {
@@ -72,8 +70,12 @@ class FileCommand extends SearchCommand
             $fileCommands,
             null,
             -1,
-            count($fileCommands) > 1
+            true
         );
+
+        if ($command === false) {
+            return SymfonyCommand::FAILURE;
+        }
 
         $output->writeln('');
 
