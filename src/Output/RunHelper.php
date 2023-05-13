@@ -80,7 +80,7 @@ class RunHelper
     /**
      * Run every single command in the executable command.
      */
-    public function executeCommand(string $prompt): void
+    public function executeCommand(Command $actualCommand, string $prompt): void
     {
         $commands = CommandRunner::stringToMultilinePrompt($prompt);
 
@@ -88,6 +88,7 @@ class RunHelper
 
         foreach ($commands as $command) {
             $result = $commandRunner->execute($command);
+
             $execOutput = $result->getOutput();
 
             if ($result->getResultCode() != SymfonyCommand::SUCCESS) {
@@ -99,7 +100,7 @@ class RunHelper
             } else {
                 if (count($execOutput) > 0) {
                     OutputHelper::writeInfoBox($this->output, 'Output: ');
-                    $this->output->writeln($execOutput);
+                    $this->output->writeln($actualCommand->formatOutput(implode("\n", $execOutput)));
                 } else {
                     OutputHelper::writeInfoBox($this->output, 'No output from command');
                 }

@@ -24,6 +24,8 @@ class YamlAdapter extends BasicAdapter implements ClientAwareAdapter
     public const YAML_FIELD_RUNNABLE = 'runnable';
     public const YAML_FIELD_PARAMETERS = 'parameters';
 
+    public const YAML_FIELD_OUTPUT = 'output-format';
+
     public function __construct(private readonly Loader $loader)
     {
 
@@ -70,6 +72,10 @@ class YamlAdapter extends BasicAdapter implements ClientAwareAdapter
             $prompt = $commandConfig[self::YAML_FIELD_PROMPT];
 
             $command = new Command($commandConfig[self::YAML_FIELD_NAME], $commandConfig[self::YAML_FIELD_DESCRIPTION], $prompt);
+
+            if (array_key_exists(self::YAML_FIELD_OUTPUT, $commandConfig)) {
+                $command->setOutputFormat($commandConfig[self::YAML_FIELD_OUTPUT]);
+            }
 
             if (array_key_exists(self::YAML_FIELD_PARAMETERS, $commandConfig)) {
                 $parameterConfig = $commandConfig[self::YAML_FIELD_PARAMETERS];

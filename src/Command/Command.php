@@ -15,6 +15,13 @@ class Command
 
     private string $fullyQualifiedIdentifier = '';
 
+    private string $outputFormat = '';
+
+    public function setOutputFormat(string $output): void
+    {
+        $this->outputFormat = $output;
+    }
+
     /**
      * @var Parameter[]
      */
@@ -136,5 +143,14 @@ class Command
     public function setFullyQualifiedIdentifier(string $fullyQualifiedIdentifier): void
     {
         $this->fullyQualifiedIdentifier = $fullyQualifiedIdentifier;
+    }
+
+    public function formatOutput(string $output): string
+    {
+        if (!$this->outputFormat) {
+            return $output;
+        }
+
+        return (sprintf($this->outputFormat, trim($output)));
     }
 }

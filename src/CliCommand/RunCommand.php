@@ -43,7 +43,7 @@ abstract class RunCommand extends ForrestCommand
         $this->getOutput()->writeln('');
 
         try {
-            $runHelper->executeCommand($prompt);
+            $runHelper->executeCommand($command, $prompt);
         } catch (ToolNotFoundException $exception) {
             $this->renderErrorBox($exception->getMessage());
             return SymfonyCommand::FAILURE;
