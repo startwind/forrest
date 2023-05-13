@@ -45,6 +45,7 @@ class YamlAdapter extends BasicAdapter implements ClientAwareAdapter
         if (!$content) {
             return [];
         }
+
         return Yaml::parse($content);
     }
 
