@@ -1,5 +1,5 @@
-<img src="docs/images/logo.png#gh-light-mode-only" width="250">
-<img src="docs/images/logo-darkmode.png#gh-dark-mode-only" width="250">
+<img src="docs/images/logo.png#gh-light-mode-only" width="300">
+<img src="docs/images/logo-darkmode.png#gh-dark-mode-only" width="300">
 
 
 # Forrest - The package manager for command line scripts
