@@ -1,3 +1,6 @@
+![Forrest logo](../docs/images/logo.png#gh-light-mode-only)
+![Forrest logo](../docs/images/logo-darkmode.png#gh-dark-mode-only)
+
 # Forrest is awesome
 
 Forrest seems to be a complex tool and very technical. That is wrong. But the easiest way to explain the awesomeness of this tool is by providing some real world and every day examples. 
