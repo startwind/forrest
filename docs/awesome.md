@@ -1,5 +1,5 @@
-![Forrest logo](../docs/images/logo.png#gh-light-mode-only)
-![Forrest logo](../docs/images/logo-darkmode.png#gh-dark-mode-only)
+<img src="../docs/images/logo.png#gh-light-mode-only" width="300">
+<img src="../docs/images/logo-darkmode.png#gh-dark-mode-only" width="300">
 
 # Forrest is awesome
 
