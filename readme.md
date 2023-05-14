@@ -1,5 +1,7 @@
-![Forrest logo](docs/images/logo.png#gh-light-mode-only | width=100)
+![Forrest logo](docs/images/logo.png#gh-light-mode-only)
 ![Forrest logo](docs/images/logo-darkmode.png#gh-dark-mode-only | width=100)
+
+<img src="docs/images/logo.png#gh-light-mode-only" width="100">
 
 
 # Forrest - The package manager for command line scripts
