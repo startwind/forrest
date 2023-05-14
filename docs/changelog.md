@@ -3,7 +3,7 @@
 Forrest is constantly evolving. Sometimes so fast that you might not even get around to trying out the new features. For this reason, we have introduced a changelog.
 
 - **develop**
-  - A command can define an `output-format`. This is basically a `sprintf` command for the commands output.
+  - A command can define an `output-format`. This is basically a `sprintf` command for the commands output. [read more](formats/yaml-format.md#output-format)
 
 
 - **1.2.0** 

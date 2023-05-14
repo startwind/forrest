@@ -60,6 +60,22 @@ commands:
   - **name** - The name of the parameter.
   - **description** - The description of the parameter. Will be shown when the user has to enter the value.
   - **default** - The default value for this parameter.
+  - **output-format** -  This is an easy way to enrich the output. This is valuable for commands that only return a single output string like `wc -l` for example. [read more](#output-format)
   - **type** - The type of the value. This will help validating the parameter and will provide new functionality based on the type.
   - **file-formats** - The file format is only relevant if the type is `forrest_filename`. This field is also used for the reverse command search via `search:file`. If the command takes a directory as parameter use `directory` as filetype.
   - **enum** You can define a list of values the user has to chose one from.
+
+## Parameter
+
+### `output-format`
+
+This is an easy way to enrich the output. This is valuable for commands that only return a single output string and is *optional*. Internally we use [`sprintf`](https://www.php.net/manual/en/function.sprintf.php) for the formatting. 
+
+#### Example
+```yaml
+'file:length':
+    name: 'file:length'
+    description: 'Return the number of lines of a given file.'
+    output-format: The file has %s lines.
+    prompt: 'cat ${filename} | wc -l'
+```
