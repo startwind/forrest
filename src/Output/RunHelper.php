@@ -3,6 +3,7 @@
 namespace Startwind\Forrest\Output;
 
 use Startwind\Forrest\Command\Command;
+use Startwind\Forrest\Command\Prompt;
 use Startwind\Forrest\Config\ConfigFileHandler;
 use Startwind\Forrest\History\HistoryHandler;
 use Startwind\Forrest\Runner\CommandRunner;
@@ -80,14 +81,14 @@ class RunHelper
     /**
      * Run every single command in the executable command.
      */
-    public function executeCommand(Command $actualCommand, string $prompt): void
+    public function executeCommand(Command $actualCommand, Prompt $prompt): void
     {
-        $commands = CommandRunner::stringToMultilinePrompt($prompt);
+        $commands = CommandRunner::stringToMultilinePrompt($prompt->getFinalPrompt());
 
         $commandRunner = new CommandRunner($this->historyHandler);
 
         foreach ($commands as $command) {
-            $result = $commandRunner->execute($command);
+            $result = $commandRunner->execute($command, true, $prompt->isStorable());
 
             $execOutput = $result->getOutput();
 

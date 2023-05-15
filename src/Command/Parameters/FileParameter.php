@@ -7,6 +7,8 @@ namespace Startwind\Forrest\Command\Parameters;
  */
 class FileParameter extends Parameter
 {
+    public const TYPE = 'file';
+
     public const DIRECTORY = 'directory';
 
     private array $fileFormats = [];
@@ -36,5 +38,10 @@ class FileParameter extends Parameter
             }
         }
         return false;
+    }
+
+    public function getType(): string
+    {
+        return self::TYPE;
     }
 }

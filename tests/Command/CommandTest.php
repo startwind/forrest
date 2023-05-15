@@ -8,6 +8,9 @@ namespace Tests\Startwind\Forrest\Command;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Startwind\Forrest\Command\Command;
+use Startwind\Forrest\Command\Parameters\Parameter;
+use Startwind\Forrest\Command\Parameters\ParameterValue;
+use Startwind\Forrest\Command\Prompt;
 
 final class CommandTest extends TestCase
 {
@@ -20,7 +23,9 @@ final class CommandTest extends TestCase
             $prompt
         );
 
-        $this->assertEquals($expected, $command->getPrompt($values));
+        $finalPrompt = new Prompt($command->getPrompt(), $values);
+
+        $this->assertEquals($expected, $finalPrompt->getFinalPrompt());
         $this->assertEquals(md5($prompt), $command->getChecksum());
     }
 
@@ -42,11 +47,10 @@ final class CommandTest extends TestCase
             [[], '', ''],
             [[], 'a', 'a'],
             [[], '${a}', '${a}'],
-            [['a' => 'b'], '${a}', 'b'],
-            [['a' => 'b' , 'b' => 'c'], '${a} is ${b}', 'b is c'],
-            [['a' => 'b' , 'b' => 'c'], '${a} is ${c}', 'b is ${c}'],
-            [['a' => 'b' , 'b' => 'c'], '${a}: ${b}, ${c}', 'b: c, ${c}'],
-            [['a' => 'b' , 'b' => 'c'], '${a}: ${b}, ${c}', 'b: c, ${c}'],
+            [[new ParameterValue('a', 'b', Parameter::TYPE)], '${a}', 'b'],
+            [[new ParameterValue('a', 'b', Parameter::TYPE), new ParameterValue('b', 'c', Parameter::TYPE)], '${a} is ${b}', 'b is c'],
+            [[new ParameterValue('a', 'b', Parameter::TYPE), new ParameterValue('b', 'c', Parameter::TYPE)], '${a} is ${c}', 'b is ${c}'],
+            [[new ParameterValue('a', 'b', Parameter::TYPE), new ParameterValue('b', 'c', Parameter::TYPE)], '${a}: ${b}, ${c}', 'b: c, ${c}']
         ];
     }
 }
