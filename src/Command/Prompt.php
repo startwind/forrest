@@ -29,6 +29,7 @@ class Prompt
         $this->values = $values;
 
         $this->finalPrompt = $plainPrompt;
+        $this->securePrompt = $plainPrompt;
 
         foreach ($values as $value) {
             $this->finalPrompt = str_replace(self::PARAMETER_PREFIX . $value->getKey() . self::PARAMETER_POSTFIX, $value->getValue(), $this->finalPrompt);
@@ -36,9 +37,9 @@ class Prompt
             if ($value->getType() == PasswordParameter::TYPE) {
                 $this->isStorable = false;
                 $staredPassword = str_repeat('*', strlen($value->getValue()));
-                $this->securePrompt = str_replace(self::PARAMETER_PREFIX . $value->getKey() . self::PARAMETER_POSTFIX, $staredPassword, $this->finalPrompt);
+                $this->securePrompt = str_replace(self::PARAMETER_PREFIX . $value->getKey() . self::PARAMETER_POSTFIX, $staredPassword, $this->securePrompt);
             } else {
-                $this->securePrompt = str_replace(self::PARAMETER_PREFIX . $value->getKey() . self::PARAMETER_POSTFIX, $value->getValue(), $this->finalPrompt);
+                $this->securePrompt = str_replace(self::PARAMETER_PREFIX . $value->getKey() . self::PARAMETER_POSTFIX, $value->getValue(), $this->securePrompt);
             }
         }
 

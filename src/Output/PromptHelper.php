@@ -5,6 +5,7 @@ namespace Startwind\Forrest\Output;
 use Startwind\Forrest\Command\Command;
 use Startwind\Forrest\Command\Parameters\Parameter;
 use Startwind\Forrest\Command\Parameters\ParameterValue;
+use Startwind\Forrest\Command\Parameters\PasswordParameter;
 use Startwind\Forrest\Command\Prompt;
 use Startwind\Forrest\Config\RecentParameterMemory;
 use Startwind\Forrest\Runner\CommandRunner;
@@ -86,12 +87,17 @@ class PromptHelper
             if ($parameter->hasValues()) {
                 $value = $this->questionHelper->ask($this->input, $this->output, new ChoiceQuestion('  Select value for ' . $name . $additional['string'] . ': ', $parameter->getValues()));
             } else {
-                $value = $this->questionHelper->ask($this->input, $this->output, new Question('  Select value for ' . $name . $additional['string'] . ': ', $additional['value']));
+                $question = new Question('  Select value for ' . $name . $additional['string'] . ': ', $additional['value']);
+                if ($parameter instanceof PasswordParameter) {
+                    $question->setHidden(true);
+                    $question->setHiddenFallback(false);
+                }
+                $value = $this->questionHelper->ask($this->input, $this->output, $question);
             }
 
             $values[] = new ParameterValue($identifier, $value, $parameter->getType());
 
-            if ($value) {
+            if ($value && !($parameter instanceof PasswordParameter)) {
                 $this->memory->addParameter($fullParameterIdentifier, $value);
             }
         }
