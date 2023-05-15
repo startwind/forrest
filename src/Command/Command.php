@@ -24,16 +24,9 @@ class Command
      */
     private array $parameters = [];
 
-    /**
-     * @var EnrichFunction[]
-     */
-    private array $functions;
 
     public function __construct(private readonly string $name, private readonly string $description, private readonly string $prompt)
     {
-        $this->functions = [
-            new FunctionComposite()
-        ];
     }
 
     /**

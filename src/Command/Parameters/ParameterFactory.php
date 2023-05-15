@@ -12,8 +12,6 @@ class ParameterFactory
     public const TYPE_PASSWORD = 'forrest_password';
     public const FIELD_TYPE = 'type';
 
-    public const DEFAULT_ENV_PATTERN = '^\${ENV\((.*)\)}^';
-
     /**
      * Create a Parameter configuration object from the given config array.
      */

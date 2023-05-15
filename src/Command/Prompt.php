@@ -28,17 +28,17 @@ class Prompt
         $this->plainPrompt = $plainPrompt;
         $this->values = $values;
 
+        $this->finalPrompt = $plainPrompt;
+
         foreach ($values as $value) {
-            $this->finalPrompt = str_replace(self::PARAMETER_PREFIX . $value->getKey() . self::PARAMETER_POSTFIX, $value->getValue(), $plainPrompt);
+            $this->finalPrompt = str_replace(self::PARAMETER_PREFIX . $value->getKey() . self::PARAMETER_POSTFIX, $value->getValue(), $this->finalPrompt);
 
             if ($value->getType() == PasswordParameter::TYPE) {
                 $this->isStorable = false;
-
                 $staredPassword = str_repeat('*', strlen($value->getValue()));
-
-                $this->securePrompt = str_replace(self::PARAMETER_PREFIX . $value->getKey() . self::PARAMETER_POSTFIX, $staredPassword, $plainPrompt);
+                $this->securePrompt = str_replace(self::PARAMETER_PREFIX . $value->getKey() . self::PARAMETER_POSTFIX, $staredPassword, $this->finalPrompt);
             } else {
-                $this->securePrompt = str_replace(self::PARAMETER_PREFIX . $value->getKey() . self::PARAMETER_POSTFIX, $value->getValue(), $plainPrompt);
+                $this->securePrompt = str_replace(self::PARAMETER_PREFIX . $value->getKey() . self::PARAMETER_POSTFIX, $value->getValue(), $this->finalPrompt);
             }
         }
 
