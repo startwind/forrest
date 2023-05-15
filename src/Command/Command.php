@@ -3,8 +3,7 @@
 namespace Startwind\Forrest\Command;
 
 use Startwind\Forrest\Command\Parameters\Parameter;
-use Startwind\Forrest\Enrichment\EnrichFunction\EnrichFunction;
-use Startwind\Forrest\Enrichment\EnrichFunction\FunctionComposite;
+use Startwind\Forrest\Command\Parameters\PasswordParameter;
 
 class Command
 {
@@ -13,6 +12,8 @@ class Command
     private string $fullyQualifiedIdentifier = '';
 
     private string $outputFormat = '';
+
+    private bool $allowedInHistory = true;
 
     public function setOutputFormat(string $output): void
     {
@@ -131,5 +132,31 @@ class Command
         }
 
         return (sprintf($this->outputFormat, trim($output)));
+    }
+
+    /**
+     * @return bool
+     */
+    public function isAllowedInHistory(): bool
+    {
+        if (!$this->allowedInHistory) {
+            return false;
+        }
+
+        foreach ($this->parameters as $parameter) {
+            if ($parameter instanceof PasswordParameter) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * @param bool $allowedInHistory
+     */
+    public function setAllowedInHistory(bool $allowedInHistory): void
+    {
+        $this->allowedInHistory = $allowedInHistory;
     }
 }

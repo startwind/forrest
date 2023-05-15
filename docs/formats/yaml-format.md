@@ -64,6 +64,7 @@ commands:
   - **type** - The type of the value. This will help validating the parameter and will provide new functionality based on the type. [read more](#type--optional-)
   - **file-formats** - The file format is only relevant if the type is `forrest_filename`. This field is also used for the reverse command search via `search:file`. If the command takes a directory as parameter use `directory` as filetype.
   - **enum** You can define a list of values the user has to chose one from.
+  - **allowed-in-history** - If this field is set to false the command will not appear in the Forrest history. This can be important if some secret keys are included. If a parameter is type forrest_password this flag will automatically be set to false. 
 
 ## Parameter
 

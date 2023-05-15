@@ -24,6 +24,8 @@ class YamlAdapter extends BasicAdapter implements ClientAwareAdapter
     public const YAML_FIELD_RUNNABLE = 'runnable';
     public const YAML_FIELD_PARAMETERS = 'parameters';
 
+    public const YAML_FIELD_ALLOWED_IN_HISTORY = 'allowed-in-history';
+
     public const YAML_FIELD_OUTPUT = 'output-format';
 
     public function __construct(private readonly Loader $loader)
@@ -76,6 +78,10 @@ class YamlAdapter extends BasicAdapter implements ClientAwareAdapter
 
             if (array_key_exists(self::YAML_FIELD_OUTPUT, $commandConfig)) {
                 $command->setOutputFormat($commandConfig[self::YAML_FIELD_OUTPUT]);
+            }
+
+            if (array_key_exists(self::YAML_FIELD_ALLOWED_IN_HISTORY, $commandConfig) && $commandConfig[self::YAML_FIELD_ALLOWED_IN_HISTORY] === false) {
+                $command->setAllowedInHistory(false);
             }
 
             if (array_key_exists(self::YAML_FIELD_PARAMETERS, $commandConfig)) {

@@ -88,7 +88,7 @@ class RunHelper
         $commandRunner = new CommandRunner($this->historyHandler);
 
         foreach ($commands as $command) {
-            $result = $commandRunner->execute($command, true, $prompt->isStorable());
+            $result = $commandRunner->execute($command, true, $actualCommand->isAllowedInHistory());
 
             $execOutput = $result->getOutput();
 

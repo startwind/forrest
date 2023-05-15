@@ -49,6 +49,10 @@ class ParameterFactory
             $parameter->setDescription($config['description']);
         }
 
+        if (array_key_exists('allowHistory', $config) && $config['allowHistory'] === false) {
+            $parameter->setAllowHistory(false);
+        }
+
         if (array_key_exists('default', $config)) {
             $defaultValue = self::getDefaultValue($config['default']);
             if ($defaultValue !== '') {
