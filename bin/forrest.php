@@ -14,6 +14,9 @@ $application = new Application();
 $application->setName('Forrest - Package manager for CLI scripts');
 $application->setVersion(FORREST_VERSION);
 
+# AI
+$application->add(new \Startwind\Forrest\CliCommand\Ai\SuggestCommand());
+
 # Command Commands
 $application->add(new \Startwind\Forrest\CliCommand\Command\ListCommand());
 $application->add(new \Startwind\Forrest\CliCommand\Command\RunCommand());
