@@ -67,7 +67,16 @@ commands:
 
 ## Parameter
 
-### `output-format`
+### `type` (optional)
+
+Forrest supports some special parameter types. All types come with special control logic. 
+
+- `forrest_filename`: A parameter that is defined as filename qualifies for the reverse search `search:file` as soon the `file-formats` fit.
+
+
+- `forrest_password`: If a parameter is defined as a password the prompt will not show password in plain test, and it will also not be stored in history. 
+
+### `output-format` (optional)
 
 This is an easy way to enrich the output. This is valuable for commands that only return a single output string and is *optional*. Internally we use [`sprintf`](https://www.php.net/manual/en/function.sprintf.php) for the formatting. 
 
