@@ -4,6 +4,7 @@ Forrest is constantly evolving. Sometimes so fast that you might not even get ar
 
 - **develop**
   - A command can define an `output-format`. This is basically a `sprintf` command for the commands output. [read more](formats/yaml-format.md#output-format)
+  - Password handling. Parameters can now be defined as password and will nether be shown when entering the data nor stored in history. [read more](formats/yaml-format.md#type--optional-)
 
 
 - **1.2.0** 
