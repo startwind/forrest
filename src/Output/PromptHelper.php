@@ -4,6 +4,8 @@ namespace Startwind\Forrest\Output;
 
 use Startwind\Forrest\Command\Command;
 use Startwind\Forrest\Command\Parameters\Parameter;
+use Startwind\Forrest\Command\Parameters\ParameterValue;
+use Startwind\Forrest\Command\Prompt;
 use Startwind\Forrest\Config\RecentParameterMemory;
 use Startwind\Forrest\Runner\CommandRunner;
 use Startwind\Forrest\Util\OutputHelper;
@@ -40,7 +42,7 @@ class PromptHelper
         $this->memory = $memory;
     }
 
-    public function askForPrompt(string $repositoryIdentifier, Command $command, array $predefinedParameters = []): string
+    public function askForPrompt(string $repositoryIdentifier, Command $command, array $predefinedParameters = []): Prompt
     {
         if ($command->isParameterMissing($predefinedParameters)) {
             $this->showCommandInformation($this->output, $command);
@@ -48,14 +50,14 @@ class PromptHelper
 
         $parameterValues = $this->askForParameterValues($repositoryIdentifier, $command, $predefinedParameters);
 
-        return $command->getPrompt($parameterValues);
+        return new Prompt($command->getPrompt(), $parameterValues);
     }
 
-    public function showFinalPrompt(string $prompt): void
+    public function showFinalPrompt(Prompt $prompt): void
     {
         $this->output->writeln('');
         $this->output->writeln('  Final prompt: ');
-        OutputHelper::writeInfoBox($this->output, CommandRunner::stringToMultilinePrompt($prompt));
+        OutputHelper::writeInfoBox($this->output, CommandRunner::stringToMultilinePrompt($prompt->getSecurePrompt()));
     }
 
     private function askForParameterValues(string $repositoryIdentifier, Command $command, array $predefinedParameters = []): array
@@ -67,7 +69,7 @@ class PromptHelper
         foreach ($command->getParameters() as $identifier => $parameter) {
 
             if (array_key_exists($identifier, $predefinedParameters)) {
-                $values[$identifier] = $predefinedParameters[$identifier];
+                $values[] = new ParameterValue($identifier, $predefinedParameters[$identifier], $parameter->getType());
                 continue;
             }
 
@@ -82,13 +84,15 @@ class PromptHelper
             }
 
             if ($parameter->hasValues()) {
-                $values[$identifier] = $this->questionHelper->ask($this->input, $this->output, new ChoiceQuestion('  Select value for ' . $name . $additional['string'] . ': ', $parameter->getValues()));
+                $value = $this->questionHelper->ask($this->input, $this->output, new ChoiceQuestion('  Select value for ' . $name . $additional['string'] . ': ', $parameter->getValues()));
             } else {
-                $values[$identifier] = $this->questionHelper->ask($this->input, $this->output, new Question('  Select value for ' . $name . $additional['string'] . ': ', $additional['value']));
+                $value = $this->questionHelper->ask($this->input, $this->output, new Question('  Select value for ' . $name . $additional['string'] . ': ', $additional['value']));
             }
 
-            if ($values[$identifier]) {
-                $this->memory->addParameter($fullParameterIdentifier, $values[$identifier]);
+            $values[] = new ParameterValue($identifier, $value, $parameter->getType());
+
+            if ($value) {
+                $this->memory->addParameter($fullParameterIdentifier, $value);
             }
         }
 

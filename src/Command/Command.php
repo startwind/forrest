@@ -8,9 +8,6 @@ use Startwind\Forrest\Enrichment\EnrichFunction\FunctionComposite;
 
 class Command
 {
-    public const PARAMETER_PREFIX = '${';
-    public const PARAMETER_POSTFIX = '}';
-
     private bool $isRunnable = true;
 
     private string $fullyQualifiedIdentifier = '';
@@ -56,22 +53,11 @@ class Command
     }
 
     /**
-     * Return the prompt. If the values are set the parameters will be set and the
-     * prompt completed.
+     * Return the prompt.
      */
-    public function getPrompt(array $values = []): string
+    public function getPrompt(): string
     {
-        $prompt = $this->prompt;
-
-        foreach ($values as $key => $value) {
-            $prompt = str_replace(self::PARAMETER_PREFIX . $key . self::PARAMETER_POSTFIX, (string)$value, $prompt);
-        }
-
-        foreach ($this->functions as $function) {
-            $prompt = $function->applyFunction($prompt);
-        }
-
-        return $prompt;
+        return $this->prompt;
     }
 
     /**

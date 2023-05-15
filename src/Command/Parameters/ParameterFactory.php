@@ -8,6 +8,8 @@ class ParameterFactory
 {
     public const TYPE_MIXED = 'forrest_mixed';
     public const TYPE_FILENAME = 'forrest_filename';
+
+    public const TYPE_PASSWORD = 'forrest_password';
     public const FIELD_TYPE = 'type';
 
     public const DEFAULT_ENV_PATTERN = '^\${ENV\((.*)\)}^';
@@ -26,6 +28,9 @@ class ParameterFactory
         switch ($type) {
             case self::TYPE_FILENAME:
                 $parameter = self::createFileParameter($config);
+                break;
+            case self::TYPE_PASSWORD:
+                $parameter = new PasswordParameter();
                 break;
             default:
                 $parameter = self::createMixedParameter($config);

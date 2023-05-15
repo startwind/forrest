@@ -4,6 +4,8 @@ namespace Startwind\Forrest\Command\Parameters;
 
 class Parameter
 {
+    public const TYPE = 'mixed';
+
     private string $name = '';
     private string $description = '';
     private string $defaultValue = '';
@@ -56,5 +58,10 @@ class Parameter
     public function hasValues(): bool
     {
         return count($this->values) > 0;
+    }
+
+    public function getType(): string
+    {
+        return self::TYPE;
     }
 }
