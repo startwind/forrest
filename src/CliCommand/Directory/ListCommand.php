@@ -4,6 +4,7 @@ namespace Startwind\Forrest\CliCommand\Directory;
 
 use Startwind\Forrest\Output\OutputHelper;
 use Symfony\Component\Console\Command\Command as SymfonyCommand;
+use Symfony\Component\Console\Helper\TableSeparator;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -29,8 +30,16 @@ class ListCommand extends DirectoryCommand
 
         $repositories = [];
 
-        foreach ($directories as $directory) {
-            $repositories = array_merge($repositories, $directory['repositories']);
+        foreach ($directories as $identifier => $directory) {
+            if (!array_key_exists('repositories', $directory)) {
+                throw new \RuntimeException('No repositories found in the given directory (' . $identifier . ').');
+            }
+
+            foreach ($directory['repositories'] as $repoIdentifier => $repository) {
+                $repositories[$identifier][$repoIdentifier] = $repository;
+            }
+
+            ksort($repositories[$identifier]);
         }
 
         ksort($repositories);
@@ -41,36 +50,50 @@ class ListCommand extends DirectoryCommand
 
         $unofficialCount = 0;
 
-        foreach ($repositories as $identifier => $repository) {
+        $dirCount = 0;
+        foreach ($repositories as $directoryIdentifier => $directoryRepositories) {
+            foreach ($directoryRepositories as $identifier => $repository) {
+                if ($all || (array_key_exists('official', $repository) && $repository['official'] === true)) {
+                    $row = [
+                        $identifier,
+                        $repository['name'],
+                        wordwrap($repository['description'], 55),
+                    ];
 
-            if ($all || (array_key_exists('official', $repository) && $repository['official'] === true)) {
-                $row = [
-                    $identifier,
-                    $repository['name'],
-                    $repository['description'],
-                ];
+                    if (count($directories) > 1) {
+                        array_unshift($row, $directoryIdentifier);
+                    }
 
-                if (in_array($identifier, $activeRepositories)) {
-                    $row[] = 'x';
-                } else {
-                    $row[] = '';
-                }
-
-                if ($all) {
-                    if (array_key_exists('official', $repository) && $repository['official'] === true) {
+                    if (in_array($identifier, $activeRepositories)) {
                         $row[] = 'x';
                     } else {
                         $row[] = '';
                     }
-                }
 
-                $rows [] = $row;
-            } else {
-                $unofficialCount++;
+                    if ($all) {
+                        if (array_key_exists('official', $repository) && $repository['official'] === true) {
+                            $row[] = 'x';
+                        } else {
+                            $row[] = '';
+                        }
+                    }
+
+                    $rows [] = $row;
+                } else {
+                    $unofficialCount++;
+                }
             }
+            if ($dirCount != count($directories) - 1) {
+                $rows[] = new TableSeparator();
+            }
+            $dirCount++;
         }
 
         $headers = ['Identifier', 'Name', 'Description', 'Installed'];
+
+        if (count($directories) > 1) {
+            array_unshift($headers, 'Directory');
+        }
 
         if ($all) {
             $headers[] = 'Official';

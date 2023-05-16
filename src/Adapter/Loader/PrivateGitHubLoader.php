@@ -16,7 +16,7 @@ class PrivateGitHubLoader implements Loader, HttpAwareLoader, WritableLoader
     private string $file;
     private string $token;
 
-    private ?Client $client;
+    private ?Client $client = null;
     private string $user;
     private string $repository;
 
@@ -72,6 +72,10 @@ class PrivateGitHubLoader implements Loader, HttpAwareLoader, WritableLoader
      */
     public function load(): string
     {
+        if (is_null($this->client)) {
+            throw  new \RuntimeException('The client for this loader was not set but is needed. Please call setClient() before the load() function.');
+        }
+
         if (!empty($this->fileInformation)) {
             return base64_decode($this->fileInformation['content']);
         }

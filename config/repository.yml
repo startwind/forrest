@@ -2,6 +2,14 @@
 directories:
   forrest:
     url: 'https://raw.githubusercontent.com/startwind/forrest-directory/main/directory.yml'
+  360monitoring:
+    loader:
+      type: github
+      config:
+        repository: forrest-directory
+        user: leankoala-gmbh
+        file: directory.yml
+        token: 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
 
 repositories:
   # "friends-of-wp":

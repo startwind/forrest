@@ -4,6 +4,8 @@ namespace Startwind\Forrest\CliCommand\Directory;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
+use Startwind\Forrest\Adapter\Loader\HttpAwareLoader;
+use Startwind\Forrest\Adapter\Loader\LoaderFactory;
 use Startwind\Forrest\CliCommand\ForrestCommand;
 use Symfony\Component\Yaml\Yaml;
 
@@ -30,8 +32,18 @@ abstract class DirectoryCommand extends ForrestCommand
         $client = new Client();
 
         foreach ($directoryConfigs as $key => $directoryConfig) {
-            $response = $client->get(self::MASTER_DIRECTORY_URL);
-            $directories[$key] = Yaml::parse($response->getBody());
+            if (array_key_exists('url', $directoryConfig)) {
+                $response = $client->get($directoryConfig['url']);
+                $directories[$key] = Yaml::parse($response->getBody());
+            } elseif (array_key_exists('loader', $directoryConfig)) {
+                $loader = LoaderFactory::create($directoryConfig['loader']);
+                if ($loader instanceof HttpAwareLoader) {
+                    $loader->setClient($client);
+                }
+                $directories[$key] = Yaml::parse($loader->load());
+            } else {
+                throw new \RuntimeException('The directory configuration needs to have an url or loader defined.');
+            }
         }
 
         return $directories;
