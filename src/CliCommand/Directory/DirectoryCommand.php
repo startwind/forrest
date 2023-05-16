@@ -15,10 +15,14 @@ abstract class DirectoryCommand extends ForrestCommand
      * @return array<string, mixed>
      * @throws GuzzleException
      */
-    protected function getDirectory(): array
+    protected function getDirectories(): array
     {
+        $config = $this->getConfigHandler();
+
         $client = new Client();
         $response = $client->get(self::MASTER_DIRECTORY_URL);
-        return Yaml::parse($response->getBody());
+        return [
+            'forrest' => Yaml::parse($response->getBody())
+        ];
     }
 }

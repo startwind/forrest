@@ -1,4 +1,8 @@
 ---
+directories:
+  forrest:
+    url: 'https://raw.githubusercontent.com/startwind/forrest-directory/main/directory.yml'
+
 repositories:
   # "friends-of-wp":
   #  adapter: gist

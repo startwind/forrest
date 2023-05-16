@@ -25,9 +25,14 @@ class ListCommand extends DirectoryCommand
         $this->initRepositoryLoader();
         $activeRepositories = $this->getRepositoryLoader()->getIdentifiers();
 
-        $directory = $this->getDirectory();
+        $directories = $this->getDirectories();
 
-        $repositories = $directory['repositories'];
+        $repositories = [];
+
+        foreach ($directories as $directory) {
+            $repositories = array_merge($repositories, $directory['repositories']);
+        }
+
         ksort($repositories);
 
         $rows = [];
