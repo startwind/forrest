@@ -13,4 +13,4 @@ Prompts can be enriched with parameters for better re-usability. A parameter is 
 
 Functions are an easy way to enrich commands with dynamic data. The Forrest team continuously extends the functions by adding new ones.
 
-- [Learn more about functions](../commands/functions/functions.md)
+- [Learn more about functions](../commands/enrichment/functions.md)
