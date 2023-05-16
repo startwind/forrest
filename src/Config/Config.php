@@ -8,7 +8,8 @@ class Config
 
     public function __construct(
         private array $configArray
-    ) {
+    )
+    {
     }
 
     public function addRepository(string $key, array $repositoryConfig): void
@@ -26,5 +27,14 @@ class Config
     public function getConfigArray(): array
     {
         return $this->configArray;
+    }
+
+    public function getDirectories(): array
+    {
+        if (!array_key_exists('directories', $this->configArray)) {
+            return [];
+        }
+
+        return $this->configArray['directories'];
     }
 }

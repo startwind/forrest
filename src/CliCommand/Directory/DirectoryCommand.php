@@ -9,7 +9,9 @@ use Symfony\Component\Yaml\Yaml;
 
 abstract class DirectoryCommand extends ForrestCommand
 {
-    public const MASTER_DIRECTORY_URL = 'https://raw.githubusercontent.com/startwind/forrest-directory/main/directory.yml';
+    private const MASTER_DIRECTORY_URL = 'https://raw.githubusercontent.com/startwind/forrest-directory/main/directory.yml';
+
+    private const MASTER_DIRECTORY_KEY = 'forrest';
 
     /**
      * @return array<string, mixed>
@@ -17,12 +19,21 @@ abstract class DirectoryCommand extends ForrestCommand
      */
     protected function getDirectories(): array
     {
-        $config = $this->getConfigHandler();
+        $configHandler = $this->getConfigHandler();
+        $config = $configHandler->parseConfig();
 
+        $directoryConfigs = $config->getDirectories();
+
+        $directoryConfigs = array_merge([self::MASTER_DIRECTORY_KEY => ['url' => self::MASTER_DIRECTORY_URL]], $directoryConfigs);
+
+        $directories = [];
         $client = new Client();
-        $response = $client->get(self::MASTER_DIRECTORY_URL);
-        return [
-            'forrest' => Yaml::parse($response->getBody())
-        ];
+
+        foreach ($directoryConfigs as $key => $directoryConfig) {
+            $response = $client->get(self::MASTER_DIRECTORY_URL);
+            $directories[$key] = Yaml::parse($response->getBody());
+        }
+
+        return $directories;
     }
 }
