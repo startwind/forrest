@@ -7,9 +7,11 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class AddCommand extends DirectoryCommand
+class ImportCommand extends DirectoryCommand
 {
-    protected static $defaultName = 'directory:add';
+    public const COMMAND_NAME = 'directory:add';
+
+    protected static $defaultName = self::COMMAND_NAME;
     protected static $defaultDescription = 'Add an external directory to the list.';
 
     protected function configure()
@@ -19,7 +21,7 @@ class AddCommand extends DirectoryCommand
 
     protected function doExecute(InputInterface $input, OutputInterface $output): int
     {
-
+        var_dump();
         return SymfonyCommand::SUCCESS;
     }
 }

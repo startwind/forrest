@@ -2,7 +2,10 @@
 
 namespace Startwind\Forrest\CliCommand\Directory;
 
-use Startwind\Forrest\Output\OutputHelper;
+use Startwind\Forrest\CliCommand\Directory\Exception\DirectoriesLoadException;
+
+use Startwind\Forrest\Util\OutputHelper;
+use Startwind\Forrest\Output\OutputHelper as TableOutputHelper;
 use Symfony\Component\Console\Command\Command as SymfonyCommand;
 use Symfony\Component\Console\Helper\TableSeparator;
 use Symfony\Component\Console\Input\InputInterface;
@@ -26,7 +29,16 @@ class ListCommand extends DirectoryCommand
         $this->initRepositoryLoader();
         $activeRepositories = $this->getRepositoryLoader()->getIdentifiers();
 
-        $directories = $this->getDirectories();
+        try {
+            $directories = $this->getDirectories();
+        } catch (DirectoriesLoadException $exception) {
+            $directories = $exception->getDirectories();
+            $messages = [];
+            foreach ($exception->getExceptions() as $exception) {
+                $messages[] = $exception->getMessage();
+            }
+            OutputHelper::writeErrorBox($output, $messages);
+        }
 
         $repositories = [];
 
@@ -99,7 +111,7 @@ class ListCommand extends DirectoryCommand
             $headers[] = 'Official';
         }
 
-        OutputHelper::renderTable($output, $headers, $rows);
+        TableOutputHelper::renderTable($output, $headers, $rows);
 
         if ($unofficialCount > 0) {
             $output->writeln([

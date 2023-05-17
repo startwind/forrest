@@ -6,6 +6,7 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
 use Startwind\Forrest\Adapter\Loader\HttpAwareLoader;
 use Startwind\Forrest\Adapter\Loader\LoaderFactory;
+use Startwind\Forrest\CliCommand\Directory\Exception\DirectoriesLoadException;
 use Startwind\Forrest\CliCommand\ForrestCommand;
 use Symfony\Component\Yaml\Yaml;
 
@@ -17,19 +18,17 @@ abstract class DirectoryCommand extends ForrestCommand
 
     /**
      * @return array<string, mixed>
-     * @throws GuzzleException
+     * @throws \Startwind\Forrest\CliCommand\Directory\Exception\DirectoriesLoadException
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     protected function getDirectories(): array
     {
-        $configHandler = $this->getConfigHandler();
-        $config = $configHandler->parseConfig();
-
-        $directoryConfigs = $config->getDirectories();
-
-        $directoryConfigs = array_merge([self::MASTER_DIRECTORY_KEY => ['url' => self::MASTER_DIRECTORY_URL]], $directoryConfigs);
+        $directoryConfigs = $this->getDirectoryConfigs();
 
         $directories = [];
         $client = new Client();
+
+        $directoriesLoadException = new DirectoriesLoadException();
 
         foreach ($directoryConfigs as $key => $directoryConfig) {
             if (array_key_exists('url', $directoryConfig)) {
@@ -40,12 +39,33 @@ abstract class DirectoryCommand extends ForrestCommand
                 if ($loader instanceof HttpAwareLoader) {
                     $loader->setClient($client);
                 }
-                $directories[$key] = Yaml::parse($loader->load());
+                try {
+                    $content = $loader->load();
+                } catch (\Exception $exception) {
+                    $directoriesLoadException->addException(new \RuntimeException('Directory error (' . $key . '): ' . $exception->getMessage()));
+                    continue;
+                }
+                $directories[$key] = Yaml::parse($content);
             } else {
                 throw new \RuntimeException('The directory configuration needs to have an url or loader defined.');
             }
         }
 
+        if ($directoriesLoadException->hasExceptions()) {
+            $directoriesLoadException->setDirectories($directories);
+            throw $directoriesLoadException;
+        }
+
         return $directories;
+    }
+
+    protected function getDirectoryConfigs(): array
+    {
+        $configHandler = $this->getConfigHandler();
+        $config = $configHandler->parseConfig();
+
+        $directoryConfigs = $config->getDirectories();
+
+        return array_merge([self::MASTER_DIRECTORY_KEY => ['url' => self::MASTER_DIRECTORY_URL]], $directoryConfigs);
     }
 }

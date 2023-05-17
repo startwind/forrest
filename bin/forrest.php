@@ -33,7 +33,8 @@ $application->add(new \Startwind\Forrest\CliCommand\Repository\Command\RemoveCom
 # Directory
 $application->add(new \Startwind\Forrest\CliCommand\Directory\ListCommand());
 $application->add(new \Startwind\Forrest\CliCommand\Directory\InstallCommand());
-$application->add(new \Startwind\Forrest\CliCommand\Directory\AddCommand());
+$application->add(new \Startwind\Forrest\CliCommand\Directory\ImportCommand());
+$application->add(new \Startwind\Forrest\CliCommand\Directory\ExportCommand());
 
 # Search
 $application->add(new \Startwind\Forrest\CliCommand\Search\FileCommand());
