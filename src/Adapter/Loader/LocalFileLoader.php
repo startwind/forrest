@@ -27,6 +27,9 @@ class LocalFileLoader implements Loader, WritableLoader
         return new self($config['file']);
     }
 
+    /**
+     * @inheritDoc
+     */
     public function write(string $content)
     {
         file_put_contents($this->filename, $content);
