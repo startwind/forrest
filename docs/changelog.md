@@ -3,6 +3,9 @@
 Forrest is constantly evolving. Sometimes so fast that you might not even get around to trying out the new features. For this reason, we have introduced a changelog.
 
 - **develop**
+
+
+- **1.3.0**
   - Introducing external and private directories. It is now possible to register an external directory with a list of repositories to Forrest. This comes handy if a team has a lot of different repositories and wants a clean structure. It can also be used to create private directories. [read more](directories/directories.mds)
   - A command can define an `output-format`. This is basically a `sprintf` command for the commands output. [read more](formats/yaml-format.md#output-format)
   - Password handling. Parameters can now be defined as password and will nether be shown when entering the data nor stored in history. [read more](formats/yaml-format.md#type--optional-)
