@@ -26,6 +26,7 @@ class ExportCommand extends DirectoryCommand
         $directories = $this->getDirectoryConfigs();
 
         if (!$selectedDirectoryIdentifier) {
+            /** @var \Symfony\Component\Console\Helper\QuestionHelper $questionHandler */
             $questionHandler = $this->getHelper('question');
             $selectedDirectoryIdentifier = $questionHandler->ask($input, $output, new ChoiceQuestion('Which directory do you want to export? ', array_keys($directories)));
         }
