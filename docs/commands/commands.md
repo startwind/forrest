@@ -28,5 +28,10 @@
 
 ## Directory Commands
 
+If you want to learn more about the directories and how to create your own private directory please read the chapter about "[Forrest Directories](../directories/directories.md)"
+
+
 - `directory:list` - List all repositories from the Forrest directory.
 - `directory:install` - Install a specified repository from the Forrest directory.
+- `directory:import` - Import an existing directory.
+- `directory:export` - Export an existing directory.
