@@ -63,7 +63,7 @@ commands:
   - **output-format** -  This is an easy way to enrich the output. This is valuable for commands that only return a single output string like `wc -l` for example. [read more](#output-format--optional-)
   - **type** - The type of the value. This will help validating the parameter and will provide new functionality based on the type. [read more](#type--optional-)
   - **file-formats** - The file format is only relevant if the type is `forrest_filename`. This field is also used for the reverse command search via `search:file`. If the command takes a directory as parameter use `directory` as filetype.
-  - **enum** You can define a list of values the user has to chose one from.
+  - **enum** You can define a list of values the user has to chose one from. [read more](#enum--optional-)
   - **allowed-in-history** - If this field is set to false the command will not appear in the Forrest history. This can be important if some secret keys are included. If a parameter is type forrest_password this flag will automatically be set to false. 
 
 ## Parameter
@@ -88,4 +88,22 @@ This is an easy way to enrich the output. This is valuable for commands that onl
     description: 'Return the number of lines of a given file.'
     output-format: The file has %s lines.
     prompt: 'cat ${filename} | wc -l'
+```
+
+### `enum` (optional)
+
+Enums can be used to predefine values the user can choose from. There are two ways of using the enums. The easy way is to just define a list of values. The second possibility is to define a set of key-value-pairs. The key is the value the user will see and therefore should be human-readable.The value is the actual value that will be put into the prompt.
+
+#### Example
+ ```yaml
+'enum-key-values':
+   name: 'parameters:enum:with-key'
+   description: 'Check password handling'
+   prompt: 'ls ${enum}'
+   parameters:
+     enum:
+        enum:
+          eins: one
+          zwei: two
+          drei: three
 ```
