@@ -37,4 +37,9 @@ class Config
 
         return $this->configArray['directories'];
     }
+
+    public function setDirectories(array $configArray): void
+    {
+        $this->configArray['directories'] = $configArray;
+    }
 }
