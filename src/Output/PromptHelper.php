@@ -85,7 +85,7 @@ class PromptHelper
             }
 
             if ($parameter->hasValues()) {
-                $value = $this->questionHelper->ask($this->input, $this->output, new ChoiceQuestion('  Select value for ' . $name . $additional['string'] . ': ', $parameter->getValues()));
+                $value = $this->askForEnum('  Select value for ' . $name . $additional['string'] . ': ', $parameter->getValues());
             } else {
                 $question = new Question('  Select value for ' . $name . $additional['string'] . ': ', $additional['value']);
                 if ($parameter instanceof PasswordParameter) {
@@ -103,6 +103,18 @@ class PromptHelper
         }
 
         return $values;
+    }
+
+    private function askForEnum(string $question, array $values): string
+    {
+        if (array_is_list($values)) {
+            $value = $this->questionHelper->ask($this->input, $this->output, new ChoiceQuestion($question, $values));
+        } else {
+            $key = $this->questionHelper->ask($this->input, $this->output, new ChoiceQuestion($question, array_keys($values)));
+            $value = $values[$key];
+        }
+
+        return $value;
     }
 
     /**

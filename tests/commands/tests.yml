@@ -24,3 +24,13 @@ commands:
         parameters:
             password:
                 type: forrest_password
+    'enum-key-values':
+        name: 'parameters:enum:with-key'
+        description: 'Check password handling'
+        prompt: 'ls ${enum}'
+        parameters:
+            enum:
+                enum:
+                    eins: one
+                    zwei: two
+                    drei: three
