@@ -8,16 +8,23 @@ use Startwind\Forrest\Adapter\Loader\Loader;
 
 class CacheDecorator implements Loader
 {
-    private const TIME_TO_LIVE = 60 * 60;
+    private const TIME_TO_LIVE = 24 * 60 * 60;
 
     protected Loader $loader;
 
-    protected CacheItemPoolInterface $cacheItemPool;
+    private CacheItemPoolInterface $cacheItemPool;
+
+    protected bool $forceCacheFlush = false;
 
     public function __construct(Loader $loader, CacheItemPoolInterface $cacheItemPool)
     {
         $this->loader = $loader;
         $this->cacheItemPool = $cacheItemPool;
+    }
+
+    public function setForceCacheFlush(): void
+    {
+        $this->forceCacheFlush = true;
     }
 
     /**
@@ -28,7 +35,7 @@ class CacheDecorator implements Loader
         if ($this->loader instanceof CachableLoader) {
             $key = $this->loader->getCacheKey();
             $item = $this->cacheItemPool->getItem($key);
-            if ($item->isHit()) {
+            if ($item->isHit() && !$this->forceCacheFlush) {
                 var_dump('HIT');
                 return $item->get();
             } else {
@@ -37,6 +44,7 @@ class CacheDecorator implements Loader
                 $item->set($content);
                 $item->expiresAfter(self::TIME_TO_LIVE);
                 $this->cacheItemPool->save($item);
+                $this->forceCacheFlush = false;
                 return $content;
             }
         } else {
