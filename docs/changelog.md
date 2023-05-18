@@ -5,6 +5,8 @@ Forrest is constantly evolving. Sometimes so fast that you might not even get ar
 - **develop**
   - 5 minute cache: Forrest now stores all results from the repositories for 5 minutes. This speeds up the run and list command.
   - Advanced enums: enums can now be key-value pairs. This helps when the actual value of the prompt is a long and unhandy string. [read more](formats/yaml-format.md#enum--optional-) 
+  - Filter `search:file` command by adding a pattern as second argument. 
+  - `add` is now a shortcut for `repository:command:add`.
 
 
 - **1.3.0**
