@@ -16,6 +16,12 @@ class AddCommand extends RepositoryCommand
     protected static $defaultName = 'repository:command:add';
     protected static $defaultDescription = 'Creates a boilerplate for a new command repository.';
 
+    protected function configure()
+    {
+        $this->setAliases(['add']);
+    }
+
+
     protected function doExecute(InputInterface $input, OutputInterface $output): int
     {
         $this->renderInfoBox([
