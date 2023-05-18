@@ -22,7 +22,7 @@ class LoaderFactory
     /**
      * Create a loader depending on a given configuration array.
      */
-    public static function create($config, Client $client, bool $withCache = true): Loader
+    public static function create($config, Client $client): Loader
     {
         if (!array_key_exists($config['type'], self::$loaders)) {
             throw new \RuntimeException('No YAML loader found with the identifier "' . $config['loader']['type'] . '". Known types are ' . implode(', ', array_keys(self::$loaders)) . '.');
@@ -37,14 +37,10 @@ class LoaderFactory
             $loader->setClient($client);
         }
 
-        if ($withCache) {
-            $loader = self::decorateWithCache($loader);
-        }
-
-        return $loader;
+        return self::decorateWithCache($loader);
     }
 
-    private static function decorateWithCache(Loader $loader): Loader
+    private static function decorateWithCache(Loader $loader): CacheDecorator
     {
         $filesystemAdapter = new Local(self::CACHE_DIR);
         $filesystem = new Filesystem($filesystemAdapter);

@@ -105,6 +105,7 @@ class PrivateGitHubLoader implements Loader, HttpAwareLoader, WritableLoader, Ca
     public function write(string $content)
     {
         $this->load();
+
         $this->client->request('PUT', $this->getUrl(), [
             'headers' => $this->getHeaders(),
             RequestOptions::JSON => [

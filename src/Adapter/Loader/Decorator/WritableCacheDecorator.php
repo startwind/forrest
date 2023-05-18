@@ -22,6 +22,8 @@ class WritableCacheDecorator extends CacheDecorator implements WritableLoader
 
     public function write(string $content)
     {
-        $this->loader->write($content);
+        /** @var WritableLoader $loader */
+        $loader = $this->loader;
+        $loader->write($content);
     }
 }
