@@ -18,8 +18,6 @@ class Prompt
 
     private string $securePrompt;
 
-    private bool $isStorable = true;
-
     /**
      * @param ParameterValue[] $values
      */
