@@ -45,6 +45,7 @@ class Prompt
 
         $function = new FunctionComposite();
         $this->finalPrompt = $function->applyFunction($this->finalPrompt);
+        $this->securePrompt = $function->applyFunction($this->securePrompt);
     }
 
     public function getPlainPrompt(): string
@@ -68,16 +69,11 @@ class Prompt
         return $this->values;
     }
 
+    /**
+     * This function returns the prompt but hides passwords.
+     */
     public function getSecurePrompt(): string
     {
         return $this->securePrompt;
-    }
-
-    /**
-     * @return bool
-     */
-    public function isStorable(): bool
-    {
-        return $this->isStorable;
     }
 }
