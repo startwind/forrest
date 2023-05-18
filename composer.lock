@@ -468,16 +468,16 @@
         },
         {
             "name": "guzzlehttp/promises",
-            "version": "dev-master",
+            "version": "1.5.x-dev",
             "source": {
                 "type": "git",
                 "url": "https://github.com/guzzle/promises.git",
-                "reference": "b94b2807d85443f9719887892882d0329d1e2598"
+                "reference": "666fdca4b950239d57b6afbe443765be990112a2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/guzzle/promises/zipball/b94b2807d85443f9719887892882d0329d1e2598",
-                "reference": "b94b2807d85443f9719887892882d0329d1e2598",
+                "url": "https://api.github.com/repos/guzzle/promises/zipball/666fdca4b950239d57b6afbe443765be990112a2",
+                "reference": "666fdca4b950239d57b6afbe443765be990112a2",
                 "shasum": ""
             },
             "require": {
@@ -488,11 +488,6 @@
             },
             "default-branch": true,
             "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.5-dev"
-                }
-            },
             "autoload": {
                 "files": [
                     "src/functions_include.php"
@@ -533,7 +528,7 @@
             ],
             "support": {
                 "issues": "https://github.com/guzzle/promises/issues",
-                "source": "https://github.com/guzzle/promises/tree/1.5.2"
+                "source": "https://github.com/guzzle/promises/tree/1.5"
             },
             "funding": [
                 {
@@ -549,7 +544,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2022-08-28T14:55:35+00:00"
+            "time": "2023-04-18T08:33:13+00:00"
         },
         {
             "name": "guzzlehttp/psr7",
@@ -2327,12 +2322,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/PHP-CS-Fixer/PHP-CS-Fixer.git",
-                "reference": "250d9570d8966ab1a24d92371b03e9f15c2b03e4"
+                "reference": "234e98f11442dd32005e57da4fdbe5db48ab7c3c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/PHP-CS-Fixer/PHP-CS-Fixer/zipball/250d9570d8966ab1a24d92371b03e9f15c2b03e4",
-                "reference": "250d9570d8966ab1a24d92371b03e9f15c2b03e4",
+                "url": "https://api.github.com/repos/PHP-CS-Fixer/PHP-CS-Fixer/zipball/234e98f11442dd32005e57da4fdbe5db48ab7c3c",
+                "reference": "234e98f11442dd32005e57da4fdbe5db48ab7c3c",
                 "shasum": ""
             },
             "require": {
@@ -2416,7 +2411,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2023-05-14T19:00:26+00:00"
+            "time": "2023-05-18T16:23:17+00:00"
         },
         {
             "name": "myclabs/deep-copy",
@@ -3207,12 +3202,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/rectorphp/rector.git",
-                "reference": "44b12286ff378d9c82f7a3d35a1f9af160a34233"
+                "reference": "ab605a51c84d58156c971a5857a61759d557fff5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/rectorphp/rector/zipball/44b12286ff378d9c82f7a3d35a1f9af160a34233",
-                "reference": "44b12286ff378d9c82f7a3d35a1f9af160a34233",
+                "url": "https://api.github.com/repos/rectorphp/rector/zipball/ab605a51c84d58156c971a5857a61759d557fff5",
+                "reference": "ab605a51c84d58156c971a5857a61759d557fff5",
                 "shasum": ""
             },
             "require": {
@@ -3261,7 +3256,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2023-05-17T21:26:57+00:00"
+            "time": "2023-05-18T15:38:11+00:00"
         },
         {
             "name": "sebastian/cli-parser",
