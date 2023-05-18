@@ -19,6 +19,7 @@ class FileCommand extends SearchCommand
     protected function configure(): void
     {
         $this->addArgument('filename', InputArgument::REQUIRED, 'The filename you want to get commands for.');
+        $this->addArgument('pattern', InputArgument::OPTIONAL, 'Filter the results for a given pattern.');
         $this->addOption('force', null, InputOption::VALUE_OPTIONAL, 'Run the command without asking for permission.', false);
         $this->setAliases(['file']);
     }
@@ -30,6 +31,7 @@ class FileCommand extends SearchCommand
         $this->enrichRepositories();
 
         $filename = $input->getArgument('filename');
+        $pattern = $input->getArgument('pattern');
 
         /** @var \Symfony\Component\Console\Helper\QuestionHelper $questionHelper */
         $questionHelper = $this->getHelper('question');
@@ -55,6 +57,18 @@ class FileCommand extends SearchCommand
             }
             return false;
         }, ['filenames' => $filenames]);
+
+        if ($pattern) {
+            foreach ($fileCommands as $key => $fileCommand) {
+                if (str_contains(strtolower($fileCommand->getName()), strtolower($pattern))) {
+                    continue;
+                }
+                if (str_contains(strtolower($fileCommand->getDescription()), strtolower($pattern))) {
+                    continue;
+                }
+                unset($fileCommands[$key]);
+            }
+        }
 
         $this->renderInfoBox('This is a list of commands that are applicable to the given file or file type.');
 
