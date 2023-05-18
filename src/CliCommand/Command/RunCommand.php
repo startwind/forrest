@@ -3,6 +3,8 @@
 namespace Startwind\Forrest\CliCommand\Command;
 
 use Symfony\Component\Console\Command\Command as SymfonyCommand;
+use Symfony\Component\Console\Completion\CompletionInput;
+use Symfony\Component\Console\Completion\CompletionSuggestions;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -37,5 +39,12 @@ class RunCommand extends CommandCommand
         $commandIdentifier = $input->getArgument('identifier');
 
         return $this->runCommand($commandIdentifier, $userParameters);
+    }
+
+    public function complete(CompletionInput $input, CompletionSuggestions $suggestions): void
+    {
+        if ($input->mustSuggestArgumentValuesFor('identifier')) {
+            $suggestions->suggestValues(['linux:run', 'linux:delete']);
+        }
     }
 }

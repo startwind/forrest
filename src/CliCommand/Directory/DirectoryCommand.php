@@ -24,13 +24,12 @@ abstract class DirectoryCommand extends ForrestCommand
         $directoryConfigs = $this->getDirectoryConfigs();
 
         $directories = [];
-        $client = new Client();
 
         $directoriesLoadException = new DirectoriesLoadException();
 
         foreach ($directoryConfigs as $key => $directoryConfig) {
             try {
-                $content = $this->loadDirectory($directoryConfig, $client);
+                $content = $this->loadDirectory($directoryConfig);
             } catch (\Exception $exception) {
                 $directoriesLoadException->addException(new \RuntimeException('Directory error (' . $key . '): ' . $exception->getMessage()));
                 continue;
@@ -46,8 +45,10 @@ abstract class DirectoryCommand extends ForrestCommand
         return $directories;
     }
 
-    protected function loadDirectory(array $directoryConfig, Client $client)
+    protected function loadDirectory(array $directoryConfig)
     {
+        $client = $this->getClient();
+
         if (array_key_exists('url', $directoryConfig)) {
             $response = $client->get($directoryConfig['url']);
             return Yaml::parse($response->getBody());

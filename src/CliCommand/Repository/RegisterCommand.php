@@ -24,7 +24,7 @@ class RegisterCommand extends RepositoryCommand
     private function repositoryFileExists(string $repositoryFileName): bool
     {
         if (str_contains($repositoryFileName, '://')) {
-            $client = new Client();
+            $client = $this->getClient();
             try {
                 $client->get($repositoryFileName);
             } catch (\Exception $exception) {

@@ -74,6 +74,6 @@ class ImportCommand extends DirectoryCommand
 
     protected function validateConfig(array $config)
     {
-        $this->loadDirectory($config, new Client());
+        $this->loadDirectory($config);
     }
 }

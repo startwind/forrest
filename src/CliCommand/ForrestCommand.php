@@ -43,10 +43,14 @@ abstract class ForrestCommand extends SymfonyCommand
     private OutputInterface $output;
     private RecentParameterMemory $recentParameterMemory;
 
+    private Client $client;
+
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $this->input = $input;
         $this->output = $output;
+
+        $this->client = new Client();
 
         $home = getenv("HOME");
 
@@ -121,11 +125,9 @@ abstract class ForrestCommand extends SymfonyCommand
         $this->createUserConfig();
 
         if (!$this->repositoryLoader) {
-            $client = new Client();
-
             $repositoryLoader = new CompositeLoader();
 
-            $repositoryLoader->addLoader('defaultConfig', new YamlLoader($this->getUserConfigFile(), self::DEFAULT_CONFIG_FILE, $client));
+            $repositoryLoader->addLoader('defaultConfig', new YamlLoader($this->getUserConfigFile(), self::DEFAULT_CONFIG_FILE, $this->getClient()));
 
             if (file_exists(self::DEFAULT_LOCAL_CONFIG_FILE)) {
                 $repositoryLoader->addLoader('localConfig', new LocalRepositoryLoader(self::DEFAULT_LOCAL_CONFIG_FILE));
@@ -227,5 +229,14 @@ abstract class ForrestCommand extends SymfonyCommand
         }
 
         return $answer;
+    }
+
+    /**
+     * Return an initialized HTTP client. Be sure that every command uses this client
+     * as caching and other things are already configured here.
+     */
+    protected function getClient(): Client
+    {
+        return $this->client;
     }
 }
