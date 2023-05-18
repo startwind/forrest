@@ -43,7 +43,7 @@ Forrest is constantly evolving. Sometimes so fast that you might not even get ar
 
 
 - **1.0.0** 
-  - First stable version with all must haves we wanted to have in Forrest.
+  - **First stable version with all must haves we wanted to have in Forrest.**
   - `file` can be used as a shortcut for `commands:file`.
   - You can search the registered commands for pattern. This is done via `search:pattern`
   - We introduced the inverse search on files. It is now possible to run `search:file` with a given file name and Forrest will return all commands that are applicable for this file. [read more](commands/search_file.md)
