@@ -11,8 +11,6 @@ class Prompt
     public const PARAMETER_PREFIX = '${';
     public const PARAMETER_POSTFIX = '}';
 
-
-    private string $plainPrompt;
     private string $finalPrompt = '';
     private array $values;
 
@@ -23,7 +21,6 @@ class Prompt
      */
     public function __construct(string $plainPrompt, array $values)
     {
-        $this->plainPrompt = $plainPrompt;
         $this->values = $values;
 
         $this->finalPrompt = $plainPrompt;
@@ -33,7 +30,6 @@ class Prompt
             $this->finalPrompt = str_replace(self::PARAMETER_PREFIX . $value->getKey() . self::PARAMETER_POSTFIX, $value->getValue(), $this->finalPrompt);
 
             if ($value->getType() == PasswordParameter::TYPE) {
-                $this->isStorable = false;
                 $staredPassword = str_repeat('*', strlen($value->getValue()));
                 $this->securePrompt = str_replace(self::PARAMETER_PREFIX . $value->getKey() . self::PARAMETER_POSTFIX, $staredPassword, $this->securePrompt);
             } else {
@@ -44,11 +40,6 @@ class Prompt
         $function = new FunctionComposite();
         $this->finalPrompt = $function->applyFunction($this->finalPrompt);
         $this->securePrompt = $function->applyFunction($this->securePrompt);
-    }
-
-    public function getPlainPrompt(): string
-    {
-        return $this->plainPrompt;
     }
 
     /**
