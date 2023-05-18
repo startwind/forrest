@@ -8,7 +8,7 @@ use Startwind\Forrest\Adapter\Loader\Loader;
 
 class CacheDecorator implements Loader
 {
-    private const TIME_TO_LIVE = 24 * 60 * 60;
+    private const TIME_TO_LIVE = 5 * 60;
 
     protected Loader $loader;
 
@@ -36,10 +36,8 @@ class CacheDecorator implements Loader
             $key = $this->loader->getCacheKey();
             $item = $this->cacheItemPool->getItem($key);
             if ($item->isHit() && !$this->forceCacheFlush) {
-                var_dump('HIT');
                 return $item->get();
             } else {
-                var_dump('NO HIT');
                 $content = $this->loader->load();
                 $item->set($content);
                 $item->expiresAfter(self::TIME_TO_LIVE);
