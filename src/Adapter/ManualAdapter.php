@@ -2,6 +2,7 @@
 
 namespace Startwind\Forrest\Adapter;
 
+use GuzzleHttp\Client;
 use Startwind\Forrest\Command\Command;
 
 class ManualAdapter implements Adapter
@@ -20,7 +21,7 @@ class ManualAdapter implements Adapter
         return $this->commands;
     }
 
-    public static function fromConfigArray(array $config): Adapter
+    public static function fromConfigArray(array $config, Client $client): Adapter
     {
         return new self();
     }

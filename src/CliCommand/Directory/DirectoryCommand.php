@@ -53,7 +53,7 @@ abstract class DirectoryCommand extends ForrestCommand
             $response = $client->get($directoryConfig['url']);
             return Yaml::parse($response->getBody());
         } elseif (array_key_exists('loader', $directoryConfig)) {
-            $loader = LoaderFactory::create($directoryConfig['loader']);
+            $loader = LoaderFactory::create($directoryConfig['loader'], $client);
             if ($loader instanceof HttpAwareLoader) {
                 $loader->setClient($client);
             }

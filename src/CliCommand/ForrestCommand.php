@@ -3,6 +3,11 @@
 namespace Startwind\Forrest\CliCommand;
 
 use GuzzleHttp\Client;
+use GuzzleHttp\HandlerStack;
+use Kevinrob\GuzzleCache\CacheMiddleware;
+use Kevinrob\GuzzleCache\Storage\FlysystemStorage;
+use Kevinrob\GuzzleCache\Strategy\GreedyCacheStrategy;
+use League\Flysystem\Local\LocalFilesystemAdapter;
 use Startwind\Forrest\Command\Command;
 use Startwind\Forrest\Config\ConfigFileHandler;
 use Startwind\Forrest\Config\RecentParameterMemory;
@@ -20,6 +25,9 @@ use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\Question;
+
+use League\Flysystem\Adapter\Local;
+
 
 abstract class ForrestCommand extends SymfonyCommand
 {
@@ -50,13 +58,18 @@ abstract class ForrestCommand extends SymfonyCommand
         $this->input = $input;
         $this->output = $output;
 
-        $this->client = new Client();
+        $this->initClient();
 
         $home = getenv("HOME");
 
         $this->recentParameterMemory = new RecentParameterMemory($home . DIRECTORY_SEPARATOR . self::USER_RECENT_FILE);
 
         return $this->doExecute($input, $output);
+    }
+
+    private function initClient()
+    {
+        $this->client = new Client();
     }
 
     protected function getRecentParameterMemory(): RecentParameterMemory

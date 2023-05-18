@@ -9,7 +9,7 @@ use GuzzleHttp\RequestOptions;
 /**
  * @see https://docs.github.com/de/rest/repos/contents?apiVersion=2022-11-28#create-a-file
  */
-class PrivateGitHubLoader implements Loader, HttpAwareLoader, WritableLoader
+class PrivateGitHubLoader implements Loader, HttpAwareLoader, WritableLoader, CachableLoader
 {
     private const GIT_HUB_API_ENDPOINT = 'https://api.github.com/repos/%s/%s/contents/%s';
 
@@ -121,5 +121,13 @@ class PrivateGitHubLoader implements Loader, HttpAwareLoader, WritableLoader
     public function setClient(Client $client): void
     {
         $this->client = $client;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getCacheKey(): string
+    {
+        return md5($this->repository . $this->user . $this->file);
     }
 }

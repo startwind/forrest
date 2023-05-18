@@ -2,6 +2,7 @@
 
 namespace Startwind\Forrest\Adapter;
 
+use GuzzleHttp\Client;
 use Startwind\Forrest\Command\Command;
 
 interface Adapter
@@ -21,7 +22,7 @@ interface Adapter
     /**
      * Return an initialized adapter via config array.
      */
-    public static function fromConfigArray(array $config): Adapter;
+    public static function fromConfigArray(array $config, Client $client): Adapter;
 
     /**
      * Return true if the repository can be edited.
