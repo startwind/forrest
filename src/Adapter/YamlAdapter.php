@@ -132,21 +132,28 @@ class YamlAdapter extends BasicAdapter implements ClientAwareAdapter
     /**
      * @inheritDoc
      */
-    public static function fromConfigArray(array $config): Adapter
+    public static function fromConfigArray(array $config, Client $client): Adapter
     {
         if (array_key_exists('file', $config)) {
             $yamlFile = $config['file'];
+            $adapterConfig = ['config' => ['file' => $yamlFile]];
             if (str_contains($yamlFile, '://')) {
-                $loader = new HttpFileLoader($yamlFile);
+                $adapterConfig['type'] = 'httpFile';
             } else {
-                $loader = new LocalFileLoader($yamlFile);
+                $adapterConfig['type'] = 'localFile';
             }
         } elseif (array_key_exists('loader', $config)) {
-            $loader = LoaderFactory::create($config['loader']);
+            $adapterConfig = $config['loader'];
         } else {
             throw new \RuntimeException('Configuration not applicable.');
         }
-        return new self($loader);
+
+        $loader = LoaderFactory::create($adapterConfig, $client);
+
+        $adapter = new self($loader);
+        $adapter->setClient($client);
+
+        return $adapter;
     }
 
     /**

@@ -8,7 +8,7 @@ use GuzzleHttp\Exception\ServerException;
 use Startwind\Forrest\Adapter\Exception\RepositoryNotFoundException;
 use Startwind\Forrest\Adapter\Exception\UnableToFetchRepositoryException;
 
-class HttpFileLoader implements Loader, HttpAwareLoader
+class HttpFileLoader implements Loader, HttpAwareLoader, CachableLoader
 {
     private string $filename;
     private ?Client $client;
@@ -51,5 +51,10 @@ class HttpFileLoader implements Loader, HttpAwareLoader
     public static function fromConfigArray(array $config): Loader
     {
         return new self($config['file']);
+    }
+
+    public function getCacheKey(): string
+    {
+        return md5($this->filename);
     }
 }
