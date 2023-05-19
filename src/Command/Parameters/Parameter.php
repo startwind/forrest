@@ -73,6 +73,14 @@ class Parameter
     }
 
     /**
+     * @param array $constraints
+     */
+    public function setConstraints(array $constraints): void
+    {
+        $this->constraints = $constraints;
+    }
+
+    /**
      * Check if the given value is valid.
      */
     public function validate(string $value): ValidationResult
