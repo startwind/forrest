@@ -6,7 +6,9 @@ abstract class ConstraintFactory
 {
     private static array $validConstraints = [
         'integer' => IntegerConstraint::class,
-        'not-empty' => NotEmptyConstraint::class
+        'not-empty' => NotEmptyConstraint::class,
+        'file-exists' => FileExistsConstraint::class,
+        'file-not-exists' => FileNotExistsConstraint::class
     ];
 
     public static function getConstraint(string $constraintName): string

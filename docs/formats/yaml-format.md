@@ -117,7 +117,9 @@ By default the active constraints for every parameter include the `not-empty` co
 #### Valid constraints
 
 - `integer`: checks if the given value is a number (integer).
-- `not-empty`: checks if the given value is not empty 
+- `not-empty`: checks if the given value is not empty.
+- `file-exists`: checks if a file exists.
+- `file-not-exists`: checks if a file does not exist.
 
 #### Example
 
