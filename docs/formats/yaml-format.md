@@ -65,7 +65,7 @@ commands:
   - **file-formats** - The file format is only relevant if the type is `forrest_filename`. This field is also used for the reverse command search via `search:file`. If the command takes a directory as parameter use `directory` as filetype.
   - **enum** You can define a list of values the user has to chose one from. [read more](#enum--optional-)
   - **allowed-in-history** - If this field is set to false the command will not appear in the Forrest history. This can be important if some secret keys are included. If a parameter is type forrest_password this flag will automatically be set to false. 
-  - **constraints** - Constraints are used to pre-validate parameters before the actual run. [read more]
+  - **constraints** - Constraints are used to pre-validate parameters before the actual run. [read more](#constraints--optional-)
 
 ## Parameter
 
@@ -108,7 +108,7 @@ Enums can be used to predefine values the user can choose from. There are two wa
           zwei: two
           drei: three
 ```
-### `contraints` (optional)
+### `constraints` (optional)
 
 Constraints are used to pre-validate parameters before the actual run. For example they can make sure that a parameter is a number or not empty.
 
