@@ -2,6 +2,7 @@
 
 namespace Startwind\Forrest\Command\Parameters;
 
+use Startwind\Forrest\Command\Parameters\Validation\Constraint\ConstraintFactory;
 use Startwind\Forrest\Command\Parameters\Validation\Constraint\IntegerConstraint;
 use Startwind\Forrest\Command\Parameters\Validation\Constraint\NotEmptyConstraint;
 use Startwind\Forrest\Enrichment\EnrichFunction\FunctionComposite;
@@ -72,16 +73,13 @@ class ParameterFactory
 
     private static function getConstraints(array $constraintArray): array
     {
-        $validConstraints = [
-            'integer' => IntegerConstraint::class,
-            'not-empty' => NotEmptyConstraint::class
-        ];
-
         $constraints = [];
 
         foreach ($constraintArray as $constraint) {
-            if (array_key_exists(strtolower($constraint), $validConstraints)) {
-                $constraints[] = $validConstraints[strtolower($constraint)];
+            try {
+                $constraints[] = ConstraintFactory::getConstraint($constraint);
+            } catch (\Exception $exception) {
+                // @todo log error
             }
         }
 
