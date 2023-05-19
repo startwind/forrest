@@ -65,6 +65,7 @@ commands:
   - **file-formats** - The file format is only relevant if the type is `forrest_filename`. This field is also used for the reverse command search via `search:file`. If the command takes a directory as parameter use `directory` as filetype.
   - **enum** You can define a list of values the user has to chose one from. [read more](#enum--optional-)
   - **allowed-in-history** - If this field is set to false the command will not appear in the Forrest history. This can be important if some secret keys are included. If a parameter is type forrest_password this flag will automatically be set to false. 
+  - **constraints** - Constraints are used to pre-validate parameters before the actual run. [read more]
 
 ## Parameter
 
@@ -106,4 +107,28 @@ Enums can be used to predefine values the user can choose from. There are two wa
           eins: one
           zwei: two
           drei: three
+```
+### `contraints` (optional)
+
+Constraints are used to pre-validate parameters before the actual run. For example they can make sure that a parameter is a number or not empty.
+
+By default the active constraints for every parameter include the `not-empty` constraint. If the parameter is allowed to be empty you have to overwrite the constraints.
+
+#### Valid constraints
+
+- `integer`: checks if the given value is a number (integer).
+- `not-empty`: checks if the given value is not empty 
+
+#### Example
+
+```yaml
+"files:find:size":
+  name: 'files:find:size'
+  description: 'Command description'
+  prompt: 'find . -type f -size +${size_in_mega_byte}M$'
+  parameters:
+    size_in_mega_byte:
+      constraints:
+        - integer
+        - not-empty
 ```
