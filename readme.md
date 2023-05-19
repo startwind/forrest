@@ -76,7 +76,7 @@ Run command with name `forrest-linux:files:find:older` which will search for fil
 ```shell
 forrest file WordPress.zip
 ```
-Show all commands that are connected to a `zip` file or the `WordPress-zip` file. This would for example show the unzip command archives.
+Show all commands that are connected to a `zip` file or the `WordPress.zip` file. This would for example show the unzip command archives.
 
 ## How to support
 

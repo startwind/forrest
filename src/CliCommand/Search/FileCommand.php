@@ -13,7 +13,9 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class FileCommand extends SearchCommand
 {
-    protected static $defaultName = 'search:file';
+    public const COMMAND_NAME = 'search:file';
+
+    protected static $defaultName = self::COMMAND_NAME;
     protected static $defaultDescription = 'Search for commands that fit the given file.';
 
     protected function configure(): void
