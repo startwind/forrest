@@ -2,6 +2,9 @@
 
 namespace Startwind\Forrest\Command\Parameters;
 
+use Startwind\Forrest\Command\Parameters\Validation\Constraint\NotEmptyConstraint;
+use Startwind\Forrest\Command\Parameters\Validation\ValidationResult;
+
 class Parameter
 {
     public const TYPE = 'mixed';
@@ -11,6 +14,10 @@ class Parameter
     private string $defaultValue = '';
 
     private array $values = [];
+
+    private array $constraints = [
+        NotEmptyConstraint::class
+    ];
 
     public function setName(string $name): void
     {
@@ -63,5 +70,28 @@ class Parameter
     public function getType(): string
     {
         return self::TYPE;
+    }
+
+    /**
+     * @param array $constraints
+     */
+    public function setConstraints(array $constraints): void
+    {
+        $this->constraints = $constraints;
+    }
+
+    /**
+     * Check if the given value is valid.
+     */
+    public function validate(string $value): ValidationResult
+    {
+        foreach ($this->constraints as $constraint) {
+            /** @var ValidationResult $constraintValidationResult */
+            $constraintValidationResult = (call_user_func([$constraint, 'validate'], $value));
+            if (!$constraintValidationResult->isValid()) {
+                return $constraintValidationResult;
+            }
+        }
+        return new ValidationResult(true);
     }
 }

@@ -84,15 +84,27 @@ class PromptHelper
                 $name = $identifier;
             }
 
-            if ($parameter->hasValues()) {
-                $value = $this->askForEnum('  Select value for ' . $name . $additional['string'] . ': ', $parameter->getValues());
-            } else {
-                $question = new Question('  Select value for ' . $name . $additional['string'] . ': ', $additional['value']);
-                if ($parameter instanceof PasswordParameter) {
-                    $question->setHidden(true);
-                    $question->setHiddenFallback(false);
+            $valid = false;
+
+            while (!$valid) {
+                if ($parameter->hasValues()) {
+                    $value = $this->askForEnum('  Select value for ' . $name . $additional['string'] . ': ', $parameter->getValues());
+                } else {
+                    $question = new Question('  Select value for ' . $name . $additional['string'] . ': ', $additional['value']);
+                    if ($parameter instanceof PasswordParameter) {
+                        $question->setHidden(true);
+                        $question->setHiddenFallback(false);
+                    }
+                    $value = $this->questionHelper->ask($this->input, $this->output, $question);
                 }
-                $value = $this->questionHelper->ask($this->input, $this->output, $question);
+
+                $validationResult = $parameter->validate($value);
+
+                $valid = $validationResult->isValid();
+
+                if (!$valid) {
+                    $this->output->writeln('  <error>' . $validationResult->getValidationMessage() . '</error>');
+                }
             }
 
             $values[] = new ParameterValue($identifier, $value, $parameter->getType());

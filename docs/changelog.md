@@ -9,6 +9,7 @@ Forrest is constantly evolving. Sometimes so fast that you might not even get ar
   - Advanced enums: enums can now be key-value pairs. This helps when the actual value of the prompt is a long and unhandy string. [read more](formats/yaml-format.md#enum--optional-) 
   - Filter `search:file` command by adding a pattern as second argument. 
   - `add` is now a shortcut for `repository:command:add`.
+  - Constraints can now be used to pre-validate parameter values. [read more](formats/yaml-format.md#contraints--optional-)
 
 
 - **1.3.0**
