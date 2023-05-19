@@ -3,6 +3,7 @@
 Forrest is constantly evolving. Sometimes so fast that you might not even get around to trying out the new features. For this reason, we have introduced a changelog.
 
 - **develop**
+  - Shortcut for `search:pattern`. The functionality can now be used via the `run` command by simply using the file as first argument.
 
 
 - **1.4.0**
