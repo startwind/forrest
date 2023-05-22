@@ -58,7 +58,7 @@ class CommandCommand extends \Startwind\Forrest\CliCommand\RunCommand
             } else {
                 $output->writeln([
                     '',
-                    '<fg=yellow>' . str_replace('Forrest', 'Hetzner', $repository->getName()) . '</> (' . $repoIdentifier . ')',
+                    '<fg=yellow>' . str_replace('Forrest', 'Hetzner', $repository->getName()) . '</> (' . str_replace('forrest', 'hetzner', $repoIdentifier) . ')',
                     '',
                 ]);
             }
