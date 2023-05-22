@@ -3,6 +3,7 @@
 namespace Startwind\Forrest\CliCommand\Command;
 
 use Startwind\Forrest\CliCommand\Search\FileCommand;
+use Startwind\Forrest\Util\OutputHelper;
 use Symfony\Component\Console\Command\Command as SymfonyCommand;
 use Symfony\Component\Console\Completion\CompletionInput;
 use Symfony\Component\Console\Completion\CompletionSuggestions;
@@ -31,6 +32,8 @@ class RunCommand extends CommandCommand
      */
     protected function doExecute(InputInterface $input, OutputInterface $output): int
     {
+        OutputHelper::writeMessage($output, 'Hetzner CLI Helper - Version 1.0.4', '<bg=#E90021;fg=white>', '</>');
+
         if (!$input->getArgument('identifier')) {
             $this->renderListCommand();
             return SymfonyCommand::SUCCESS;

@@ -43,7 +43,7 @@ class CommandCommand extends \Startwind\Forrest\CliCommand\RunCommand
         $output->writeln([
             '<fg=yellow>Usage:</>',
             '',
-            '  forrest run [command]',
+            '  hetzner-cli run [command]',
             '',
         ]);
 
@@ -58,7 +58,7 @@ class CommandCommand extends \Startwind\Forrest\CliCommand\RunCommand
             } else {
                 $output->writeln([
                     '',
-                    '<fg=yellow>' . $repository->getName() . '</> (' . $repoIdentifier . ')',
+                    '<fg=yellow>' . str_replace('Forrest', 'Hetzner', $repository->getName()) . '</> (' . $repoIdentifier . ')',
                     '',
                 ]);
             }

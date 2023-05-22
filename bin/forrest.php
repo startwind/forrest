@@ -11,7 +11,7 @@ const FORREST_NAME = 'Forrest';
 
 $application = new Application();
 
-$application->setName('Forrest - Package manager for CLI scripts');
+$application->setName('Hetzner CLI - Helpful commands for Hetzner servers.');
 $application->setVersion(FORREST_VERSION);
 
 # Command Commands

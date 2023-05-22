@@ -25,7 +25,7 @@ class OutputHelper
     {
         $output->writeln([
             '',
-            'Forrest - Package manager for CLI scripts <fg=green>' . FORREST_VERSION . '</>',
+            'Hetzner CLI - Helpful commands for Hetzner servers. <fg=green>Version 1.0.4</>',
             '',
         ]);
     }
@@ -71,7 +71,7 @@ class OutputHelper
                 $numberPrefix = '  ' . $number;
                 $number++;
             }
-            $output->writeln($numberPrefix . '  <fg=green>' . $commandIdentifier . '</>' . $spaces . $command->getDescription());
+            $output->writeln($numberPrefix . '  <fg=green>' . str_replace('forrest-linux', 'linux', $commandIdentifier) . '</>' . $spaces . $command->getDescription());
         }
 
         if ($askForCommand) {
