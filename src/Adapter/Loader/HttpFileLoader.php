@@ -27,7 +27,7 @@ class HttpFileLoader implements Loader, HttpAwareLoader, CachableLoader
             $response = $this->client->get($this->filename);
         } catch (ClientException $exception) {
             if ($exception->getResponse()->getStatusCode() === 404) {
-                throw new RepositoryNotFoundException("The given repository can't be found.");
+                throw new RepositoryNotFoundException("The given repository (" . $this->filename . ") can't be found.");
             } else {
                 throw $exception;
             }

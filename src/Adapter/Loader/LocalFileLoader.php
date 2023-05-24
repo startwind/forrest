@@ -16,6 +16,9 @@ class LocalFileLoader implements Loader, WritableLoader
      */
     public function load(): string
     {
+        if (!file_exists($this->filename)) {
+            throw new \RuntimeException('The mandatory file ("' . $this->filename . '") does not exist.');
+        }
         return file_get_contents($this->filename);
     }
 

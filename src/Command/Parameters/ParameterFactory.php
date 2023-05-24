@@ -77,6 +77,9 @@ class ParameterFactory
 
         foreach ($constraintArray as $constraint) {
             try {
+                if (is_null($constraint)) {
+                    throw new \RuntimeException('The given constraint must not be null.');
+                }
                 $constraints[] = ConstraintFactory::getConstraint($constraint);
             } catch (\Exception $exception) {
                 // @todo log error

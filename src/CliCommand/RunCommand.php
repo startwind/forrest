@@ -9,7 +9,7 @@ use Symfony\Component\Console\Command\Command as SymfonyCommand;
 
 abstract class RunCommand extends ForrestCommand
 {
-    protected function runCommand(string $commandIdentifier, array $userParameters): int
+    protected function runCommand(string $commandIdentifier, array $userParameters = []): int
     {
         $repositoryIdentifier = $this->getRepositoryIdentifier($commandIdentifier);
 

@@ -7,6 +7,7 @@ use Startwind\Forrest\Output\OutputHelper;
 use Symfony\Component\Console\Command\Command as SymfonyCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class PatternCommand extends SearchCommand
@@ -17,6 +18,8 @@ class PatternCommand extends SearchCommand
     protected function configure(): void
     {
         $this->addArgument('pattern', InputArgument::REQUIRED, 'The pattern you want to search for.');
+        $this->addOption('force', null, InputOption::VALUE_OPTIONAL, 'Run the command without asking for permission.', false);
+
         $this->setAliases(['pattern']);
     }
 
@@ -44,17 +47,10 @@ class PatternCommand extends SearchCommand
             return false;
         }, ['pattern' => $pattern]);
 
-        if (!empty($commands)) {
-            /** @var \Symfony\Component\Console\Helper\QuestionHelper $questionHelper */
-            $questionHelper = $this->getHelper('question');
-            OutputHelper::renderCommands($output, $input, $questionHelper, $commands);
-        } else {
+        if (empty($commands)) {
             $this->renderErrorBox('No commands found that match this pattern.');
         }
 
-        $output->writeln('');
-
-        return SymfonyCommand::SUCCESS;
+        return $this->runFromCommands($commands);
     }
-
 }
