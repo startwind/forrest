@@ -38,6 +38,8 @@ class RegisterCommand extends RepositoryCommand
 
     protected function doExecute(InputInterface $input, OutputInterface $output): int
     {
+        $this->initRepositoryLoader();
+
         $repositoryFileName = $input->getArgument('repositoryFileName');
 
         if (!$this->repositoryFileExists($repositoryFileName)) {
