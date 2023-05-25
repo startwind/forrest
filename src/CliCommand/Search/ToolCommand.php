@@ -10,6 +10,7 @@ use Startwind\Forrest\Runner\CommandRunner;
 use Symfony\Component\Console\Command\Command as SymfonyCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class ToolCommand extends SearchCommand
@@ -20,6 +21,8 @@ class ToolCommand extends SearchCommand
     protected function configure(): void
     {
         $this->addArgument('tool', InputArgument::REQUIRED, 'The tool name you want to search for.');
+        $this->addOption('force', null, InputOption::VALUE_OPTIONAL, 'Run the command without asking for permission.', false);
+
         $this->setAliases(['tool']);
     }
 
@@ -44,16 +47,10 @@ class ToolCommand extends SearchCommand
             }
         }
 
-        if (!empty($commands)) {
-            /** @var \Symfony\Component\Console\Helper\QuestionHelper $questionHelper */
-            $questionHelper = $this->getHelper('question');
-            OutputHelper::renderCommands($output, $input, $questionHelper, $commands);
-        } else {
-            $this->renderErrorBox('No commands found that match this tool.');
+        if (empty($commands)) {
+            $this->renderErrorBox('No commands found that match the given tool.');
         }
 
-        $output->writeln('');
-
-        return SymfonyCommand::SUCCESS;
+        return $this->runFromCommands($commands);
     }
 }

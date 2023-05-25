@@ -45,7 +45,7 @@ class PatternCommand extends SearchCommand
         }
 
         if (empty($commands)) {
-            $this->renderErrorBox('No commands found that match this pattern.');
+            $this->renderErrorBox('No commands found that match the given pattern.');
         }
 
         return $this->runFromCommands($commands);
