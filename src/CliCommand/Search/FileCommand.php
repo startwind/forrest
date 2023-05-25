@@ -46,6 +46,7 @@ class FileCommand extends SearchCommand
         }
 
         $filenames = [$filename];
+
         if (is_dir($filename)) {
             $filenames[] = FileParameter::DIRECTORY;
         }

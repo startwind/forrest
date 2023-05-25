@@ -4,6 +4,8 @@ namespace Startwind\Forrest\CliCommand\Search;
 
 use Startwind\Forrest\Command\Command;
 use Startwind\Forrest\Output\OutputHelper;
+use Startwind\Forrest\Repository\FileRepository;
+use Startwind\Forrest\Repository\SearchAwareRepository;
 use Startwind\Forrest\Runner\CommandRunner;
 use Symfony\Component\Console\Command\Command as SymfonyCommand;
 use Symfony\Component\Console\Input\InputArgument;
@@ -31,9 +33,16 @@ class ToolCommand extends SearchCommand
 
         $this->renderInfoBox('This is a list of commands that match the given tool.');
 
-        $commands = $this->search(function (Command $command, $config) {
-            return CommandRunner::extractToolFromPrompt($command->getPrompt()) == $config['tool'];
-        }, ['tool' => $tool]);
+        $commands = [];
+
+        foreach ($this->getRepositoryCollection()->getRepositories() as $repositoryIdentifier => $repository) {
+            if ($repository instanceof SearchAwareRepository) {
+                $foundCommands = $repository->searchByTools([$tool]);
+                foreach ($foundCommands as $foundCommand) {
+                    $commands[FileRepository::createUniqueCommandName($repositoryIdentifier, $foundCommand)] = $foundCommand;
+                }
+            }
+        }
 
         if (!empty($commands)) {
             /** @var \Symfony\Component\Console\Helper\QuestionHelper $questionHelper */

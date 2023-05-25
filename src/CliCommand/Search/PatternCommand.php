@@ -2,9 +2,9 @@
 
 namespace Startwind\Forrest\CliCommand\Search;
 
-use Startwind\Forrest\Command\Command;
 use Startwind\Forrest\Output\OutputHelper;
-use Symfony\Component\Console\Command\Command as SymfonyCommand;
+use Startwind\Forrest\Repository\FileRepository;
+use Startwind\Forrest\Repository\SearchAwareRepository;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -33,19 +33,16 @@ class PatternCommand extends SearchCommand
 
         $this->renderInfoBox('This is a list of commands that match the given pattern.');
 
-        $commands = $this->search(function (Command $command, $config) {
-            $pattern = $config['pattern'];
+        $commands = [];
 
-            if (str_contains(strtolower($command->getName()), strtolower($pattern))) {
-                return true;
+        foreach ($this->getRepositoryCollection()->getRepositories() as $repositoryIdentifier => $repository) {
+            if ($repository instanceof SearchAwareRepository) {
+                $foundCommands = $repository->searchByPattern([$pattern]);
+                foreach ($foundCommands as $foundCommand) {
+                    $commands[FileRepository::createUniqueCommandName($repositoryIdentifier, $foundCommand)] = $foundCommand;
+                }
             }
-
-            if (str_contains(strtolower($command->getDescription()), strtolower($pattern))) {
-                return true;
-            }
-
-            return false;
-        }, ['pattern' => $pattern]);
+        }
 
         if (empty($commands)) {
             $this->renderErrorBox('No commands found that match this pattern.');
