@@ -5,11 +5,11 @@ namespace Startwind\Forrest\Repository;
 class RepositoryCollection
 {
     /**
-     * @var Repository[]
+     * @var FileRepository[]
      */
     private array $repositories = [];
 
-    public function addRepository(string $identifier, Repository $repository): void
+    public function addRepository(string $identifier, FileRepository $repository): void
     {
         $this->repositories[$identifier] = $repository;
     }
@@ -22,7 +22,7 @@ class RepositoryCollection
     /**
      * Get a repository by identifier.
      */
-    public function getRepository($identifier): Repository
+    public function getRepository($identifier): FileRepository
     {
         if (!array_key_exists($identifier, $this->repositories)) {
             throw new \RuntimeException('No repository with identifier "' . $identifier . '" found.');

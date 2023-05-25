@@ -3,7 +3,7 @@
 namespace Startwind\Forrest\Output;
 
 use Startwind\Forrest\Command\Command;
-use Startwind\Forrest\Repository\Repository;
+use Startwind\Forrest\Repository\FileRepository;
 use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputInterface;
@@ -39,7 +39,7 @@ class OutputHelper
 
         foreach ($commands as $commandId => $command) {
             if ($repoIdentifier) {
-                $commandIdentifier = Repository::createUniqueCommandName($repoIdentifier, $command);
+                $commandIdentifier = FileRepository::createUniqueCommandName($repoIdentifier, $command);
             } else {
                 $commandIdentifier = $commandId;
             }
@@ -60,7 +60,7 @@ class OutputHelper
 
         foreach ($commands as $commandId => $command) {
             if ($repoIdentifier) {
-                $commandIdentifier = Repository::createUniqueCommandName($repoIdentifier, $command);
+                $commandIdentifier = FileRepository::createUniqueCommandName($repoIdentifier, $command);
             } else {
                 $commandIdentifier = $commandId;
             }

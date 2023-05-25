@@ -3,6 +3,7 @@
 namespace Startwind\Forrest\CliCommand\Repository\Command;
 
 use Startwind\Forrest\CliCommand\Repository\RepositoryCommand;
+use Startwind\Forrest\Repository\EditableRepository;
 use Startwind\Forrest\Util\OutputHelper;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\QuestionHelper;
@@ -30,6 +31,10 @@ class RemoveCommand extends RepositoryCommand
         $repositoryIdentifier = $this->getRepositoryIdentifier($identifier);
 
         $repository = $this->getRepositoryCollection()->getRepository($repositoryIdentifier);
+
+        if (!$repository instanceof EditableRepository) {
+            throw new \RuntimeException('The given repository "' . $repositoryIdentifier . '" is read-only.');
+        }
 
         OutputHelper::writeWarningBox($output, 'Removing ' . $identifier . '. Please notice that this removing can not be undone.');
 

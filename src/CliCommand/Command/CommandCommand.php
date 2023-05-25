@@ -3,7 +3,7 @@
 namespace Startwind\Forrest\CliCommand\Command;
 
 use Startwind\Forrest\Output\OutputHelper;
-use Startwind\Forrest\Repository\Repository;
+use Startwind\Forrest\Repository\FileRepository;
 
 class CommandCommand extends \Startwind\Forrest\CliCommand\RunCommand
 {
@@ -29,7 +29,7 @@ class CommandCommand extends \Startwind\Forrest\CliCommand\RunCommand
         foreach ($repositories as $repoIdentifier => $repository) {
             try {
                 foreach ($repository->getCommands() as $command) {
-                    $maxLength = max($maxLength, strlen(Repository::createUniqueCommandName($repoIdentifier, $command)));
+                    $maxLength = max($maxLength, strlen(FileRepository::createUniqueCommandName($repoIdentifier, $command)));
                 }
             } catch (\Exception $exception) {
                 unset($repositories[$repoIdentifier]);

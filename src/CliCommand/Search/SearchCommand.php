@@ -5,7 +5,7 @@ namespace Startwind\Forrest\CliCommand\Search;
 use Startwind\Forrest\CliCommand\ForrestCommand;
 use Startwind\Forrest\CliCommand\RunCommand;
 use Startwind\Forrest\Output\OutputHelper;
-use Startwind\Forrest\Repository\Repository;
+use Startwind\Forrest\Repository\FileRepository;
 use Symfony\Component\Console\Command\Command as SymfonyCommand;
 
 abstract class SearchCommand extends RunCommand
@@ -27,7 +27,7 @@ abstract class SearchCommand extends RunCommand
             $commands = $repository->getCommands();
             foreach ($commands as $command) {
                 if ($finder($command, $config)) {
-                    $foundCommands[Repository::createUniqueCommandName($repositoryId, $command)] = $command;
+                    $foundCommands[FileRepository::createUniqueCommandName($repositoryId, $command)] = $command;
                 }
             }
         }

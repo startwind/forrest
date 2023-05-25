@@ -4,7 +4,7 @@ namespace Startwind\Forrest\Repository\Loader;
 
 use Startwind\Forrest\Adapter\ManualAdapter;
 use Startwind\Forrest\Command\Command;
-use Startwind\Forrest\Repository\Repository;
+use Startwind\Forrest\Repository\FileRepository;
 use Startwind\Forrest\Repository\RepositoryCollection;
 use Symfony\Component\Yaml\Yaml;
 
@@ -23,7 +23,7 @@ abstract class LocalJsonRepositoryLoader implements RepositoryLoader
 
         $manualAdapter = new ManualAdapter();
 
-        $repository = new Repository($manualAdapter, $repositoryName, $repositoryDescription, true);
+        $repository = new FileRepository($manualAdapter, $repositoryName, $repositoryDescription, true);
 
         foreach ($jsonConfig['scripts'] as $name => $script) {
             if (is_string($script)) {

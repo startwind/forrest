@@ -5,87 +5,26 @@ namespace Startwind\Forrest\Repository;
 use Startwind\Forrest\Adapter\Adapter;
 use Startwind\Forrest\Command\Command;
 
-class Repository
+interface Repository
 {
-    private array $commands = [];
+    public function getAdapter(): Adapter;
 
-    public function __construct(
-        private readonly Adapter $adapter,
-        private readonly string  $name,
-        private readonly string  $description,
-        private readonly bool    $isSpecialRepo = false,
-    )
-    {
-    }
+    public function getName(): string;
 
-    public function getAdapter(): Adapter
-    {
-        return $this->adapter;
-    }
-
-    public function getName(): string
-    {
-        return $this->name;
-    }
-
-    public function getDescription(): string
-    {
-        return $this->description;
-    }
+    public function getDescription(): string;
 
     /**
      * @return Command[]
-     * @throws \Exception
      */
-    public function getCommands(): array
-    {
-        $exceptions = [];
+    public function getCommands(): array;
 
-        if (!$this->commands) {
-            try {
-                $this->commands = $this->adapter->getCommands();
-            } catch (\Exception $exception) {
-                $exceptions[] = $exception;
-                throw  $exception;
-            }
-        }
-
-        return $this->commands;
-    }
-
-    public function hasCommands(): bool
-    {
-        return count($this->getCommands()) > 0;
-    }
+    public function hasCommands(): bool;
 
     /**
-     * Return true if the repository can be edited
+     * Special directories are highlighted when the commands are listed.
+     * Examples are context-sensitive repos like composer.json files.
      */
-    public function isEditable(): bool
-    {
-        return $this->getAdapter()->isEditable();
-    }
+    public function isSpecial(): bool;
 
-    public function addCommand(Command $command): void
-    {
-        $this->adapter->addCommand($command);
-    }
-
-    public function removeCommand(string $commandName): void
-    {
-        $this->adapter->removeCommand($commandName);
-    }
-
-    /**
-     * @return bool
-     */
-    public function isSpecial(): bool
-    {
-        return $this->isSpecialRepo;
-    }
-
-    public static function createUniqueCommandName(string $repositoryIdentifier, Command $command): string
-    {
-        return $repositoryIdentifier . ':' . $command->getName();
-    }
+    public static function createUniqueCommandName(string $repositoryIdentifier, Command $command): string;
 }
