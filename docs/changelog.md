@@ -3,6 +3,7 @@
 Forrest is constantly evolving. Sometimes so fast that you might not even get around to trying out the new features. For this reason, we have introduced a changelog.
 
 - **develop**
+  - The `repository:list` command now shows if a repository is writeable.
 
 
 - **1.5.0**
