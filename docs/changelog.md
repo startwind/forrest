@@ -4,6 +4,7 @@ Forrest is constantly evolving. Sometimes so fast that you might not even get ar
 
 - **develop**
   - The `repository:list` command now shows if a repository is writeable.
+  - New constraint `identifier` checks for values that only contain lower-case lettern and numbers. [read more](formats/yaml-format.md#constraints--optional-)
 
 
 - **1.5.0**

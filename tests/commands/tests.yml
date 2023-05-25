@@ -42,3 +42,14 @@ commands:
     parameters:
       docker_name:
         enum: "${docker-names()}"
+
+  ## CONSTRAINTS
+  'constraints:identifier':
+    name: 'constraints:identifier'
+    description: 'Check for identifier constraint'
+    runnable: false
+    prompt: 'echo ${identifier}'
+    parameters:
+      identifier:
+        constraints:
+          - identifier

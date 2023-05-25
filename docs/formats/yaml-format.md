@@ -120,6 +120,7 @@ By default the active constraints for every parameter include the `not-empty` co
 - `not-empty`: checks if the given value is not empty.
 - `file-exists`: checks if a file exists.
 - `file-not-exists`: checks if a file does not exist.
+- `identifer`: checks if a string only contains lowercase letters or numbers.
 
 #### Example
 

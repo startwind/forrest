@@ -90,7 +90,7 @@ class PromptHelper
                 if ($parameter->hasValues()) {
                     $value = $this->askForEnum('  Select value for ' . $name . $additional['string'] . ": \n", $parameter->getValues());
                 } else {
-                    $question = new Question('  Select value for ' . $name . $additional['string'] . ": \n", $additional['value']);
+                    $question = new Question('  Select value for ' . $name . $additional['string'] . ": ", $additional['value']);
                     if ($parameter instanceof PasswordParameter) {
                         $question->setHidden(true);
                         $question->setHiddenFallback(false);

@@ -8,7 +8,8 @@ abstract class ConstraintFactory
         'integer' => IntegerConstraint::class,
         'not-empty' => NotEmptyConstraint::class,
         'file-exists' => FileExistsConstraint::class,
-        'file-not-exists' => FileNotExistsConstraint::class
+        'file-not-exists' => FileNotExistsConstraint::class,
+        'identifier' => IdentifierConstraint::class
     ];
 
     public static function getConstraint(string $constraintName): string

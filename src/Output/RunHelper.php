@@ -61,7 +61,7 @@ class RunHelper
     {
         if (!$command->isRunnable()) {
             OutputHelper::writeWarningBox($this->output, [
-                'This command was marked as not runnable by Forrest. It was copied to you clipboard.'
+                'This command was marked as not runnable by Forrest. It was copied to your clipboard.'
             ]);
 
             OSHelper::copyToClipboard($finalPrompt);
