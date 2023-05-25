@@ -29,6 +29,7 @@ abstract class OSHelper
             // works on windows 7 +
             $clip = popen("clip", "wb");
         } elseif (PHP_OS_FAMILY === "Linux") {
+            return false;
             // tested, works on ArchLinux
             $clip = popen('xclip -selection clipboard', 'wb');
         } elseif (PHP_OS_FAMILY === "Darwin") {
