@@ -37,7 +37,8 @@ commands:
   'enum-explode':
     name: 'parameters:enum:with-explode'
     description: 'Check password handling'
-    prompt: 'ls ${docker_users}'
+    runnable: false
+    prompt: 'docker exec -it ${docker_name} /bin/bash'
     parameters:
-      docker_users:
+      docker_name:
         enum: "${docker-names()}"

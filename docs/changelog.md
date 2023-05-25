@@ -4,6 +4,7 @@ Forrest is constantly evolving. Sometimes so fast that you might not even get ar
 
 - **develop**
   - Shortcut for `search:pattern`. The functionality can now be used via the `run` command by simply using the file as first argument.
+  - New function for docker. It is now possible to use functions in enums. In this particular case you can use `${docker-names()}` and it will show all the running docker containers in the selection.
 
 
 - **1.4.0**
