@@ -1,8 +1,8 @@
 <?php
 
-namespace Startwind\Forrest\Enrichment\EnrichFunction;
+namespace Startwind\Forrest\Enrichment\EnrichFunction\String;
 
-class DateFunction extends BasicFunction
+class DateStringFunction extends BasicStringFunction
 {
     protected string $functionName = 'date';
 

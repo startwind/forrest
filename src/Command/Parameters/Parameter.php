@@ -4,6 +4,7 @@ namespace Startwind\Forrest\Command\Parameters;
 
 use Startwind\Forrest\Command\Parameters\Validation\Constraint\NotEmptyConstraint;
 use Startwind\Forrest\Command\Parameters\Validation\ValidationResult;
+use Startwind\Forrest\Enrichment\EnrichFunction\Explode\FunctionComposite;
 
 class Parameter
 {
@@ -57,9 +58,19 @@ class Parameter
     /**
      * @param array $values
      */
-    public function setValues(array $values): void
+    public function setValues(array|string $values): void
     {
-        $this->values = $values;
+        if (is_array($values)) {
+            $this->values = $values;
+        } else {
+            $explodeFunctionComposite = new FunctionComposite();
+            $values = $explodeFunctionComposite->applyFunction($values);
+            if (is_string($values)) {
+                throw  new \RuntimeException('Unable to process enum value "' . $values . '"');
+            } else {
+                $this->values = $values;
+            }
+        }
     }
 
     public function hasValues(): bool
