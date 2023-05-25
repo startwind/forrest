@@ -15,7 +15,7 @@ When running a command again we will suggest the recent parameter. This way it i
 - `--force`: If this parameter is added Forrest will not ask for confirmation before running the command. As this can be very insecure (some commands come directly from the cloud) the force option can only be applied if the command did not change since the last run. 
 
 
-- `--parameters`, `-p`: Commands can come with placeholders in scripts. If so the user is asked before running them for the actual values. This comes in handy when manually using the tool. When it is used y the system e.g. `crontab` the approach will fail. This is why it is possible to prefill the parameters via the CLI already. The given value must be `json` encoded. Example: `-p '{"dir_to_search_in":".", "number_on_days":"12"}'`.
+- `--parameters`, `-p`: Commands can come with placeholders in scripts. If so the user is asked before running them for the actual values. This comes in handy when manually using the tool. When it is used y the system e.g. `crontab` the approach will fail. This is why it is possible to prefill the parameters via the CLI already. The given value must be `json` encoded. Example: `-p '{"dir_to_search_in":".", "number_of_days":"12"}'`.
 
 ## Examples
 
@@ -34,11 +34,11 @@ forrest run forrest-linux:files:find:older --force
 This command will prefill the parameters/placeholders and will just ask for permission to run.
 
 ```shell
-forrest run forrest-linux:files:find:older -p '{"dir_to_search_in":".", "number_on_days":"12"}'
+forrest run forrest-linux:files:find:older -p '{"dir_to_search_in":".", "number_of_days":"12"}'
 ```
 
 This command will prefill the parameters/placeholders and will run immediately.
 
 ```shell
-forrest run forrest-linux:files:find:older -p '{"dir_to_search_in":".", "number_on_days":"12"}' --force
+forrest run forrest-linux:files:find:older -p '{"dir_to_search_in":".", "number_of_days":"12"}' --force
 ```
