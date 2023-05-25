@@ -2,6 +2,9 @@
 
 namespace Startwind\Forrest\Command\Parameters\Validation\Constraint;
 
+use Startwind\Forrest\Command\Parameters\Validation\Constraint\File\FileExistsConstraint;
+use Startwind\Forrest\Command\Parameters\Validation\Constraint\File\FileNotExistsConstraint;
+
 abstract class ConstraintFactory
 {
     private static array $validConstraints = [
