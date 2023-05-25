@@ -19,4 +19,25 @@ abstract class OSHelper
             return false;
         }
     }
+
+    /**
+     * @throws \Exception
+     */
+    public static function copyToClipboard(string $string): bool
+    {
+        if (PHP_OS_FAMILY === "Windows") {
+            // works on windows 7 +
+            $clip = popen("clip", "wb");
+        } elseif (PHP_OS_FAMILY === "Linux") {
+            // tested, works on ArchLinux
+            $clip = popen('xclip -selection clipboard', 'wb');
+        } elseif (PHP_OS_FAMILY === "Darwin") {
+            // untested!
+            $clip = popen('pbcopy', 'wb');
+        } else {
+            throw new \Exception("running on unsupported OS: " . PHP_OS_FAMILY . " - only Windows, Linux, and MacOS supported.");
+        }
+        $written = fwrite($clip, $string);
+        return (pclose($clip) === 0 && strlen($string) === $written);
+    }
 }

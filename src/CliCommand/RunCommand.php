@@ -5,6 +5,7 @@ namespace Startwind\Forrest\CliCommand;
 use Startwind\Forrest\Output\PromptHelper;
 use Startwind\Forrest\Output\RunHelper;
 use Startwind\Forrest\Runner\Exception\ToolNotFoundException;
+use Startwind\Forrest\Util\OSHelper;
 use Symfony\Component\Console\Command\Command as SymfonyCommand;
 
 abstract class RunCommand extends ForrestCommand
@@ -28,7 +29,7 @@ abstract class RunCommand extends ForrestCommand
 
         $force = !$this->getInput()->getOption('force') === false;
 
-        if (!$runHelper->handleRunnable($command)) {
+        if (!$runHelper->handleRunnable($command, $prompt->getFinalPrompt())) {
             return SymfonyCommand::SUCCESS;
         }
 
