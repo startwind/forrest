@@ -30,3 +30,21 @@ parameters:
   user_name:
     default: ${env(LOGNAME)}
 ```
+
+## `docker-names()`
+
+The `docker-names()` function will list all currently running docker containers by name. 
+
+### Example
+
+```yaml
+commands:
+  'enum-explode':
+    name: 'docker:ssh'
+    description: 'Show prompt for login'
+    runnable: false
+    prompt: 'docker exec -it ${docker_name} /bin/bash'
+    parameters:
+      docker_name:
+        enum: "${docker-names()}"
+```

@@ -3,9 +3,7 @@
 namespace Startwind\Forrest\Command\Parameters;
 
 use Startwind\Forrest\Command\Parameters\Validation\Constraint\ConstraintFactory;
-use Startwind\Forrest\Command\Parameters\Validation\Constraint\IntegerConstraint;
-use Startwind\Forrest\Command\Parameters\Validation\Constraint\NotEmptyConstraint;
-use Startwind\Forrest\Enrichment\EnrichFunction\FunctionComposite;
+use Startwind\Forrest\Enrichment\EnrichFunction\String\FunctionComposite;
 
 class ParameterFactory
 {

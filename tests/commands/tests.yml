@@ -1,36 +1,44 @@
 repository:
-    name: 'test commands'
-    description: 'For tests'
-    identifier: forrest-dev-tests
+  name: 'test commands'
+  description: 'For tests'
+  identifier: forrest-dev-tests
 commands:
-    test-yaml-default-fromEnv:
-        name: 'test:yaml:default:fromEnv'
-        description: 'Use an env variable as default value'
-        prompt: 'ls -lah ${user_name}'
-        parameters:
-            user_name: { default: '${env(LOGNAME)}' }
-    test-tool-not-exists:
-        name: 'test:tool:not-exists'
-        description: 'Run a tool that is not installed on the machine'
-        prompt: 'sls -lah'
-    test_date_function:
-        name: 'test:command:with-date'
-        description: 'Use a date in the prompt'
-        prompt: 'echo ${date(Y-m-d)}'
-    'parameters:password':
-        name: 'parameters:password'
-        description: 'Check password handling'
-        prompt: 'ls ${password}'
-        parameters:
-            password:
-                type: forrest_password
-    'enum-key-values':
-        name: 'parameters:enum:with-key'
-        description: 'Check password handling'
-        prompt: 'ls ${enum}'
-        parameters:
-            enum:
-                enum:
-                    eins: one
-                    zwei: two
-                    drei: three
+  test-yaml-default-fromEnv:
+    name: 'test:yaml:default:fromEnv'
+    description: 'Use an env variable as default value'
+    prompt: 'ls -lah ${user_name}'
+    parameters:
+      user_name: { default: '${env(LOGNAME)}' }
+  test-tool-not-exists:
+    name: 'test:tool:not-exists'
+    description: 'Run a tool that is not installed on the machine'
+    prompt: 'sls -lah'
+  test_date_function:
+    name: 'test:command:with-date'
+    description: 'Use a date in the prompt'
+    prompt: 'echo ${date(Y-m-d)}'
+  'parameters:password':
+    name: 'parameters:password'
+    description: 'Check password handling'
+    prompt: 'ls ${password}'
+    parameters:
+      password:
+        type: forrest_password
+  'enum-key-values':
+    name: 'parameters:enum:with-key'
+    description: 'Check password handling'
+    prompt: 'ls ${enum}'
+    parameters:
+      enum:
+        enum:
+          eins: one
+          zwei: two
+          drei: three
+  'enum-explode':
+    name: 'parameters:enum:with-explode'
+    description: 'Check password handling'
+    runnable: false
+    prompt: 'docker exec -it ${docker_name} /bin/bash'
+    parameters:
+      docker_name:
+        enum: "${docker-names()}"

@@ -4,7 +4,7 @@ namespace Startwind\Forrest\Command;
 
 use Startwind\Forrest\Command\Parameters\ParameterValue;
 use Startwind\Forrest\Command\Parameters\PasswordParameter;
-use Startwind\Forrest\Enrichment\EnrichFunction\FunctionComposite;
+use Startwind\Forrest\Enrichment\EnrichFunction\String\FunctionComposite;
 
 class Prompt
 {

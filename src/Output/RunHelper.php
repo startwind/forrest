@@ -7,6 +7,7 @@ use Startwind\Forrest\Command\Prompt;
 use Startwind\Forrest\Config\ConfigFileHandler;
 use Startwind\Forrest\History\HistoryHandler;
 use Startwind\Forrest\Runner\CommandRunner;
+use Startwind\Forrest\Util\OSHelper;
 use Startwind\Forrest\Util\OutputHelper;
 use Symfony\Component\Console\Command\Command as SymfonyCommand;
 use Symfony\Component\Console\Helper\QuestionHelper;
@@ -56,13 +57,15 @@ class RunHelper
         }
     }
 
-    public function handleRunnable(Command $command): bool
+    public function handleRunnable(Command $command, string $finalPrompt): bool
     {
         if (!$command->isRunnable()) {
             OutputHelper::writeWarningBox($this->output, [
-                'This command was marked as not runnable from Forrest. Please copy the prompt and run it',
-                'on the command line.'
+                'This command was marked as not runnable by Forrest. It was copied to you clipboard.'
             ]);
+
+            OSHelper::copyToClipboard($finalPrompt);
+
             return false;
         } else {
             return true;
