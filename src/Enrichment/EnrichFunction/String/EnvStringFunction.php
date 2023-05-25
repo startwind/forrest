@@ -1,8 +1,8 @@
 <?php
 
-namespace Startwind\Forrest\Enrichment\EnrichFunction;
+namespace Startwind\Forrest\Enrichment\EnrichFunction\String;
 
-class EnvFunction extends BasicFunction
+class EnvStringFunction extends BasicStringFunction
 {
     protected string $functionName = 'env';
 
