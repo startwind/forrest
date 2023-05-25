@@ -3,13 +3,14 @@
 Forrest is constantly evolving. Sometimes so fast that you might not even get around to trying out the new features. For this reason, we have introduced a changelog.
 
 - **develop**
-  - The `repository:list` command now shows if a repository is writeable.
 
 
 - **1.5.0**
   - Shortcut for `search:file`. The functionality can now be used via the `run` command by simply using the file as first argument.
   - New function for docker commands. It is now possible to use functions in enums. In this particular case you can use `${docker-names()}` and it will show all the running docker containers in the selection. [read more](commands/enrichment/functions.md#docker-names)
   - If a command is not runnable it will be copied to the clipboard so it is easy to paste it to the command line very easy. [read more](formats/yaml-format.md#parameter)
+  - The `repository:list` command now shows if a repository is writeable.
+  - New constraint `identifier` checks for values that only contain lower-case lettern and numbers. [read more](formats/yaml-format.md#constraints--optional-)
 
 
 - **1.4.0**

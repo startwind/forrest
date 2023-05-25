@@ -55,9 +55,6 @@ class Parameter
         return $this->values;
     }
 
-    /**
-     * @param array $values
-     */
     public function setValues(array|string $values): void
     {
         if (is_array($values)) {
@@ -83,9 +80,6 @@ class Parameter
         return self::TYPE;
     }
 
-    /**
-     * @param array $constraints
-     */
     public function setConstraints(array $constraints): void
     {
         $this->constraints = $constraints;

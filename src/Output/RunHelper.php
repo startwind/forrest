@@ -60,11 +60,17 @@ class RunHelper
     public function handleRunnable(Command $command, string $finalPrompt): bool
     {
         if (!$command->isRunnable()) {
-            OutputHelper::writeWarningBox($this->output, [
-                'This command was marked as not runnable by Forrest. It was copied to you clipboard.'
-            ]);
+            $copied = OSHelper::copyToClipboard($finalPrompt);
 
-            OSHelper::copyToClipboard($finalPrompt);
+            if ($copied) {
+                $clipboardText = " It was copied to your clipboard.";
+            } else {
+                $clipboardText = "";
+            }
+
+            OutputHelper::writeWarningBox($this->output, [
+                'This command was marked as not runnable by Forrest.' . $clipboardText
+            ]);
 
             return false;
         } else {

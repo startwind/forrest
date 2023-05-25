@@ -2,13 +2,18 @@
 
 namespace Startwind\Forrest\Command\Parameters\Validation\Constraint;
 
+use Startwind\Forrest\Command\Parameters\Validation\Constraint\File\FileExistsConstraint;
+use Startwind\Forrest\Command\Parameters\Validation\Constraint\File\FileNotExistsConstraint;
+
 abstract class ConstraintFactory
 {
     private static array $validConstraints = [
         'integer' => IntegerConstraint::class,
+        'identifier' => IdentifierConstraint::class,
         'not-empty' => NotEmptyConstraint::class,
+        # File constraints
         'file-exists' => FileExistsConstraint::class,
-        'file-not-exists' => FileNotExistsConstraint::class
+        'file-not-exists' => FileNotExistsConstraint::class,
     ];
 
     public static function getConstraint(string $constraintName): string

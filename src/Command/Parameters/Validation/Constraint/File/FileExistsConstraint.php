@@ -1,7 +1,8 @@
 <?php
 
-namespace Startwind\Forrest\Command\Parameters\Validation\Constraint;
+namespace Startwind\Forrest\Command\Parameters\Validation\Constraint\File;
 
+use Startwind\Forrest\Command\Parameters\Validation\Constraint\Constraint;
 use Startwind\Forrest\Command\Parameters\Validation\SuccessfulValidationResult;
 use Startwind\Forrest\Command\Parameters\Validation\ValidationResult;
 
