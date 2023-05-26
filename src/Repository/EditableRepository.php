@@ -4,7 +4,7 @@ namespace Startwind\Forrest\Repository;
 
 use Startwind\Forrest\Command\Command;
 
-interface EditableRepository
+interface EditableRepository extends Repository
 {
     /**
      * Add a command to the repository.

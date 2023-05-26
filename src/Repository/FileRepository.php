@@ -3,11 +3,10 @@
 namespace Startwind\Forrest\Repository;
 
 use Startwind\Forrest\Adapter\Adapter;
-use Startwind\Forrest\Command\Command;
 use Startwind\Forrest\Command\Parameters\FileParameter;
 use Startwind\Forrest\Runner\CommandRunner;
 
-class FileRepository implements Repository, SearchAwareRepository
+class FileRepository implements Repository, SearchAware, ListAware
 {
     private array $commands = [];
 
@@ -20,24 +19,32 @@ class FileRepository implements Repository, SearchAwareRepository
     {
     }
 
-    public function getAdapter(): Adapter
+    /**
+     * Return the adapter to child classes.
+     */
+    protected function getAdapter(): Adapter
     {
         return $this->adapter;
     }
 
+    /**
+     * @inheritDoc
+     */
     public function getName(): string
     {
         return $this->name;
     }
 
+    /**
+     * @inheritDoc
+     */
     public function getDescription(): string
     {
         return $this->description;
     }
 
     /**
-     * @return Command[]
-     * @throws \Exception
+     * @inheritDoc
      */
     public function getCommands(): array
     {
@@ -48,13 +55,16 @@ class FileRepository implements Repository, SearchAwareRepository
                 $this->commands = $this->adapter->getCommands();
             } catch (\Exception $exception) {
                 $exceptions[] = $exception;
-                throw  $exception;
+                throw $exception;
             }
         }
 
         return $this->commands;
     }
 
+    /**
+     * @inheritDoc
+     */
     public function hasCommands(): bool
     {
         return count($this->getCommands()) > 0;
@@ -66,11 +76,6 @@ class FileRepository implements Repository, SearchAwareRepository
     public function isSpecial(): bool
     {
         return $this->isSpecialRepo;
-    }
-
-    public static function createUniqueCommandName(string $repositoryIdentifier, Command $command): string
-    {
-        return $repositoryIdentifier . ':' . $command->getName();
     }
 
     /**
@@ -119,6 +124,11 @@ class FileRepository implements Repository, SearchAwareRepository
         return $commands;
     }
 
+    /**
+     * @inheritDoc
+     *
+     * @throws \Exception
+     */
     public function searchByTools(array $tools): array
     {
         $commands = [];

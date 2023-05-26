@@ -6,7 +6,7 @@ use Startwind\Forrest\Command\Command;
 use Startwind\Forrest\Command\Parameters\FileParameter;
 use Startwind\Forrest\Output\OutputHelper;
 use Startwind\Forrest\Repository\FileRepository;
-use Startwind\Forrest\Repository\SearchAwareRepository;
+use Startwind\Forrest\Repository\SearchAware;
 use Symfony\Component\Console\Command\Command as SymfonyCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -51,16 +51,7 @@ class FileCommand extends SearchCommand
             $filenames[] = FileParameter::DIRECTORY;
         }
 
-        $fileCommands = [];
-
-        foreach ($this->getRepositoryCollection()->getRepositories() as $repositoryIdentifier => $repository) {
-            if ($repository instanceof SearchAwareRepository) {
-                $foundCommands = $repository->searchByFile($filenames);
-                foreach ($foundCommands as $foundCommand) {
-                    $fileCommands[FileRepository::createUniqueCommandName($repositoryIdentifier, $foundCommand)] = $foundCommand;
-                }
-            }
-        }
+        $fileCommands = $this->getRepositoryCollection()->searchByFile($filenames);
 
         if ($pattern) {
             foreach ($fileCommands as $key => $fileCommand) {

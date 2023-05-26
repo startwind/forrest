@@ -22,12 +22,11 @@ class ListCommand extends RepositoryCommand
             $rows[] = [
                 $repository->getName(),
                 $repository->getDescription(),
-                $repository->getAdapter()->getType(),
                 $repository->isEditable() ? 'x' : '',
             ];
         }
 
-        $headlines = ['Name', 'Description', 'Type', 'Writable'];
+        $headlines = ['Name', 'Description', 'Writable'];
 
         OutputHelper::renderTable($output, $headlines, $rows);
 
