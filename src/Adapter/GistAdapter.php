@@ -5,10 +5,9 @@ namespace Startwind\Forrest\Adapter;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
 use Startwind\Forrest\Adapter\Exception\RateLimitExceededException;
-use Startwind\Forrest\Command\Command;
 use Startwind\Forrest\Command\GistCommand;
 
-class GistAdapter implements Adapter, ClientAwareAdapter
+class GistAdapter implements Adapter, ClientAwareAdapter, ListAwareAdapter
 {
     public const TYPE = 'gist';
 
@@ -99,29 +98,5 @@ class GistAdapter implements Adapter, ClientAwareAdapter
         $adapter->setClient($client);
 
         return $adapter;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function isEditable(): bool
-    {
-        return false;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function addCommand(Command $command): void
-    {
-        throw new \RuntimeException('Unable to add a command to a GIST repository.');
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function removeCommand(string $commandName): void
-    {
-        throw new \RuntimeException('Unable to remove a command to a GIST repository.');
     }
 }

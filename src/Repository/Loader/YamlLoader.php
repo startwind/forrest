@@ -4,8 +4,11 @@ namespace Startwind\Forrest\Repository\Loader;
 
 use GuzzleHttp\Client;
 use Startwind\Forrest\Adapter\AdapterFactory;
+use Startwind\Forrest\Adapter\EditableAdapter;
+use Startwind\Forrest\Repository\ApiRepository;
 use Startwind\Forrest\Repository\EditableFileRepository;
 use Startwind\Forrest\Repository\FileRepository;
+use Startwind\Forrest\Repository\Repository;
 use Startwind\Forrest\Repository\RepositoryCollection;
 use Symfony\Component\Yaml\Yaml;
 
@@ -34,7 +37,11 @@ class YamlLoader implements RepositoryLoader
             throw new \RuntimeException("Config file ($configFile) not found");
         }
 
-        $this->config = Yaml::parse(file_get_contents($configFile));
+        try {
+            $this->config = Yaml::parse(file_get_contents($configFile));
+        } catch (\Exception $exception) {
+            throw new \RuntimeException('Unable to load YAML file ("' . $configFile . '"): ' . $exception->getMessage());
+        }
 
         if (!array_key_exists(self::CONFIG_ELEMENT_REPOSITORIES, $this->config)) {
             throw new \RuntimeException('Config file does not contain the mandatory element "' . self::CONFIG_ELEMENT_REPOSITORIES . '".');
@@ -44,8 +51,14 @@ class YamlLoader implements RepositoryLoader
     private function initRepositories(): void
     {
         foreach ($this->config[self::CONFIG_ELEMENT_REPOSITORIES] as $repoName => $repoConfig) {
-            $adapterIdentifier = $repoConfig[self::CONFIG_ELEMENT_ADAPTER];
 
+            if (!array_key_exists('type', $repoConfig)) {
+                $repoType = Repository::TYPE_FILE;
+            } else {
+                $repoType = $repoConfig['type'];
+            }
+
+            /** @todo these three checks can be condensed */
             if (!array_key_exists(self::CONFIG_ELEMENT_NAME, $repoConfig)) {
                 throw new \RuntimeException('No field for repository "' . $repoName . '" with value ' . self::CONFIG_ELEMENT_NAME . ' found. Fields given are: ' . implode(', ', array_keys($repoConfig)) . '.');
             }
@@ -58,14 +71,17 @@ class YamlLoader implements RepositoryLoader
                 throw new \RuntimeException('No field for repository "' . $repoName . '" with value ' . self::CONFIG_ELEMENT_CONFIG . ' found. Fields given are: ' . implode(', ', array_keys($repoConfig)) . '.');
             }
 
-            $adapter = AdapterFactory::getAdapter($adapterIdentifier, $repoConfig['config'], $this->client);
-
-            if ($adapter->isEditable()) {
-                $this->repositories[$repoName] = new EditableFileRepository($adapter, $repoConfig['name'], $repoConfig['description']);
+            if ($repoType == Repository::TYPE_API) {
+                $this->repositories[$repoName] = new ApiRepository($repoConfig['config']['endpoint'], $repoConfig['name'], $repoConfig['description'], $this->client);
             } else {
-                $this->repositories[$repoName] = new FileRepository($adapter, $repoConfig['name'], $repoConfig['description']);
+                $adapterIdentifier = $repoConfig[self::CONFIG_ELEMENT_ADAPTER];
+                $adapter = AdapterFactory::getAdapter($adapterIdentifier, $repoConfig['config'], $this->client);
+                if ($adapter instanceof EditableAdapter && $adapter->isEditable()) {
+                    $this->repositories[$repoName] = new EditableFileRepository($adapter, $repoConfig['name'], $repoConfig['description']);
+                } else {
+                    $this->repositories[$repoName] = new FileRepository($adapter, $repoConfig['name'], $repoConfig['description']);
+                }
             }
-
         }
     }
 

@@ -4,6 +4,9 @@ namespace Startwind\Forrest\Repository;
 
 interface Repository
 {
+    public const TYPE_FILE = 'file';
+    public const TYPE_API = 'api';
+
     /**
      * Return the name of the repository.
      */

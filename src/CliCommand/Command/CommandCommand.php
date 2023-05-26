@@ -52,6 +52,9 @@ class CommandCommand extends \Startwind\Forrest\CliCommand\RunCommand
         ]);
 
         foreach ($repositories as $repoIdentifier => $repository) {
+            if (!$repository instanceof ListAware) {
+                continue;
+            }
             if (!$repository->hasCommands()) {
                 continue;
             }

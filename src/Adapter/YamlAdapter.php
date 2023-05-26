@@ -10,10 +10,11 @@ use Startwind\Forrest\Adapter\Loader\LoaderFactory;
 use Startwind\Forrest\Adapter\Loader\LocalFileLoader;
 use Startwind\Forrest\Adapter\Loader\WritableLoader;
 use Startwind\Forrest\Command\Command;
+use Startwind\Forrest\Command\CommandFactory;
 use Startwind\Forrest\Command\Parameters\ParameterFactory;
 use Symfony\Component\Yaml\Yaml;
 
-class YamlAdapter extends BasicAdapter implements ClientAwareAdapter
+class YamlAdapter extends BasicAdapter implements ClientAwareAdapter, ListAwareAdapter, EditableAdapter
 {
     public const TYPE = 'yaml';
 
@@ -72,61 +73,10 @@ class YamlAdapter extends BasicAdapter implements ClientAwareAdapter
                 throw new \RuntimeException('The mandatory field ' . self::YAML_FIELD_DESCRIPTION . ' is not set for identifier "' . $identifier . '".');
             }
 
-            $prompt = $commandConfig[self::YAML_FIELD_PROMPT];
-
-            $command = new Command($commandConfig[self::YAML_FIELD_NAME], $commandConfig[self::YAML_FIELD_DESCRIPTION], $prompt);
-
-            if (array_key_exists(self::YAML_FIELD_OUTPUT, $commandConfig)) {
-                $command->setOutputFormat($commandConfig[self::YAML_FIELD_OUTPUT]);
-            }
-
-            if (array_key_exists(self::YAML_FIELD_ALLOWED_IN_HISTORY, $commandConfig) && $commandConfig[self::YAML_FIELD_ALLOWED_IN_HISTORY] === false) {
-                $command->setAllowedInHistory(false);
-            }
-
-            if (array_key_exists(self::YAML_FIELD_PARAMETERS, $commandConfig)) {
-                $parameterConfig = $commandConfig[self::YAML_FIELD_PARAMETERS];
-            } else {
-                $parameterConfig = [];
-            }
-
-            if (is_string($parameterConfig)) {
-                throw new \RuntimeException('The configuration is malformed. Array expected but "' . $parameterConfig . '" found.');
-            }
-
-            $command->setParameters($this->createParameters($prompt, $parameterConfig));
-
-            if (array_key_exists(self::YAML_FIELD_RUNNABLE, $commandConfig)) {
-                if ($commandConfig[self::YAML_FIELD_RUNNABLE] === false) {
-                    $command->flagAsNotRunnable();
-                }
-            }
-
-            $commands[] = $command;
+            $commands[] = CommandFactory::fromArray($commandConfig);
         }
 
         return $commands;
-    }
-
-    /**
-     * @return \Startwind\Forrest\Command\Parameters\Parameter[]
-     */
-    protected function createParameters(string $prompt, array $parameterConfig): array
-    {
-        $parameterNames = $this->extractParametersFromPrompt($prompt);
-
-        $parameters = [];
-
-        foreach ($parameterNames as $parameterName) {
-            if (array_key_exists($parameterName, $parameterConfig)) {
-                $config = $parameterConfig[$parameterName];
-            } else {
-                $config = [];
-            }
-            $parameters[$parameterName] = ParameterFactory::create($config);
-        }
-
-        return $parameters;
     }
 
     /**

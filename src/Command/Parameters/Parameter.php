@@ -8,6 +8,9 @@ use Startwind\Forrest\Enrichment\EnrichFunction\Explode\FunctionComposite;
 
 class Parameter
 {
+    public const PARAMETER_PREFIX = '${';
+    public const PARAMETER_POSTFIX = '}';
+
     public const TYPE = 'mixed';
 
     private string $name = '';
