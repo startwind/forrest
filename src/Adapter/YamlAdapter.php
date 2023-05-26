@@ -22,12 +22,6 @@ class YamlAdapter extends BasicAdapter implements ClientAwareAdapter, ListAwareA
     public const YAML_FIELD_PROMPT = 'prompt';
     public const YAML_FIELD_NAME = 'name';
     public const YAML_FIELD_DESCRIPTION = 'description';
-    public const YAML_FIELD_RUNNABLE = 'runnable';
-    public const YAML_FIELD_PARAMETERS = 'parameters';
-
-    public const YAML_FIELD_ALLOWED_IN_HISTORY = 'allowed-in-history';
-
-    public const YAML_FIELD_OUTPUT = 'output-format';
 
     public function __construct(private readonly Loader $loader)
     {

@@ -82,14 +82,6 @@ class YamlLoader implements RepositoryLoader
                     $this->repositories[$repoName] = new FileRepository($adapter, $repoConfig['name'], $repoConfig['description']);
                 }
             }
-
-            $adapter = AdapterFactory::getAdapter($adapterIdentifier, $repoConfig['config'], $this->client);
-
-            if ($adapter->isEditable()) {
-                $this->repositories[$repoName] = new EditableFileRepository($adapter, $repoConfig['name'], $repoConfig['description']);
-            } else {
-                $this->repositories[$repoName] = new FileRepository($adapter, $repoConfig['name'], $repoConfig['description']);
-            }
         }
     }
 
