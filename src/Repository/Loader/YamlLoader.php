@@ -4,7 +4,8 @@ namespace Startwind\Forrest\Repository\Loader;
 
 use GuzzleHttp\Client;
 use Startwind\Forrest\Adapter\AdapterFactory;
-use Startwind\Forrest\Repository\Repository;
+use Startwind\Forrest\Repository\EditableFileRepository;
+use Startwind\Forrest\Repository\FileRepository;
 use Startwind\Forrest\Repository\RepositoryCollection;
 use Symfony\Component\Yaml\Yaml;
 
@@ -59,7 +60,12 @@ class YamlLoader implements RepositoryLoader
 
             $adapter = AdapterFactory::getAdapter($adapterIdentifier, $repoConfig['config'], $this->client);
 
-            $this->repositories[$repoName] = new Repository($adapter, $repoConfig['name'], $repoConfig['description']);
+            if ($adapter->isEditable()) {
+                $this->repositories[$repoName] = new EditableFileRepository($adapter, $repoConfig['name'], $repoConfig['description']);
+            } else {
+                $this->repositories[$repoName] = new FileRepository($adapter, $repoConfig['name'], $repoConfig['description']);
+            }
+
         }
     }
 

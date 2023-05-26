@@ -5,6 +5,7 @@ namespace Startwind\Forrest\CliCommand\Repository\Command;
 use Startwind\Forrest\CliCommand\Repository\RepositoryCommand;
 use Startwind\Forrest\Command\Command;
 use Startwind\Forrest\Output\OutputHelper;
+use Startwind\Forrest\Repository\EditableRepository;
 use Symfony\Component\Console\Command\Command as SymfonyCommand;
 use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Input\InputInterface;
@@ -41,7 +42,7 @@ class AddCommand extends RepositoryCommand
         $count = 0;
 
         foreach ($repositories as $repository) {
-            if ($repository->isEditable()) {
+            if ($repository instanceof EditableRepository) {
                 $count++;
                 $editableRepositories[$count] = $repository;
                 $rows[] = [

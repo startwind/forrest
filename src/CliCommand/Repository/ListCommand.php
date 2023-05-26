@@ -3,6 +3,7 @@
 namespace Startwind\Forrest\CliCommand\Repository;
 
 use Startwind\Forrest\Output\OutputHelper;
+use Startwind\Forrest\Repository\EditableRepository;
 use Symfony\Component\Console\Command\Command as SymfonyCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -18,16 +19,16 @@ class ListCommand extends RepositoryCommand
 
         $rows = [];
 
-        foreach ($this->getRepositoryCollection()->getRepositories() as $repository) {
+        foreach ($this->getRepositoryCollection()->getRepositories() as $identifier => $repository) {
             $rows[] = [
+                $identifier,
                 $repository->getName(),
                 $repository->getDescription(),
-                $repository->getAdapter()->getType(),
-                $repository->isEditable() ? 'x' : '',
+                $repository instanceof EditableRepository ? 'x' : '',
             ];
         }
 
-        $headlines = ['Name', 'Description', 'Type', 'Writable'];
+        $headlines = ['Identifier', 'Name', 'Description', 'Writable'];
 
         OutputHelper::renderTable($output, $headlines, $rows);
 

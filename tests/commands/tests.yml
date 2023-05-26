@@ -6,7 +6,7 @@ commands:
   test-yaml-default-fromEnv:
     name: 'test:yaml:default:fromEnv'
     description: 'Use an env variable as default value'
-    prompt: 'ls -lah ${user_name}'
+    prompt: 'echo ${user_name}'
     parameters:
       user_name: { default: '${env(LOGNAME)}' }
   test-tool-not-exists:
@@ -27,7 +27,7 @@ commands:
   'enum-key-values':
     name: 'parameters:enum:with-key'
     description: 'Check password handling'
-    prompt: 'ls ${enum}'
+    prompt: 'echo ${enum}'
     parameters:
       enum:
         enum:

@@ -4,7 +4,7 @@ namespace Startwind\Forrest\Repository\Loader;
 
 use Startwind\Forrest\Adapter\Loader\LocalFileLoader;
 use Startwind\Forrest\Adapter\YamlAdapter;
-use Startwind\Forrest\Repository\Repository;
+use Startwind\Forrest\Repository\FileRepository;
 use Startwind\Forrest\Repository\RepositoryCollection;
 use Symfony\Component\Yaml\Yaml;
 
@@ -69,7 +69,7 @@ class LocalRepositoryLoader implements RepositoryLoader
     {
         $adapter = new YamlAdapter(new LocalFileLoader($this->localCommandsFile));
 
-        $repository = new Repository($adapter, $this->name, $this->description, true);
+        $repository = new FileRepository($adapter, $this->name, $this->description, true);
 
         $repositoryCollection->addRepository($this->identifier, $repository);
     }
