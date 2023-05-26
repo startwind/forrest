@@ -62,26 +62,49 @@ class ApiRepository implements Repository, SearchAware
 
     /**
      * @inheritDoc
-     *
-     * @throws \Exception
      */
     public function searchByPattern(array $patterns): array
     {
+        $response = $this->client->get($this->endpoint . 'search/pattern', ['verify' => false]);
+        $plainCommands = json_decode($response->getBody(), true);
 
+        $commandsArray = $plainCommands['commands'];
+
+        $commands = [];
+
+        foreach ($commandsArray as $commandsArrayElement) {
+            $commands[$commandsArrayElement['name']] = CommandFactory::fromArray($commandsArrayElement);
+        }
+
+        return $commands;
     }
 
     /**
      * @inheritDoc
-     *
-     * @throws \Exception
      */
     public function searchByTools(array $tools): array
     {
+        $response = $this->client->get($this->endpoint . 'search/tool', ['verify' => false]);
+        $plainCommands = json_decode($response->getBody(), true);
 
+        $commandsArray = $plainCommands['commands'];
+
+        $commands = [];
+
+        foreach ($commandsArray as $commandsArrayElement) {
+            $commands[$commandsArrayElement['name']] = CommandFactory::fromArray($commandsArrayElement);
+        }
+
+        return $commands;
     }
 
     public function getCommand(string $identifier): Command
     {
-        // TODO: Implement getCommand() method.
+        $response = $this->client->get($this->endpoint . 'command/' . urlencode($identifier), ['verify' => false]);
+        $plainCommands = json_decode($response->getBody(), true);
+
+        $command = CommandFactory::fromArray($plainCommands['command']);
+
+        return $command;
     }
 }
