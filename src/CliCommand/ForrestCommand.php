@@ -175,17 +175,15 @@ abstract class ForrestCommand extends SymfonyCommand
 
         $this->enrichRepositories();
 
-        foreach ($this->getRepositoryCollection()->getRepositories() as $key => $repository) {
-            if ($key === $repositoryIdentifier) {
-                foreach ($repository->getCommands() as $command) {
-                    if ($command->getName() == $commandName) {
-                        return $command;
-                    }
-                }
-            }
+        $repository = $this->getRepositoryCollection()->getRepository($repositoryIdentifier);
+
+        try {
+            $command = $repository->getCommand($commandName);
+        } catch (\Exception $exception) {
+            throw new \RuntimeException('Unable to load command from ' . $repositoryIdentifier . ': ' . lcfirst($exception->getMessage()));
         }
 
-        throw new \RuntimeException('No command found with name ' . $identifier . '.');
+        return $command;
     }
 
     protected function getCommandName(string $fullyQualifiedCommandName): string

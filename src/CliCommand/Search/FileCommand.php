@@ -90,7 +90,7 @@ class FileCommand extends SearchCommand
 
         $values = [$this->getParameterIdentifier($command, $filenames) => $filename];
 
-        return $this->runCommand($command->getFullyQualifiedIdentifier(), $values);
+        return $this->runCommand($command, $values);
     }
 
     /**

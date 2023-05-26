@@ -2,6 +2,8 @@
 
 namespace Startwind\Forrest\Repository;
 
+use Startwind\Forrest\Command\Command;
+
 interface Repository
 {
     public const TYPE_FILE = 'file';
@@ -16,6 +18,11 @@ interface Repository
      * Return the description of the repository.
      */
     public function getDescription(): string;
+
+    /**
+     * Return a single command from a repository by identifier.
+     */
+    public function getCommand(string $identifier): Command;
 
     /**
      * Special directories are highlighted when the commands are listed.

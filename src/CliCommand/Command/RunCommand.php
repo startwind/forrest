@@ -53,6 +53,7 @@ class RunCommand extends CommandCommand
 
         $userParameters = json_decode($input->getOption('parameters'), true);
 
+        // @fixme will break if somebody tries to call an API command directly
 
         return $this->runCommand($commandIdentifier, $userParameters);
     }

@@ -3,8 +3,8 @@
 namespace Startwind\Forrest\Repository;
 
 use GuzzleHttp\Client;
-use Startwind\Forrest\Command\Parameters\FileParameter;
-use Startwind\Forrest\Runner\CommandRunner;
+use Startwind\Forrest\Command\Command;
+use Startwind\Forrest\Command\CommandFactory;
 
 class ApiRepository implements Repository, SearchAware
 {
@@ -43,18 +43,21 @@ class ApiRepository implements Repository, SearchAware
 
     /**
      * @inheritDoc
-     *
-     * @throws \Exception
      */
     public function searchByFile(array $files): array
     {
         $response = $this->client->get($this->endpoint . 'search/file', ['verify' => false]);
         $plainCommands = json_decode($response->getBody(), true);
 
+        $commandsArray = $plainCommands['commands'];
 
+        $commands = [];
 
-        var_dump($plainCommands);
-        die;
+        foreach ($commandsArray as $commandsArrayElement) {
+            $commands[$commandsArrayElement['name']] = CommandFactory::fromArray($commandsArrayElement);
+        }
+
+        return $commands;
     }
 
     /**
@@ -75,5 +78,10 @@ class ApiRepository implements Repository, SearchAware
     public function searchByTools(array $tools): array
     {
 
+    }
+
+    public function getCommand(string $identifier): Command
+    {
+        // TODO: Implement getCommand() method.
     }
 }

@@ -3,6 +3,7 @@
 namespace Startwind\Forrest\Repository;
 
 use Startwind\Forrest\Adapter\Adapter;
+use Startwind\Forrest\Command\Command;
 use Startwind\Forrest\Command\Parameters\FileParameter;
 use Startwind\Forrest\Runner\CommandRunner;
 
@@ -141,5 +142,20 @@ class FileRepository implements Repository, SearchAware, ListAware
             }
         }
         return $commands;
+    }
+
+    /**
+     * @throws \Exception
+     */
+    public function getCommand(string $identifier): Command
+    {
+        $commands = $this->getCommands();
+        foreach ($commands as $command) {
+            if ($command->getName() == $identifier) {
+                return $command;
+            }
+        }
+
+        throw new \RuntimeException('No command with name "' . $identifier . '" found.');
     }
 }
