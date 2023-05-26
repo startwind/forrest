@@ -13,7 +13,7 @@ class FileRepository implements Repository, SearchAware, ListAware
     private array $commands = [];
 
     public function __construct(
-        private readonly ListAwareAdapter $adapter,
+        private readonly Adapter $adapter,
         private readonly string  $name,
         private readonly string  $description,
         private readonly bool    $isSpecialRepo = false,
