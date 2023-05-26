@@ -19,7 +19,7 @@ class ManualAdapter implements Adapter, ListAwareAdapter, EditableAdapter
     /**
      * @inheritDoc
      */
-    public function getCommands(): array
+    public function getCommands(bool $withParameters = true): array
     {
         return $this->commands;
     }
@@ -51,5 +51,23 @@ class ManualAdapter implements Adapter, ListAwareAdapter, EditableAdapter
     public function removeCommand(string $commandName): void
     {
         unset($this->commands[$commandName]);
+    }
+
+    public function getCommand(string $identifier): Command
+    {
+        $commands = $this->getCommands();
+
+        if (!array_key_exists($identifier, $commands)) {
+            throw new \RuntimeException('No command with name ' . $identifier . ' found.');
+        }
+
+        return $commands[$identifier];
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function assertHealth(): void
+    {
     }
 }

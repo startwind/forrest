@@ -5,6 +5,7 @@ namespace Startwind\Forrest\Repository\Loader;
 use GuzzleHttp\Client;
 use Startwind\Forrest\Adapter\AdapterFactory;
 use Startwind\Forrest\Adapter\EditableAdapter;
+use Startwind\Forrest\Logger\ForrestLogger;
 use Startwind\Forrest\Repository\ApiRepository;
 use Startwind\Forrest\Repository\EditableFileRepository;
 use Startwind\Forrest\Repository\FileRepository;
@@ -72,16 +73,25 @@ class YamlLoader implements RepositoryLoader
             }
 
             if ($repoType == Repository::TYPE_API) {
-                $this->repositories[$repoName] = new ApiRepository($repoConfig['config']['endpoint'], $repoConfig['name'], $repoConfig['description'], $this->client);
+                $newRepo = new ApiRepository($repoConfig['config']['endpoint'], $repoConfig['name'], $repoConfig['description'], $this->client);
             } else {
                 $adapterIdentifier = $repoConfig[self::CONFIG_ELEMENT_ADAPTER];
                 $adapter = AdapterFactory::getAdapter($adapterIdentifier, $repoConfig['config'], $this->client);
                 if ($adapter instanceof EditableAdapter && $adapter->isEditable()) {
-                    $this->repositories[$repoName] = new EditableFileRepository($adapter, $repoConfig['name'], $repoConfig['description']);
+                    $newRepo = new EditableFileRepository($adapter, $repoConfig['name'], $repoConfig['description']);
                 } else {
-                    $this->repositories[$repoName] = new FileRepository($adapter, $repoConfig['name'], $repoConfig['description']);
+                    $newRepo = new FileRepository($adapter, $repoConfig['name'], $repoConfig['description']);
                 }
             }
+
+            try {
+                $newRepo->assertHealth();
+            } catch (\Exception $exception) {
+                ForrestLogger::error("Unable to load repository " . $repoName . ": " . $exception->getMessage());
+                continue;
+            }
+
+            $this->repositories[$repoName] = $newRepo;
         }
     }
 

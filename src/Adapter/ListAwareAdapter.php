@@ -11,5 +11,5 @@ interface ListAwareAdapter extends Adapter
      *
      * @return Command[]
      */
-    public function getCommands(): array;
+    public function getCommands(bool $withParameters = true): array;
 }

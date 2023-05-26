@@ -53,9 +53,9 @@ class RunCommand extends CommandCommand
 
         $userParameters = json_decode($input->getOption('parameters'), true);
 
-        // @fixme will break if somebody tries to call an API command directly
+        $command = $this->getRepositoryCollection()->getCommand($commandIdentifier);
 
-        return $this->runCommand($commandIdentifier, $userParameters);
+        return $this->runCommand($command, $userParameters);
     }
 
     public function complete(CompletionInput $input, CompletionSuggestions $suggestions): void

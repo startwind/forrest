@@ -29,4 +29,11 @@ interface Repository
      * Examples are context-sensitive repos like composer.json files.
      */
     public function isSpecial(): bool;
+
+    /**
+     * Assert that this repository is healthy and can be read.
+     *
+     * @throws \Exception
+     */
+    public function assertHealth(): void;
 }

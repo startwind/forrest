@@ -54,4 +54,9 @@ class CacheDecorator implements Loader
     {
         throw new \RuntimeException('This is just a decorator and works only with an already initiated Loader.');
     }
+
+    public function assertHealth(): void
+    {
+        $this->loader->assertHealth();
+    }
 }

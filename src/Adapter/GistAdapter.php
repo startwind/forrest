@@ -5,6 +5,7 @@ namespace Startwind\Forrest\Adapter;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
 use Startwind\Forrest\Adapter\Exception\RateLimitExceededException;
+use Startwind\Forrest\Command\Command;
 use Startwind\Forrest\Command\GistCommand;
 
 class GistAdapter implements Adapter, ClientAwareAdapter, ListAwareAdapter
@@ -69,7 +70,7 @@ class GistAdapter implements Adapter, ClientAwareAdapter, ListAwareAdapter
     /**
      * @inheritDoc
      */
-    public function getCommands(): array
+    public function getCommands(bool $withParameters = true): array
     {
         $gists = $this->getRawGists($this->username);
 
@@ -98,5 +99,29 @@ class GistAdapter implements Adapter, ClientAwareAdapter, ListAwareAdapter
         $adapter->setClient($client);
 
         return $adapter;
+    }
+
+    public function getCommand(string $identifier): Command
+    {
+        $commands = $this->getCommands(true);
+        foreach ($commands as $command) {
+            if ($command->getName() == $identifier) {
+                return $command;
+            }
+        }
+
+        throw new \RuntimeException('No command with name ' . $identifier . ' found.');
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function assertHealth(): void
+    {
+        try {
+            $this->client->get('https://api.github.com');
+        } catch (\Exception $exception) {
+            throw new \RuntimeException('Cannot connect to the github API. Please check if your computer is online.');
+        }
     }
 }

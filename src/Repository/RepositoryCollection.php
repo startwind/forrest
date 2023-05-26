@@ -3,9 +3,12 @@
 namespace Startwind\Forrest\Repository;
 
 use Startwind\Forrest\Command\Command;
+use Startwind\Forrest\Logger\ForrestLogger;
 
 class RepositoryCollection implements SearchAware
 {
+    public const COMMAND_SEPARATOR = ':';
+
     /**
      * @var Repository[]
      */
@@ -45,9 +48,14 @@ class RepositoryCollection implements SearchAware
 
         foreach ($this->repositories as $repositoryIdentifier => $repository) {
             if ($repository instanceof SearchAware) {
-                $foundCommands = $repository->searchByFile($files);
+                try {
+                    $foundCommands = $repository->searchByFile($files);
+                } catch (\Exception $exception) {
+                    ForrestLogger::error("Unable to \"search by file\" in repository " . $repositoryIdentifier);
+                    continue;
+                }
                 foreach ($foundCommands as $foundCommand) {
-                    $fileCommands[RepositoryCollection::createUniqueCommandName($repositoryIdentifier, $foundCommand)] = $foundCommand;
+                    $fileCommands[self::createUniqueCommandName($repositoryIdentifier, $foundCommand)] = $foundCommand;
                 }
             }
         }
@@ -91,6 +99,38 @@ class RepositoryCollection implements SearchAware
         }
 
         return $commands;
+    }
+
+    /**
+     * Return a command by the fully qualified command name.
+     */
+    public function getCommand(string $fullyQualifiedCommandName): Command
+    {
+        $repositoryIdentifier = RepositoryCollection::getRepositoryIdentifier($fullyQualifiedCommandName);
+        $commandName = RepositoryCollection::getCommandName($fullyQualifiedCommandName);
+
+        try {
+            $command = $this->getRepository($repositoryIdentifier)->getCommand($commandName);
+        } catch (\Exception $exception) {
+            throw new \RuntimeException('Unable to load command from ' . $repositoryIdentifier . ': ' . lcfirst($exception->getMessage()));
+        }
+
+        $command->setFullyQualifiedIdentifier($fullyQualifiedCommandName);
+
+        return $command;
+    }
+
+    /**
+     * Return the identifier of the repository from a full command name.
+     */
+    public static function getRepositoryIdentifier(string $identifier): string
+    {
+        return substr($identifier, 0, strpos($identifier, self::COMMAND_SEPARATOR));
+    }
+
+    public static function getCommandName(string $fullyQualifiedCommandName): string
+    {
+        return substr($fullyQualifiedCommandName, strpos($fullyQualifiedCommandName, self::COMMAND_SEPARATOR) + 1);
     }
 
     public static function createUniqueCommandName(string $repositoryIdentifier, Command $command): string

@@ -49,7 +49,7 @@ class YamlAdapter extends BasicAdapter implements ClientAwareAdapter, ListAwareA
     /**
      * @inheritDoc
      */
-    public function getCommands(): array
+    public function getCommands(bool $withParameters = true): array
     {
         $config = $this->getConfig();
 
@@ -67,7 +67,7 @@ class YamlAdapter extends BasicAdapter implements ClientAwareAdapter, ListAwareA
                 throw new \RuntimeException('The mandatory field ' . self::YAML_FIELD_DESCRIPTION . ' is not set for identifier "' . $identifier . '".');
             }
 
-            $commands[] = CommandFactory::fromArray($commandConfig);
+            $commands[$commandConfig[self::YAML_FIELD_NAME]] = CommandFactory::fromArray($commandConfig, $withParameters);
         }
 
         return $commands;
@@ -181,5 +181,24 @@ class YamlAdapter extends BasicAdapter implements ClientAwareAdapter, ListAwareA
         if ($this->loader instanceof HttpAwareLoader) {
             $this->loader->setClient($client);
         }
+    }
+
+    public function getCommand(string $identifier): Command
+    {
+        $commands = $this->getCommands();
+
+        if (!array_key_exists($identifier, $commands)) {
+            throw new \RuntimeException('No command with name ' . $identifier . ' found.');
+        }
+
+        return $commands[$identifier];
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function assertHealth(): void
+    {
+        $this->loader->assertHealth();
     }
 }

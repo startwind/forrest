@@ -31,7 +31,7 @@ class CommandCommand extends \Startwind\Forrest\CliCommand\RunCommand
         foreach ($repositories as $repoIdentifier => $repository) {
             if ($repository instanceof ListAware) {
                 try {
-                    foreach ($repository->getCommands() as $command) {
+                    foreach ($repository->getCommands(false) as $command) {
                         $maxLength = max($maxLength, strlen(RepositoryCollection::createUniqueCommandName($repoIdentifier, $command)));
                     }
                 } catch (\Exception $exception) {

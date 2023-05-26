@@ -9,7 +9,7 @@ abstract class BasicExplodeFunction implements ExplodeEnrichFunction
 {
     protected string $functionName = '';
 
-    public function applyFunction(string $string): string|array
+    public function applyFunction(string $string): array
     {
         if ($this->functionName == '') {
             throw new \RuntimeException('The function name must be set');

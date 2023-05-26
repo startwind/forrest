@@ -17,7 +17,7 @@ class CommandFactory
     /**
      * Create a Command object out of the given array.
      */
-    public static function fromArray(array $commandConfig): Command
+    public static function fromArray(array $commandConfig, $withParameters = true): Command
     {
         $prompt = $commandConfig[self::CONFIG_FIELD_PROMPT];
 
@@ -41,7 +41,9 @@ class CommandFactory
             throw new \RuntimeException('The configuration is malformed. Array expected but "' . $parameterConfig . '" found.');
         }
 
-        $command->setParameters(self::createParameters($prompt, $parameterConfig));
+        if ($withParameters) {
+            $command->setParameters(self::createParameters($prompt, $parameterConfig));
+        }
 
         return $command;
     }

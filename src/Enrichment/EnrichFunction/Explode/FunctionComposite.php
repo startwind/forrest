@@ -6,7 +6,7 @@ use Startwind\Forrest\Enrichment\EnrichFunction\ExplodeEnrichFunction;
 
 class FunctionComposite implements ExplodeEnrichFunction
 {
-    public function applyFunction(string $string): string|array
+    public function applyFunction(string $string): array
     {
         /** @var ExplodeEnrichFunction[] $functions */
         $functions = [
@@ -14,12 +14,16 @@ class FunctionComposite implements ExplodeEnrichFunction
         ];
 
         foreach ($functions as $function) {
-            $result = $function->applyFunction($string);
+            try {
+                $result = $function->applyFunction($string);
+            } catch (\Exception $exception) {
+                continue;
+            }
             if (is_array($result)) {
                 return $result;
             }
         }
 
-        return $string;
+        return [];
     }
 }

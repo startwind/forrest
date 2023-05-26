@@ -30,6 +30,10 @@ class LocalFileLoader implements Loader, WritableLoader
         return new self($config['file']);
     }
 
+    public function assertHealth(): void
+    {
+    }
+
     /**
      * @inheritDoc
      */

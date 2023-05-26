@@ -57,8 +57,6 @@ class OutputHelper
         $number = 1;
         $numberPrefix = '';
 
-        $commandIdentifier = '';
-
         foreach ($commands as $commandId => $command) {
             if ($repoIdentifier) {
                 $commandIdentifier = RepositoryCollection::createUniqueCommandName($repoIdentifier, $command);
@@ -76,7 +74,7 @@ class OutputHelper
         }
 
         if ($askForCommand) {
-            return self::askForCommand($output, $input, $questionHelper, $commands, $commandIdentifier);
+            return self::askForCommand($output, $input, $questionHelper, $commands);
         }
 
         return false;
@@ -85,7 +83,7 @@ class OutputHelper
     /**
      * @param Command[] $commands
      */
-    private static function askForCommand(OutputInterface $output, InputInterface $input, QuestionHelper $questionHelper, array $commands, string $commandIdentifier): bool|Command
+    private static function askForCommand(OutputInterface $output, InputInterface $input, QuestionHelper $questionHelper, array $commands): bool|Command
     {
         $output->writeln('');
 
@@ -104,6 +102,7 @@ class OutputHelper
             $commandIdentifier = array_keys($commands)[$commandNumber - 1];
             $command = $commands[$commandIdentifier];
         }
+
 
         $command->setFullyQualifiedIdentifier($commandIdentifier);
 

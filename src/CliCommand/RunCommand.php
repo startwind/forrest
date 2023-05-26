@@ -5,6 +5,7 @@ namespace Startwind\Forrest\CliCommand;
 use Startwind\Forrest\Command\Command;
 use Startwind\Forrest\Output\PromptHelper;
 use Startwind\Forrest\Output\RunHelper;
+use Startwind\Forrest\Repository\RepositoryCollection;
 use Startwind\Forrest\Runner\Exception\ToolNotFoundException;
 use Symfony\Component\Console\Command\Command as SymfonyCommand;
 
@@ -19,14 +20,14 @@ abstract class RunCommand extends ForrestCommand
             $commandIdentifier = $command->getFullyQualifiedIdentifier();
         }
 
-        $repositoryIdentifier = $this->getRepositoryIdentifier($commandIdentifier);
+        $repositoryIdentifier = RepositoryCollection::getRepositoryIdentifier($commandIdentifier);
 
         /** @var \Symfony\Component\Console\Helper\QuestionHelper $questionHelper */
         $questionHelper = $this->getHelper('question');
 
         $promptHelper = new PromptHelper($this->getInput(), $this->getOutput(), $questionHelper, $this->getRecentParameterMemory());
 
-        $prompt = $promptHelper->askForPrompt($repositoryIdentifier, $command, $userParameters);
+        $prompt = $promptHelper->askForPrompt($command, $userParameters);
 
         $promptHelper->showFinalPrompt($prompt);
 

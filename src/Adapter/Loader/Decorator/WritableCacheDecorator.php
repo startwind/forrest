@@ -19,7 +19,6 @@ class WritableCacheDecorator extends CacheDecorator implements WritableLoader
         parent::__construct($loader, $cacheItemPool);
     }
 
-
     public function write(string $content)
     {
         /** @var WritableLoader $loader */

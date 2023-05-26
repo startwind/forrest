@@ -4,6 +4,7 @@ namespace Startwind\Forrest\CliCommand\Repository\Command;
 
 use Startwind\Forrest\CliCommand\Repository\RepositoryCommand;
 use Startwind\Forrest\Repository\EditableRepository;
+use Startwind\Forrest\Repository\RepositoryCollection;
 use Startwind\Forrest\Util\OutputHelper;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\QuestionHelper;
@@ -28,7 +29,7 @@ class RemoveCommand extends RepositoryCommand
 
         $identifier = $input->getArgument('commandName');
 
-        $repositoryIdentifier = $this->getRepositoryIdentifier($identifier);
+        $repositoryIdentifier = RepositoryCollection::getRepositoryIdentifier($identifier);
 
         $repository = $this->getRepositoryCollection()->getRepository($repositoryIdentifier);
 
@@ -47,7 +48,7 @@ class RemoveCommand extends RepositoryCommand
             return Command::FAILURE;
         }
 
-        $commandName = $this->getCommandName($identifier);
+        $commandName = RepositoryCollection::getCommandName($identifier);
 
         try {
             $repository->removeCommand($commandName);

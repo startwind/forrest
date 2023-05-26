@@ -3,15 +3,13 @@
 namespace Startwind\Forrest\CliCommand;
 
 use GuzzleHttp\Client;
-use GuzzleHttp\HandlerStack;
-use Kevinrob\GuzzleCache\CacheMiddleware;
-use Kevinrob\GuzzleCache\Storage\FlysystemStorage;
-use Kevinrob\GuzzleCache\Strategy\GreedyCacheStrategy;
-use League\Flysystem\Local\LocalFilesystemAdapter;
 use Startwind\Forrest\Command\Command;
 use Startwind\Forrest\Config\ConfigFileHandler;
 use Startwind\Forrest\Config\RecentParameterMemory;
 use Startwind\Forrest\History\HistoryHandler;
+use Startwind\Forrest\Logger\ForrestLogger;
+use Startwind\Forrest\Logger\ForrestLoggers;
+use Startwind\Forrest\Logger\OutputLogger;
 use Startwind\Forrest\Repository\Loader\CompositeLoader;
 use Startwind\Forrest\Repository\Loader\LocalComposerRepositoryLoader;
 use Startwind\Forrest\Repository\Loader\LocalPackageRepositoryLoader;
@@ -52,11 +50,17 @@ abstract class ForrestCommand extends SymfonyCommand
     private RecentParameterMemory $recentParameterMemory;
 
     private Client $client;
+    /**
+     * @var true
+     */
+    private bool $enriched = false;
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $this->input = $input;
         $this->output = $output;
+
+        ForrestLogger::addLogger(new OutputLogger($output));
 
         $this->initClient();
 
@@ -77,6 +81,9 @@ abstract class ForrestCommand extends SymfonyCommand
         return $this->recentParameterMemory;
     }
 
+    /**
+     * Do the actual execution.
+     */
     protected function doExecute(InputInterface $input, OutputInterface $output): int
     {
         return SymfonyCommand::SUCCESS;
@@ -160,43 +167,21 @@ abstract class ForrestCommand extends SymfonyCommand
 
     protected function enrichRepositories(): void
     {
-        $this->initRepositoryLoader();
-        $this->repositoryCollection = new RepositoryCollection();
-        $this->repositoryLoader->enrich($this->repositoryCollection);
+        if (!$this->enriched) {
+            $this->initRepositoryLoader();
+            $this->repositoryCollection = new RepositoryCollection();
+            $this->repositoryLoader->enrich($this->repositoryCollection);
+            $this->enriched = true;
+        }
     }
 
     /**
      * Return the command from the fully qualified command identifier.
      */
-    protected function getCommand(string $identifier): Command
+    protected function getCommand(string $fullyQualifiedCommandName): Command
     {
-        $repositoryIdentifier = $this->getRepositoryIdentifier($identifier);
-        $commandName = $this->getCommandName($identifier);
-
         $this->enrichRepositories();
-
-        $repository = $this->getRepositoryCollection()->getRepository($repositoryIdentifier);
-
-        try {
-            $command = $repository->getCommand($commandName);
-        } catch (\Exception $exception) {
-            throw new \RuntimeException('Unable to load command from ' . $repositoryIdentifier . ': ' . lcfirst($exception->getMessage()));
-        }
-
-        return $command;
-    }
-
-    protected function getCommandName(string $fullyQualifiedCommandName): string
-    {
-        return substr($fullyQualifiedCommandName, strpos($fullyQualifiedCommandName, self::COMMAND_SEPARATOR) + 1);
-    }
-
-    /**
-     * Return the identifier of the repository from a full command name.
-     */
-    protected function getRepositoryIdentifier(string $identifier): string
-    {
-        return substr($identifier, 0, strpos($identifier, self::COMMAND_SEPARATOR));
+        return $this->getRepositoryCollection()->getCommand($fullyQualifiedCommandName);
     }
 
     /**

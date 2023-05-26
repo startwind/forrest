@@ -107,4 +107,13 @@ class ApiRepository implements Repository, SearchAware
 
         return $command;
     }
+
+    public function assertHealth(): void
+    {
+        try {
+            $this->client->get($this->endpoint . 'health', ['verify' => false]);
+        } catch (\Exception $exception) {
+            throw new \RuntimeException('Unable to connect to Forrest API (' . $this->endpoint . ')');
+        }
+    }
 }

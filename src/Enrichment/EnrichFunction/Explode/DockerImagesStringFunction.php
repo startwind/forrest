@@ -2,9 +2,9 @@
 
 namespace Startwind\Forrest\Enrichment\EnrichFunction\Explode;
 
-use Startwind\Forrest\Enrichment\EnrichFunction\String\BasicStringFunction;
 use Startwind\Forrest\Runner\CommandRunner;
 use Startwind\Forrest\Runner\Exception\ToolNotFoundException;
+use Symfony\Component\Console\Command\Command;
 
 class DockerImagesStringFunction extends BasicExplodeFunction
 {
@@ -16,7 +16,11 @@ class DockerImagesStringFunction extends BasicExplodeFunction
             throw new ToolNotFoundException('The cli tool "docker" has to be installed to use the "docker-name" enrichment function.');
         }
 
-        exec("docker ps --no-trunc --format='{{json .}}'", $output, $statusCode);
+        exec("docker ps --no-trunc --format='{{json .}}' 2>&1", $output, $statusCode);
+
+        if ($statusCode !== Command::SUCCESS) {
+            throw new \RuntimeException($output[0]);
+        }
 
         $names = [];
 
