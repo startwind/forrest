@@ -167,6 +167,9 @@ class FileRepository implements Repository, SearchAware, ListAware
         throw new \RuntimeException('No command with name "' . $identifier . '" found.');
     }
 
+    /**
+     * @inheritDoc
+     */
     public function assertHealth(): void
     {
         $this->getAdapter()->assertHealth();
