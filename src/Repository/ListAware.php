@@ -9,7 +9,7 @@ use Startwind\Forrest\Command\Command;
  * example the most private repos and YAML repos are list-aware, the database-based only
  * normally are not because they contain to many commands.
  */
-interface ListAware
+interface ListAware extends Repository
 {
     /**
      * Return all commands in the repository.
