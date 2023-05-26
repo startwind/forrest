@@ -6,13 +6,14 @@ use Startwind\Forrest\Adapter\Adapter;
 use Startwind\Forrest\Command\Command;
 use Startwind\Forrest\Command\Parameters\FileParameter;
 use Startwind\Forrest\Runner\CommandRunner;
+use Startwind\Forrest\Adapter\ListAwareAdapter;
 
 class FileRepository implements Repository, SearchAware, ListAware
 {
     private array $commands = [];
 
     public function __construct(
-        private readonly Adapter $adapter,
+        private readonly ListAwareAdapter $adapter,
         private readonly string  $name,
         private readonly string  $description,
         private readonly bool    $isSpecialRepo = false,
@@ -51,9 +52,12 @@ class FileRepository implements Repository, SearchAware, ListAware
     {
         $exceptions = [];
 
+        /** @var ListAwareAdapter $adapter */
+        $adapter = $this->getAdapter();
+
         if (!$this->commands) {
             try {
-                $this->commands = $this->adapter->getCommands();
+                $this->commands = $adapter->getCommands();
             } catch (\Exception $exception) {
                 $exceptions[] = $exception;
                 throw $exception;

@@ -3,6 +3,7 @@
 namespace Startwind\Forrest\Repository;
 
 use Startwind\Forrest\Command\Command;
+use Startwind\Forrest\Adapter\EditableAdapter;
 
 class EditableFileRepository extends FileRepository implements EditableRepository
 {
@@ -11,7 +12,9 @@ class EditableFileRepository extends FileRepository implements EditableRepositor
      */
     public function addCommand(Command $command): void
     {
-        $this->getAdapter()->addCommand($command);
+        /** @var EditableAdapter $adapter */
+        $adapter = $this->getAdapter();
+        $adapter->addCommand($command);
     }
 
     /**
@@ -19,6 +22,8 @@ class EditableFileRepository extends FileRepository implements EditableRepositor
      */
     public function removeCommand(string $commandName): void
     {
-        $this->getAdapter()->removeCommand($commandName);
+        /** @var EditableAdapter $adapter */
+        $adapter = $this->getAdapter();
+        $adapter->removeCommand($commandName);
     }
 }
