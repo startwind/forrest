@@ -110,7 +110,7 @@ abstract class ForrestCommand extends SymfonyCommand
         return $home . DIRECTORY_SEPARATOR . self::USER_CONFIG_FILE;
     }
 
-    protected function getUserChecksumsFile(): string
+    private function getUserChecksumsFile(): string
     {
         $home = getenv("HOME");
         return $home . DIRECTORY_SEPARATOR . self::USER_CHECKSUM_FILE;

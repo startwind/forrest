@@ -7,12 +7,10 @@ use Startwind\Forrest\Enrichment\EnrichFunction\String\FunctionComposite;
 
 class ParameterFactory
 {
-    public const TYPE_MIXED = 'forrest_mixed';
-    public const TYPE_FILENAME = 'forrest_filename';
-
-    public const TYPE_PASSWORD = 'forrest_password';
-    public const FIELD_TYPE = 'type';
-
+    private const TYPE_MIXED = 'forrest_mixed';
+    private const TYPE_FILENAME = 'forrest_filename';
+    private const TYPE_PASSWORD = 'forrest_password';
+    private const FIELD_TYPE = 'type';
     private const FIELD_CONSTRAINTS = 'constraints';
 
     /**

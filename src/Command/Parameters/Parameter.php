@@ -66,7 +66,7 @@ class Parameter
             $explodeFunctionComposite = new FunctionComposite();
             $values = $explodeFunctionComposite->applyFunction($values);
             if (is_string($values)) {
-                throw  new \RuntimeException('Unable to process enum value "' . $values . '"');
+                throw new \RuntimeException('Unable to process enum value "' . $values . '"');
             } else {
                 $this->values = $values;
             }
