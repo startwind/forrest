@@ -20,6 +20,8 @@ class ToolCommand extends SearchCommand
 
     protected function configure(): void
     {
+        parent::configure();
+
         $this->addArgument('tool', InputArgument::REQUIRED, 'The tool name you want to search for.');
         $this->addOption('force', null, InputOption::VALUE_OPTIONAL, 'Run the command without asking for permission.', false);
 

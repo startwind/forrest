@@ -19,6 +19,7 @@ class AddCommand extends RepositoryCommand
 
     protected function configure()
     {
+        parent::configure();
         $this->setAliases(['add']);
     }
 

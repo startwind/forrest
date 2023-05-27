@@ -55,9 +55,11 @@ class CommandCommand extends \Startwind\Forrest\CliCommand\RunCommand
             if (!$repository instanceof ListAware) {
                 continue;
             }
+
             if (!$repository->hasCommands()) {
                 continue;
             }
+
             if ($repository->isSpecial()) {
                 $this->renderWarningBox($repository->getName() . ' (' . $repoIdentifier . ')');
                 $output->writeln(['  ' . $repository->getDescription(), '']);
@@ -73,7 +75,7 @@ class CommandCommand extends \Startwind\Forrest\CliCommand\RunCommand
             /** @var \Symfony\Component\Console\Helper\QuestionHelper $questionHelper */
             $questionHelper = $this->getHelper('question');
 
-            OutputHelper::renderCommands($output, $this->getInput(), $questionHelper, $repository->getCommands(), $repoIdentifier, $maxLength);
+            OutputHelper::renderCommands($output, $this->getInput(), $questionHelper, $repository->getCommands(false), $repoIdentifier, $maxLength);
         }
 
         $output->writeln('');

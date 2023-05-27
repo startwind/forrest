@@ -22,9 +22,13 @@ class FileCommand extends SearchCommand
 
     protected function configure(): void
     {
+        parent::configure();
+
         $this->addArgument('filename', InputArgument::REQUIRED, 'The filename you want to get commands for.');
         $this->addArgument('pattern', InputArgument::OPTIONAL, 'Filter the results for a given pattern.');
+
         $this->addOption('force', null, InputOption::VALUE_OPTIONAL, 'Run the command without asking for permission.', false);
+
         $this->setAliases(['file']);
     }
 

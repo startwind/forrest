@@ -75,7 +75,7 @@ class FileRepository implements Repository, SearchAware, ListAware
      */
     public function hasCommands(): bool
     {
-        return count($this->getCommands()) > 0;
+        return count($this->getCommands(false)) > 0;
     }
 
     /**

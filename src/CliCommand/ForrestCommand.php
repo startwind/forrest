@@ -8,7 +8,6 @@ use Startwind\Forrest\Config\ConfigFileHandler;
 use Startwind\Forrest\Config\RecentParameterMemory;
 use Startwind\Forrest\History\HistoryHandler;
 use Startwind\Forrest\Logger\ForrestLogger;
-use Startwind\Forrest\Logger\ForrestLoggers;
 use Startwind\Forrest\Logger\OutputLogger;
 use Startwind\Forrest\Repository\Loader\CompositeLoader;
 use Startwind\Forrest\Repository\Loader\LocalComposerRepositoryLoader;
@@ -21,16 +20,13 @@ use Startwind\Forrest\Util\OutputHelper;
 use Symfony\Component\Console\Command\Command as SymfonyCommand;
 use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\Question;
-
-use League\Flysystem\Adapter\Local;
 
 
 abstract class ForrestCommand extends SymfonyCommand
 {
-    public const COMMAND_SEPARATOR = ':';
-
     public const DEFAULT_CONFIG_FILE = __DIR__ . '/../../config/repository.yml';
 
     public const DEFAULT_LOCAL_CONFIG_FILE = '.forrest.yml';
@@ -55,12 +51,22 @@ abstract class ForrestCommand extends SymfonyCommand
      */
     private bool $enriched = false;
 
+    protected function configure()
+    {
+        $this->addOption('debug', 'd', InputOption::VALUE_NONE, 'Show logs.');
+    }
+
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
+        ForrestLogger::addLogger('output', new OutputLogger($output));
+
+        if ($input->getOption('debug')) {
+            ForrestLogger::setLogLevel(ForrestLogger::LEVEL_INFO);
+        }
+
         $this->input = $input;
         $this->output = $output;
 
-        ForrestLogger::addLogger(new OutputLogger($output));
 
         $this->initClient();
 

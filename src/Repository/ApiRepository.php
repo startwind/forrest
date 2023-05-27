@@ -113,7 +113,7 @@ class ApiRepository implements Repository, SearchAware
         try {
             $this->client->get($this->endpoint . 'health', ['verify' => false]);
         } catch (\Exception $exception) {
-            throw new \RuntimeException('Unable to connect to Forrest API (' . $this->endpoint . ')');
+            throw new \RuntimeException('Unable to connect to Forrest API ("' . $this->endpoint . '")');
         }
     }
 }
