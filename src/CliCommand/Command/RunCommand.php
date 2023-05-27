@@ -17,6 +17,7 @@ class RunCommand extends CommandCommand
 
     protected function configure(): void
     {
+        parent::configure();
         $this->setAliases(['run']);
         $this->addArgument('identifier', InputArgument::OPTIONAL, 'The commands identifier.', false);
         $this->addArgument('pattern', InputArgument::OPTIONAL, 'Small filter', false);
@@ -38,7 +39,7 @@ class RunCommand extends CommandCommand
         }
 
         if (!str_contains($commandIdentifier, ':') && file_exists($commandIdentifier)) {
-            return $this->runSearchFileCommand($commandIdentifier, $pattern);
+            return $this->runSearchFileCommand($commandIdentifier, $pattern, $input->getOption('debug'));
         }
 
         $this->enrichRepositories();
@@ -52,11 +53,12 @@ class RunCommand extends CommandCommand
      * The run command can also be applied to a file. This is a shortcut for the
      * search:file symfony console command.
      */
-    private function runSearchFileCommand(string $filename, string $pattern): int
+    private function runSearchFileCommand(string $filename, string $pattern, bool $debug): int
     {
         $arguments = [
             'filename' => $filename,
-            'pattern' => $pattern
+            'pattern' => $pattern,
+            '--debug' => $debug
         ];
 
         $fileArguments = new ArrayInput($arguments);

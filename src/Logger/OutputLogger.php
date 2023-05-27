@@ -19,6 +19,11 @@ class OutputLogger implements Logger
         OutputHelper::writeInfoBox($this->output, $message);
     }
 
+    public function warn($message): void
+    {
+        OutputHelper::writeWarningBox($this->output, $message);
+    }
+
     public function error($message): void
     {
         OutputHelper::writeErrorBox($this->output, $message);

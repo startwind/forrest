@@ -13,6 +13,7 @@ class HistoryCommand extends CommandCommand
 
     protected function configure()
     {
+        parent::configure();
         $this->setAliases(['history']);
     }
 

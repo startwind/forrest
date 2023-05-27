@@ -2,11 +2,13 @@
 
 namespace Startwind\Forrest\Enrichment\EnrichFunction\Explode;
 
+use Startwind\Forrest\Enrichment\EnrichFunction\CacheableFunction;
+use Startwind\Forrest\Logger\ForrestLogger;
 use Startwind\Forrest\Runner\CommandRunner;
 use Startwind\Forrest\Runner\Exception\ToolNotFoundException;
 use Symfony\Component\Console\Command\Command;
 
-class DockerImagesStringFunction extends BasicExplodeFunction
+class DockerImagesStringFunction extends BasicExplodeFunction implements CacheableFunction
 {
     protected string $functionName = 'docker-names';
 
@@ -19,7 +21,12 @@ class DockerImagesStringFunction extends BasicExplodeFunction
         exec("docker ps --no-trunc --format='{{json .}}' 2>&1", $output, $statusCode);
 
         if ($statusCode !== Command::SUCCESS) {
-            throw new \RuntimeException($output[0]);
+            if (str_contains($output[0], 'Is the docker daemon running?')) {
+                ForrestLogger::warn('Docker daemon not running. Please start it to use the "docker-names" function.');
+            } else {
+                ForrestLogger::warn($output[0]);
+            }
+            return [];
         }
 
         $names = [];
@@ -29,6 +36,10 @@ class DockerImagesStringFunction extends BasicExplodeFunction
             if ($container) {
                 $names[] = $container['Names'];
             }
+        }
+
+        if (count($names) == 0) {
+            ForrestLogger::warn('Currently there are no docker containers running. Please start one to use the "docker-names" function.');
         }
 
         return $names;

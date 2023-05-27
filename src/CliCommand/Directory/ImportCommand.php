@@ -18,6 +18,7 @@ class ImportCommand extends DirectoryCommand
 
     protected function configure()
     {
+        parent::configure();
         $this->addArgument('identifier', InputArgument::REQUIRED, 'The config string for the directory.');
         $this->addArgument('directoryConfig', InputArgument::REQUIRED, 'The config string for the directory.');
     }

@@ -19,6 +19,7 @@ class ListCommand extends DirectoryCommand
 
     protected function configure()
     {
+        parent::configure();
         // @todo as long as there are only a few repositories listed we show all. This mechanism should be activated
         //       as soon as there a longer list.
         $this->addOption('all', '', InputOption::VALUE_OPTIONAL, 'List all repositories. Default is that only official repositories are shown.', true);

@@ -87,7 +87,7 @@ class YamlLoader implements RepositoryLoader
             try {
                 $newRepo->assertHealth();
             } catch (\Exception $exception) {
-                ForrestLogger::error("Unable to load repository " . $repoName . ": " . $exception->getMessage());
+                ForrestLogger::error("Unable to load repository " . $repoName . ": " . $exception->getMessage() . '.');
                 continue;
             }
 

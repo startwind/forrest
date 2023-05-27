@@ -14,6 +14,7 @@ class RemoveCommand extends RepositoryCommand
 
     protected function configure(): void
     {
+        parent::configure();
         $this->addArgument('identifier', InputArgument::REQUIRED, 'The repositories identifier.');
     }
 

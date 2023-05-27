@@ -17,6 +17,8 @@ class PatternCommand extends SearchCommand
 
     protected function configure(): void
     {
+        parent::configure();
+
         $this->addArgument('pattern', InputArgument::REQUIRED, 'The pattern you want to search for.');
         $this->addOption('force', null, InputOption::VALUE_OPTIONAL, 'Run the command without asking for permission.', false);
 

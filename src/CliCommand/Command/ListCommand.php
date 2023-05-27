@@ -14,6 +14,7 @@ class ListCommand extends CommandCommand
 
     protected function configure()
     {
+        parent::configure();
         $this->addArgument('repository', InputArgument::OPTIONAL, 'Show only this single repository', '');
     }
 

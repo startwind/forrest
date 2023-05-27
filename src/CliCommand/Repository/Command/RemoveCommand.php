@@ -20,6 +20,7 @@ class RemoveCommand extends RepositoryCommand
 
     protected function configure()
     {
+        parent::configure();
         $this->addArgument('commandName', InputArgument::REQUIRED, 'The name of the command you want to remove');
     }
 
