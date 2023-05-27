@@ -46,9 +46,7 @@ abstract class ForrestCommand extends SymfonyCommand
     private RecentParameterMemory $recentParameterMemory;
 
     private Client $client;
-    /**
-     * @var true
-     */
+
     private bool $enriched = false;
 
     protected function configure()

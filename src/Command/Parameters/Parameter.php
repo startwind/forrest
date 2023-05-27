@@ -64,12 +64,7 @@ class Parameter
             $this->values = $values;
         } else {
             $explodeFunctionComposite = new FunctionComposite();
-            $values = $explodeFunctionComposite->applyFunction($values);
-            if (is_string($values)) {
-                throw new \RuntimeException('Unable to process enum value "' . $values . '"');
-            } else {
-                $this->values = $values;
-            }
+            $this->values = $explodeFunctionComposite->applyFunction($values);
         }
     }
 
