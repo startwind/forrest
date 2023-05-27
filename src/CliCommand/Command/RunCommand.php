@@ -4,8 +4,6 @@ namespace Startwind\Forrest\CliCommand\Command;
 
 use Startwind\Forrest\CliCommand\Search\FileCommand;
 use Symfony\Component\Console\Command\Command as SymfonyCommand;
-use Symfony\Component\Console\Completion\CompletionInput;
-use Symfony\Component\Console\Completion\CompletionSuggestions;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -31,37 +29,46 @@ class RunCommand extends CommandCommand
      */
     protected function doExecute(InputInterface $input, OutputInterface $output): int
     {
-        if (!$input->getArgument('identifier')) {
+        $commandIdentifier = $input->getArgument('identifier');
+        $pattern = $input->getArgument('pattern');
+
+        if (!$commandIdentifier) {
             $this->renderListCommand();
             return SymfonyCommand::SUCCESS;
         }
 
-        $commandIdentifier = $input->getArgument('identifier');
-
         if (!str_contains($commandIdentifier, ':') && file_exists($commandIdentifier)) {
-            $arguments = [
-                'filename' => $commandIdentifier,
-                'pattern' => $input->getArgument('pattern')
-            ];
-
-            $fileArguments = new ArrayInput($arguments);
-            $fileCommand = $this->getApplication()->find(FileCommand::COMMAND_NAME);
-            return $fileCommand->run($fileArguments, $output);
+            return $this->runSearchFileCommand($commandIdentifier, $pattern);
         }
 
         $this->enrichRepositories();
 
-        $userParameters = json_decode($input->getOption('parameters'), true);
-
         $command = $this->getRepositoryCollection()->getCommand($commandIdentifier);
 
-        return $this->runCommand($command, $userParameters);
+        return $this->runCommand($command, $this->extractUserParameters($input));
     }
 
-    public function complete(CompletionInput $input, CompletionSuggestions $suggestions): void
+    /**
+     * The run command can also be applied to a file. This is a shortcut for the
+     * search:file symfony console command.
+     */
+    private function runSearchFileCommand(string $filename, string $pattern): int
     {
-        if ($input->mustSuggestArgumentValuesFor('identifier')) {
-            $suggestions->suggestValues(['linux:run', 'linux:delete']);
-        }
+        $arguments = [
+            'filename' => $filename,
+            'pattern' => $pattern
+        ];
+
+        $fileArguments = new ArrayInput($arguments);
+        $fileCommand = $this->getApplication()->find(FileCommand::COMMAND_NAME);
+        return $fileCommand->run($fileArguments, $this->getOutput());
+    }
+
+    /**
+     * Return the parameters that are prefilled via the input option.
+     */
+    private function extractUserParameters(InputInterface $input): array
+    {
+        return json_decode($input->getOption('parameters'), true);
     }
 }

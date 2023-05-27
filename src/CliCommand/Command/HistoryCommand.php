@@ -26,8 +26,6 @@ class HistoryCommand extends CommandCommand
 
         $count = 1;
 
-        # strlen((string)count($commands));
-
         foreach ($commands as $command) {
             $output->write($count . '  ' . $command);
             $count++;

@@ -7,7 +7,7 @@ use Symfony\Component\Console\Command\Command as SymfonyCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Startwind\Forrest\Repository\RepositoryCollection;
+use Symfony\Component\Console\Helper\QuestionHelper;
 
 class ShowCommand extends CommandCommand
 {
@@ -24,16 +24,15 @@ class ShowCommand extends CommandCommand
         $this->enrichRepositories();
 
         $commandIdentifier = $input->getArgument('identifier');
-        $repositoryIdentifier = RepositoryCollection::getRepositoryIdentifier($commandIdentifier);
 
-        /** @var \Symfony\Component\Console\Helper\QuestionHelper $questionHelper */
+        /** @var QuestionHelper $questionHelper */
         $questionHelper = $this->getHelper('question');
 
         $promptHelper = new PromptHelper($this->getInput(), $this->getOutput(), $questionHelper, $this->getRecentParameterMemory());
 
         $command = $this->getCommand($commandIdentifier);
 
-        $prompt = $promptHelper->askForPrompt($command, []);
+        $prompt = $promptHelper->askForPrompt($command);
 
         $promptHelper->showFinalPrompt($prompt);
 
