@@ -5,13 +5,12 @@ namespace Startwind\Forrest\CliCommand\Search;
 use Startwind\Forrest\Command\Command;
 use Startwind\Forrest\Command\Parameters\FileParameter;
 use Startwind\Forrest\Output\OutputHelper;
-use Startwind\Forrest\Repository\FileRepository;
-use Startwind\Forrest\Repository\SearchAware;
 use Symfony\Component\Console\Command\Command as SymfonyCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Helper\QuestionHelper;
 
 class FileCommand extends SearchCommand
 {
@@ -41,7 +40,7 @@ class FileCommand extends SearchCommand
         $filename = $input->getArgument('filename');
         $pattern = $input->getArgument('pattern');
 
-        /** @var \Symfony\Component\Console\Helper\QuestionHelper $questionHelper */
+        /** @var QuestionHelper $questionHelper */
         $questionHelper = $this->getHelper('question');
 
         if (!file_exists($filename)) {
