@@ -11,7 +11,9 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class PatternCommand extends SearchCommand
 {
-    protected static $defaultName = 'search:pattern';
+    public const COMMAND_NAME = 'search:pattern';
+
+    protected static $defaultName = self::COMMAND_NAME;
     protected static $defaultDescription = 'Search for commands that fit the given pattern.';
 
     protected function configure(): void
