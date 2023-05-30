@@ -1,0 +1,44 @@
+<?php
+
+namespace Startwind\Forrest\Repository;
+
+use GuzzleHttp\Client;
+use GuzzleHttp\RequestOptions;
+use Startwind\Forrest\Command\Command;
+use Startwind\Forrest\Command\CommandFactory;
+use Startwind\Forrest\Logger\ForrestLogger;
+
+class EditableApiRepository extends ApiRepository implements EditableRepository
+{
+    private string $password = '';
+
+    /**
+     * @param string $password
+     */
+    public function setPassword(string $password): void
+    {
+        $this->password = $password;
+    }
+
+    public function addCommand(Command $command): void
+    {
+        $response = $this->client->post(
+            $this->endpoint . 'command/' . $command->getName(),
+            [
+                RequestOptions::JSON => $command,
+                'verify' => false
+            ]
+        );
+
+        $response = json_decode((string)$response->getBody(), true);
+
+        if ($response['status'] == 'failure') {
+            ForrestLogger::error($response['message']);
+        }
+    }
+
+    public function removeCommand(string $commandName): void
+    {
+        // TODO: Implement removeCommand() method.
+    }
+}

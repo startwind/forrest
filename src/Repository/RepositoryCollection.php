@@ -51,7 +51,7 @@ class RepositoryCollection implements SearchAware
                 try {
                     $foundCommands = $repository->searchByFile($files);
                 } catch (\Exception $exception) {
-                    ForrestLogger::error("Unable to \"search by file\" in repository " . $repositoryIdentifier);
+                    ForrestLogger::error("Unable to \"search by file\" in repository " . $repositoryIdentifier . ' (' . $exception->getMessage() . ')');
                     continue;
                 }
                 foreach ($foundCommands as $foundCommand) {

@@ -16,7 +16,7 @@ use Symfony\Component\Console\Question\ConfirmationQuestion;
 class RemoveCommand extends RepositoryCommand
 {
     protected static $defaultName = 'repository:command:remove';
-    protected static $defaultDescription = 'Creates a boilerplate for a new command repository.';
+    protected static $defaultDescription = 'Removes a command from an editable repository.';
 
     protected function configure()
     {

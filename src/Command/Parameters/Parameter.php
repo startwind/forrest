@@ -6,7 +6,7 @@ use Startwind\Forrest\Command\Parameters\Validation\Constraint\NotEmptyConstrain
 use Startwind\Forrest\Command\Parameters\Validation\ValidationResult;
 use Startwind\Forrest\Enrichment\EnrichFunction\Explode\FunctionComposite;
 
-class Parameter
+class Parameter implements \JsonSerializable
 {
     public const PARAMETER_PREFIX = '${';
     public const PARAMETER_POSTFIX = '}';
@@ -19,9 +19,19 @@ class Parameter
 
     private array $values = [];
 
+    private array $rawStructure = [];
+
     private array $constraints = [
         NotEmptyConstraint::class
     ];
+
+    /**
+     * @param array $rawStructure
+     */
+    public function setRawStructure(array $rawStructure): void
+    {
+        $this->rawStructure = $rawStructure;
+    }
 
     public function setName(string $name): void
     {
@@ -96,5 +106,10 @@ class Parameter
             }
         }
         return new ValidationResult(true);
+    }
+
+    public function jsonSerialize(): array
+    {
+        return $this->rawStructure;
     }
 }

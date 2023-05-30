@@ -29,6 +29,8 @@ $application->add(new \Startwind\Forrest\CliCommand\Repository\RemoveCommand());
 # Repository Command
 $application->add(new \Startwind\Forrest\CliCommand\Repository\Command\AddCommand());
 $application->add(new \Startwind\Forrest\CliCommand\Repository\Command\RemoveCommand());
+$application->add(new \Startwind\Forrest\CliCommand\Repository\Command\MoveAllCommand());
+
 
 # Directory
 $application->add(new \Startwind\Forrest\CliCommand\Directory\ListCommand());

@@ -3,16 +3,17 @@
 namespace Startwind\Forrest\Repository;
 
 use GuzzleHttp\Client;
+use GuzzleHttp\RequestOptions;
 use Startwind\Forrest\Command\Command;
 use Startwind\Forrest\Command\CommandFactory;
 
 class ApiRepository implements Repository, SearchAware
 {
     public function __construct(
-        private readonly string $endpoint,
+        protected readonly string $endpoint,
         private readonly string $name,
         private readonly string $description,
-        private readonly Client $client,
+        protected readonly Client $client,
     )
     {
     }
@@ -42,11 +43,24 @@ class ApiRepository implements Repository, SearchAware
     }
 
     /**
+     * @todo merge the three search functions and remove duplicate code
+     *
      * @inheritDoc
      */
     public function searchByFile(array $files): array
     {
-        $response = $this->client->get($this->endpoint . 'search/file', ['verify' => false]);
+        $payload = [
+            'types' => $files
+        ];
+
+        $response = $this->client->post(
+            $this->endpoint . 'search/file',
+            [
+                RequestOptions::JSON => $payload,
+                'verify' => false
+            ]
+        );
+
         $plainCommands = json_decode($response->getBody(), true);
 
         $commandsArray = $plainCommands['commands'];
@@ -65,7 +79,18 @@ class ApiRepository implements Repository, SearchAware
      */
     public function searchByPattern(array $patterns): array
     {
-        $response = $this->client->get($this->endpoint . 'search/pattern', ['verify' => false]);
+        $payload = [
+            'patterns' => $patterns
+        ];
+
+        $response = $this->client->post(
+            $this->endpoint . 'search/pattern',
+            [
+                RequestOptions::JSON => $payload,
+                'verify' => false
+            ]
+        );
+
         $plainCommands = json_decode($response->getBody(), true);
 
         $commandsArray = $plainCommands['commands'];
@@ -84,7 +109,18 @@ class ApiRepository implements Repository, SearchAware
      */
     public function searchByTools(array $tools): array
     {
-        $response = $this->client->get($this->endpoint . 'search/tool', ['verify' => false]);
+        $payload = [
+            'tool' => $tools[0]
+        ];
+
+        $response = $this->client->post(
+            $this->endpoint . 'search/tool',
+            [
+                RequestOptions::JSON => $payload,
+                'verify' => false
+            ]
+        );
+
         $plainCommands = json_decode($response->getBody(), true);
 
         $commandsArray = $plainCommands['commands'];

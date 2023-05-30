@@ -7,6 +7,7 @@ use Startwind\Forrest\Adapter\AdapterFactory;
 use Startwind\Forrest\Adapter\EditableAdapter;
 use Startwind\Forrest\Logger\ForrestLogger;
 use Startwind\Forrest\Repository\ApiRepository;
+use Startwind\Forrest\Repository\EditableApiRepository;
 use Startwind\Forrest\Repository\EditableFileRepository;
 use Startwind\Forrest\Repository\FileRepository;
 use Startwind\Forrest\Repository\Repository;
@@ -72,8 +73,15 @@ class YamlLoader implements RepositoryLoader
                 throw new \RuntimeException('No field for repository "' . $repoName . '" with value ' . self::CONFIG_ELEMENT_CONFIG . ' found. Fields given are: ' . implode(', ', array_keys($repoConfig)) . '.');
             }
 
+            // @todo this should be moved to a repository factory
+
             if ($repoType == Repository::TYPE_API) {
-                $newRepo = new ApiRepository($repoConfig['config']['endpoint'], $repoConfig['name'], $repoConfig['description'], $this->client);
+                if (array_key_exists('password', $repoConfig['config'])) {
+                    $newRepo = new EditableApiRepository($repoConfig['config']['endpoint'], $repoConfig['name'], $repoConfig['description'], $this->client);
+                    $newRepo->setPassword($repoConfig['config']['password']);
+                } else {
+                    $newRepo = new ApiRepository($repoConfig['config']['endpoint'], $repoConfig['name'], $repoConfig['description'], $this->client);
+                }
             } else {
                 $adapterIdentifier = $repoConfig[self::CONFIG_ELEMENT_ADAPTER];
                 $adapter = AdapterFactory::getAdapter($adapterIdentifier, $repoConfig['config'], $this->client);

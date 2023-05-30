@@ -42,6 +42,8 @@ class ParameterFactory
 
     private static function enrichParameters(Parameter $parameter, array $config): void
     {
+        $parameter->setRawStructure($config);
+
         if (array_key_exists('name', $config)) {
             $parameter->setName($config['name']);
         }
