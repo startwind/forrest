@@ -59,6 +59,8 @@ class YamlAdapter extends BasicAdapter implements ClientAwareAdapter, ListAwareA
             throw new \RuntimeException('The given YAML file does not contain a section named "' . self::YAML_FIELD_COMMANDS . '".');
         }
 
+        if(is_null($config[self::YAML_FIELD_COMMANDS])) return [];
+
         foreach ($config[self::YAML_FIELD_COMMANDS] as $identifier => $commandConfig) {
             if (!array_key_exists(self::YAML_FIELD_PROMPT, $commandConfig)) {
                 throw new \RuntimeException('The mandatory field ' . self::YAML_FIELD_PROMPT . ' is not set for identifier "' . $identifier . '".');
