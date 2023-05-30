@@ -48,7 +48,10 @@ class FileCommand extends SearchCommand
             return SymfonyCommand::FAILURE;
         }
 
-        $filenames = [$filename];
+        $filenames = [
+            basename($filename),
+            pathinfo($filename, PATHINFO_EXTENSION)
+        ];
 
         if (is_dir($filename)) {
             $filenames[] = FileParameter::DIRECTORY;
