@@ -44,9 +44,14 @@ $application->add(new \Startwind\Forrest\CliCommand\Search\FileCommand());
 $application->add(new \Startwind\Forrest\CliCommand\Search\PatternCommand());
 $application->add(new \Startwind\Forrest\CliCommand\Search\ToolCommand());
 
+# Forrest
+$application->add(new \Startwind\Forrest\CliCommand\Forrest\HelpCommand());
+
 # Others
 if (!str_contains(FORREST_VERSION, '##FORREST_VERSION')) {
     $application->add(new SelfUpdateCommand(FORREST_NAME, FORREST_VERSION, "startwind/forrest"));
 }
+
+$application->setDefaultCommand(\Startwind\Forrest\CliCommand\Forrest\HelpCommand::COMMAND_NAME);
 
 $application->run();
