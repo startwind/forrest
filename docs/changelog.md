@@ -3,11 +3,12 @@
 Forrest is constantly evolving. Sometimes so fast that you might not even get around to trying out the new features. For this reason, we have introduced a changelog.
 
 - **develop**
+  - Fixed bug where search:tool does not find any commands but still asks "Which tool to run".
 
 
 - **2.0.0**
   - **Search via API**. With this new major release we are able to search for commands using an API. This way we can find fitting commands much faster and are able to extend the systems on the fly. 
-
+  - **Debug mode** We introduced a debug mode that will be activated via `--debug` and will show more verbose information if an error occurs.
 
 - **1.5.0**
   - Shortcut for `search:file`. The functionality can now be used via the `run` command by simply using the file as first argument.
