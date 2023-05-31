@@ -3,7 +3,6 @@
 namespace Startwind\Forrest\Output;
 
 use Startwind\Forrest\Command\Command;
-use Startwind\Forrest\Repository\FileRepository;
 use Startwind\Forrest\Repository\RepositoryCollection;
 use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Helper\Table;
