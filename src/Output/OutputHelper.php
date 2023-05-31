@@ -26,7 +26,8 @@ class OutputHelper
     {
         $output->writeln([
             '',
-            '<options=bold>Forrest</>: the command line helper <fg=green>' . FORREST_VERSION . '</> by Nils Langner and contributors.',
+            '<options=bold>Forrest</> - Unifying the command line <fg=green>' . FORREST_VERSION . '</>',
+            // '         by Nils Langner and contributors.',
             '',
         ]);
     }
