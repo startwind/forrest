@@ -42,6 +42,7 @@ class ToolCommand extends SearchCommand
 
         if (empty($commands)) {
             $this->renderErrorBox('No commands found that match the given tool.');
+            return SymfonyCommand::FAILURE;
         }
 
         return $this->runFromCommands($commands);
