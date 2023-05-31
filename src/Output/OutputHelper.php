@@ -26,7 +26,7 @@ class OutputHelper
     {
         $output->writeln([
             '',
-            'Forrest - Package manager for CLI scripts <fg=green>' . FORREST_VERSION . '</>',
+            '<options=bold>Forrest</>: the command line helper <fg=green>' . FORREST_VERSION . '</> by Nils Langner and contributors.',
             '',
         ]);
     }
