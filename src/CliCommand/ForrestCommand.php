@@ -3,15 +3,12 @@
 namespace Startwind\Forrest\CliCommand;
 
 use GuzzleHttp\Client;
-use GuzzleHttp\HandlerStack;
-use Kevinrob\GuzzleCache\CacheMiddleware;
-use Kevinrob\GuzzleCache\Storage\FlysystemStorage;
-use Kevinrob\GuzzleCache\Strategy\GreedyCacheStrategy;
-use League\Flysystem\Local\LocalFilesystemAdapter;
 use Startwind\Forrest\Command\Command;
 use Startwind\Forrest\Config\ConfigFileHandler;
 use Startwind\Forrest\Config\RecentParameterMemory;
 use Startwind\Forrest\History\HistoryHandler;
+use Startwind\Forrest\Logger\ForrestLogger;
+use Startwind\Forrest\Logger\OutputLogger;
 use Startwind\Forrest\Repository\Loader\CompositeLoader;
 use Startwind\Forrest\Repository\Loader\LocalComposerRepositoryLoader;
 use Startwind\Forrest\Repository\Loader\LocalPackageRepositoryLoader;
@@ -23,16 +20,13 @@ use Startwind\Forrest\Util\OutputHelper;
 use Symfony\Component\Console\Command\Command as SymfonyCommand;
 use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\Question;
-
-use League\Flysystem\Adapter\Local;
 
 
 abstract class ForrestCommand extends SymfonyCommand
 {
-    public const COMMAND_SEPARATOR = ':';
-
     public const DEFAULT_CONFIG_FILE = __DIR__ . '/../../config/repository.yml';
 
     public const DEFAULT_LOCAL_CONFIG_FILE = '.forrest.yml';
@@ -53,10 +47,24 @@ abstract class ForrestCommand extends SymfonyCommand
 
     private Client $client;
 
+    private bool $enriched = false;
+
+    protected function configure()
+    {
+        $this->addOption('debug', 'd', InputOption::VALUE_NONE, 'Show logs.');
+    }
+
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
+        ForrestLogger::addLogger('output', new OutputLogger($output));
+
+        if ($input->getOption('debug')) {
+            ForrestLogger::setLogLevel(ForrestLogger::LEVEL_INFO);
+        }
+
         $this->input = $input;
         $this->output = $output;
+
 
         $this->initClient();
 
@@ -77,6 +85,9 @@ abstract class ForrestCommand extends SymfonyCommand
         return $this->recentParameterMemory;
     }
 
+    /**
+     * Do the actual execution.
+     */
     protected function doExecute(InputInterface $input, OutputInterface $output): int
     {
         return SymfonyCommand::SUCCESS;
@@ -103,7 +114,7 @@ abstract class ForrestCommand extends SymfonyCommand
         return $home . DIRECTORY_SEPARATOR . self::USER_CONFIG_FILE;
     }
 
-    protected function getUserChecksumsFile(): string
+    private function getUserChecksumsFile(): string
     {
         $home = getenv("HOME");
         return $home . DIRECTORY_SEPARATOR . self::USER_CHECKSUM_FILE;
@@ -160,45 +171,21 @@ abstract class ForrestCommand extends SymfonyCommand
 
     protected function enrichRepositories(): void
     {
-        $this->initRepositoryLoader();
-        $this->repositoryCollection = new RepositoryCollection();
-        $this->repositoryLoader->enrich($this->repositoryCollection);
+        if (!$this->enriched) {
+            $this->initRepositoryLoader();
+            $this->repositoryCollection = new RepositoryCollection();
+            $this->repositoryLoader->enrich($this->repositoryCollection);
+            $this->enriched = true;
+        }
     }
 
     /**
      * Return the command from the fully qualified command identifier.
      */
-    protected function getCommand(string $identifier): Command
+    protected function getCommand(string $fullyQualifiedCommandName): Command
     {
-        $repositoryIdentifier = $this->getRepositoryIdentifier($identifier);
-        $commandName = $this->getCommandName($identifier);
-
         $this->enrichRepositories();
-
-        foreach ($this->getRepositoryCollection()->getRepositories() as $key => $repository) {
-            if ($key === $repositoryIdentifier) {
-                foreach ($repository->getCommands() as $command) {
-                    if ($command->getName() == $commandName) {
-                        return $command;
-                    }
-                }
-            }
-        }
-
-        throw new \RuntimeException('No command found with name ' . $identifier . '.');
-    }
-
-    protected function getCommandName(string $fullyQualifiedCommandName): string
-    {
-        return substr($fullyQualifiedCommandName, strpos($fullyQualifiedCommandName, self::COMMAND_SEPARATOR) + 1);
-    }
-
-    /**
-     * Return the identifier of the repository from a full command name.
-     */
-    protected function getRepositoryIdentifier(string $identifier): string
-    {
-        return substr($identifier, 0, strpos($identifier, self::COMMAND_SEPARATOR));
+        return $this->getRepositoryCollection()->getCommand($fullyQualifiedCommandName);
     }
 
     /**

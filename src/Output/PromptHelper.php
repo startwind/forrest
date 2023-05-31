@@ -43,13 +43,13 @@ class PromptHelper
         $this->memory = $memory;
     }
 
-    public function askForPrompt(string $repositoryIdentifier, Command $command, array $predefinedParameters = []): Prompt
+    public function askForPrompt(Command $command, array $predefinedParameters = []): Prompt
     {
         if ($command->isParameterMissing($predefinedParameters)) {
             $this->showCommandInformation($this->output, $command);
         }
 
-        $parameterValues = $this->askForParameterValues($repositoryIdentifier, $command, $predefinedParameters);
+        $parameterValues = $this->askForParameterValues($command, $predefinedParameters);
 
         return new Prompt($command->getPrompt(), $parameterValues);
     }
@@ -61,11 +61,11 @@ class PromptHelper
         OutputHelper::writeInfoBox($this->output, CommandRunner::stringToMultilinePrompt($prompt->getSecurePrompt()));
     }
 
-    private function askForParameterValues(string $repositoryIdentifier, Command $command, array $predefinedParameters = []): array
+    private function askForParameterValues(Command $command, array $predefinedParameters = []): array
     {
         $values = [];
 
-        $commandIdentifier = $repositoryIdentifier . ':' . $command->getName();
+        $commandIdentifier = $command->getFullyQualifiedIdentifier();
 
         foreach ($command->getParameters() as $identifier => $parameter) {
 

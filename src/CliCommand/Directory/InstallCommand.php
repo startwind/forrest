@@ -16,6 +16,7 @@ class InstallCommand extends DirectoryCommand
 
     protected function configure(): void
     {
+        parent::configure();
         $this->addArgument('identifier', InputArgument::REQUIRED, 'The repositories identifier');
     }
 

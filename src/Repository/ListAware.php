@@ -16,7 +16,7 @@ interface ListAware extends Repository
      *
      * @return Command[]
      */
-    public function getCommands(): array;
+    public function getCommands(bool $withParameters = true): array;
 
     /**
      * Return true if the repository has commands.

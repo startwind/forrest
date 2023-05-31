@@ -35,6 +35,6 @@ abstract class SearchCommand extends RunCommand
 
         $this->getOutput()->writeln('');
 
-        return $this->runCommand($command->getFullyQualifiedIdentifier(), $values);
+        return $this->runCommand($command, $values);
     }
 }

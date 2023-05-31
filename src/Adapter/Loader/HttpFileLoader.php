@@ -10,6 +10,8 @@ use Startwind\Forrest\Adapter\Exception\UnableToFetchRepositoryException;
 
 class HttpFileLoader implements Loader, HttpAwareLoader, CachableLoader
 {
+    private static $offline = false;
+
     private string $filename;
     private ?Client $client;
 
@@ -51,6 +53,20 @@ class HttpFileLoader implements Loader, HttpAwareLoader, CachableLoader
     public static function fromConfigArray(array $config): Loader
     {
         return new self($config['file']);
+    }
+
+    public function assertHealth(): void
+    {
+        if (self::$offline) {
+            throw new \RuntimeException('Cannot connect to the internet. Please check if your computer is online.');
+        }
+
+        try {
+            $this->client->get('https://www.google.com');
+        } catch (\Exception $exception) {
+            self::$offline = true;
+            throw new \RuntimeException('Cannot connect to the internet. Please check if your computer is online.');
+        }
     }
 
     public function getCacheKey(): string

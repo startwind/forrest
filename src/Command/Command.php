@@ -5,7 +5,7 @@ namespace Startwind\Forrest\Command;
 use Startwind\Forrest\Command\Parameters\Parameter;
 use Startwind\Forrest\Command\Parameters\PasswordParameter;
 
-class Command
+class Command implements \JsonSerializable
 {
     private bool $isRunnable = true;
 
@@ -26,7 +26,7 @@ class Command
     private array $parameters = [];
 
 
-    public function __construct(private readonly string $name, private readonly string $description, private readonly string $prompt)
+    public function __construct(private string $name, private readonly string $description, private readonly string $prompt)
     {
     }
 
@@ -36,6 +36,14 @@ class Command
     public function isRunnable(): bool
     {
         return $this->isRunnable;
+    }
+
+    /**
+     * @param string $name
+     */
+    public function setName(string $name): void
+    {
+        $this->name = $name;
     }
 
     /**
@@ -158,5 +166,20 @@ class Command
     public function setAllowedInHistory(bool $allowedInHistory): void
     {
         $this->allowedInHistory = $allowedInHistory;
+    }
+
+    public function jsonSerialize(): array
+    {
+        $command = [
+            'name' => $this->getName(),
+            'description' => $this->getDescription(),
+            'prompt' => $this->getPrompt()
+        ];
+
+        foreach ($this->getParameters() as $identifier => $parameter) {
+            $command['parameters'][$identifier] = $parameter->jsonSerialize();
+        }
+
+        return $command;
     }
 }

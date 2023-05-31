@@ -3,12 +3,17 @@
 namespace Startwind\Forrest\Repository;
 
 use Startwind\Forrest\Adapter\Adapter;
+use Startwind\Forrest\Command\Command;
 use Startwind\Forrest\Command\Parameters\FileParameter;
+use Startwind\Forrest\Logger\ForrestLogger;
 use Startwind\Forrest\Runner\CommandRunner;
+use Startwind\Forrest\Adapter\ListAwareAdapter;
 
 class FileRepository implements Repository, SearchAware, ListAware
 {
     private array $commands = [];
+
+    private bool $fetchedWithParameters = false;
 
     public function __construct(
         private readonly Adapter $adapter,
@@ -46,18 +51,21 @@ class FileRepository implements Repository, SearchAware, ListAware
     /**
      * @inheritDoc
      */
-    public function getCommands(): array
+    public function getCommands(bool $withParameters = true): array
     {
-        $exceptions = [];
+        /** @var ListAwareAdapter $adapter */
+        $adapter = $this->getAdapter();
 
-        if (!$this->commands) {
+        if (!$this->commands || (!$this->fetchedWithParameters && $withParameters)) {
             try {
-                $this->commands = $this->adapter->getCommands();
+                $this->commands = $adapter->getCommands($withParameters);
             } catch (\Exception $exception) {
-                $exceptions[] = $exception;
-                throw $exception;
+                ForrestLogger::error('Unable to get commands: ' . $exception->getMessage() . '.');
+                return [];
             }
         }
+
+        $this->fetchedWithParameters = $this->fetchedWithParameters || $withParameters;
 
         return $this->commands;
     }
@@ -67,7 +75,7 @@ class FileRepository implements Repository, SearchAware, ListAware
      */
     public function hasCommands(): bool
     {
-        return count($this->getCommands()) > 0;
+        return count($this->getCommands(false)) > 0;
     }
 
     /**
@@ -111,7 +119,7 @@ class FileRepository implements Repository, SearchAware, ListAware
     {
         $commands = [];
 
-        foreach ($this->getCommands() as $command) {
+        foreach ($this->getCommands(true) as $command) {
             foreach ($patterns as $pattern) {
                 if (str_contains(strtolower($command->getName()), strtolower($pattern))) {
                     $commands[] = $command;
@@ -133,7 +141,7 @@ class FileRepository implements Repository, SearchAware, ListAware
     {
         $commands = [];
 
-        foreach ($this->getCommands() as $command) {
+        foreach ($this->getCommands(false) as $command) {
             foreach ($tools as $tool) {
                 if (CommandRunner::extractToolFromPrompt($command->getPrompt()) == $tool) {
                     $commands[] = $command;
@@ -141,5 +149,29 @@ class FileRepository implements Repository, SearchAware, ListAware
             }
         }
         return $commands;
+    }
+
+    /**
+     * @throws \Exception
+     */
+    public function getCommand(string $identifier): Command
+    {
+        $commands = $this->getCommands(true);
+
+        foreach ($commands as $command) {
+            if ($command->getName() == $identifier) {
+                return $command;
+            }
+        }
+
+        throw new \RuntimeException('No command with name "' . $identifier . '" found.');
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function assertHealth(): void
+    {
+        $this->getAdapter()->assertHealth();
     }
 }

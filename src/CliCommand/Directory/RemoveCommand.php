@@ -19,6 +19,7 @@ class RemoveCommand extends DirectoryCommand
 
     protected function configure()
     {
+        parent::configure();
         $this->addArgument('directory', InputArgument::OPTIONAL, 'The config string for the directory.');
     }
 

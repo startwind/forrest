@@ -124,6 +124,15 @@ class PrivateGitHubLoader implements Loader, HttpAwareLoader, WritableLoader, Ca
         $this->client = $client;
     }
 
+    public function assertHealth(): void
+    {
+        try {
+            $this->client->get('https://api.github.com');
+        } catch (\Exception $exception) {
+            throw new \RuntimeException('Cannot connect to the github API. Please check if your computer is online.');
+        }
+    }
+
     /**
      * @inheritDoc
      */

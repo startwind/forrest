@@ -12,30 +12,12 @@ interface Adapter
      */
     public function getType(): string;
 
-    /**
-     * Return all commands behind this repository.
-     *
-     * @return Command[]
-     */
-    public function getCommands(): array;
+    public function assertHealth(): void;
+
+    public function getCommand(string $identifier): Command;
 
     /**
      * Return an initialized adapter via config array.
      */
     public static function fromConfigArray(array $config, Client $client): Adapter;
-
-    /**
-     * Return true if the repository can be edited.
-     */
-    public function isEditable(): bool;
-
-    /**
-     * Add a new command to the repository and persist it already.
-     */
-    public function addCommand(Command $command): void;
-
-    /**
-     * Remove command from the repository and persist it already.
-     */
-    public function removeCommand(string $commandName): void;
 }

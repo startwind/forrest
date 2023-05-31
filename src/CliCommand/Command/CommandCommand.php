@@ -31,7 +31,7 @@ class CommandCommand extends \Startwind\Forrest\CliCommand\RunCommand
         foreach ($repositories as $repoIdentifier => $repository) {
             if ($repository instanceof ListAware) {
                 try {
-                    foreach ($repository->getCommands() as $command) {
+                    foreach ($repository->getCommands(false) as $command) {
                         $maxLength = max($maxLength, strlen(RepositoryCollection::createUniqueCommandName($repoIdentifier, $command)));
                     }
                 } catch (\Exception $exception) {
@@ -52,9 +52,14 @@ class CommandCommand extends \Startwind\Forrest\CliCommand\RunCommand
         ]);
 
         foreach ($repositories as $repoIdentifier => $repository) {
+            if (!$repository instanceof ListAware) {
+                continue;
+            }
+
             if (!$repository->hasCommands()) {
                 continue;
             }
+
             if ($repository->isSpecial()) {
                 $this->renderWarningBox($repository->getName() . ' (' . $repoIdentifier . ')');
                 $output->writeln(['  ' . $repository->getDescription(), '']);
@@ -70,7 +75,7 @@ class CommandCommand extends \Startwind\Forrest\CliCommand\RunCommand
             /** @var \Symfony\Component\Console\Helper\QuestionHelper $questionHelper */
             $questionHelper = $this->getHelper('question');
 
-            OutputHelper::renderCommands($output, $this->getInput(), $questionHelper, $repository->getCommands(), $repoIdentifier, $maxLength);
+            OutputHelper::renderCommands($output, $this->getInput(), $questionHelper, $repository->getCommands(false), $repoIdentifier, $maxLength);
         }
 
         $output->writeln('');

@@ -5,13 +5,12 @@ namespace Startwind\Forrest\CliCommand\Search;
 use Startwind\Forrest\Command\Command;
 use Startwind\Forrest\Command\Parameters\FileParameter;
 use Startwind\Forrest\Output\OutputHelper;
-use Startwind\Forrest\Repository\FileRepository;
-use Startwind\Forrest\Repository\SearchAware;
 use Symfony\Component\Console\Command\Command as SymfonyCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Helper\QuestionHelper;
 
 class FileCommand extends SearchCommand
 {
@@ -22,9 +21,13 @@ class FileCommand extends SearchCommand
 
     protected function configure(): void
     {
+        parent::configure();
+
         $this->addArgument('filename', InputArgument::REQUIRED, 'The filename you want to get commands for.');
         $this->addArgument('pattern', InputArgument::OPTIONAL, 'Filter the results for a given pattern.');
+
         $this->addOption('force', null, InputOption::VALUE_OPTIONAL, 'Run the command without asking for permission.', false);
+
         $this->setAliases(['file']);
     }
 
@@ -37,7 +40,7 @@ class FileCommand extends SearchCommand
         $filename = $input->getArgument('filename');
         $pattern = $input->getArgument('pattern');
 
-        /** @var \Symfony\Component\Console\Helper\QuestionHelper $questionHelper */
+        /** @var QuestionHelper $questionHelper */
         $questionHelper = $this->getHelper('question');
 
         if (!file_exists($filename)) {
@@ -45,7 +48,10 @@ class FileCommand extends SearchCommand
             return SymfonyCommand::FAILURE;
         }
 
-        $filenames = [$filename];
+        $filenames = [
+            basename($filename),
+            pathinfo($filename, PATHINFO_EXTENSION)
+        ];
 
         if (is_dir($filename)) {
             $filenames[] = FileParameter::DIRECTORY;
@@ -90,7 +96,7 @@ class FileCommand extends SearchCommand
 
         $values = [$this->getParameterIdentifier($command, $filenames) => $filename];
 
-        return $this->runCommand($command->getFullyQualifiedIdentifier(), $values);
+        return $this->runCommand($command, $values);
     }
 
     /**

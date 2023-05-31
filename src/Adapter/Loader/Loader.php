@@ -9,6 +9,8 @@ interface Loader
      */
     public function load(): string;
 
+    public function assertHealth(): void;
+
     /**
      * Create a loader via a config array.
      */

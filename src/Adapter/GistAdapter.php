@@ -8,7 +8,7 @@ use Startwind\Forrest\Adapter\Exception\RateLimitExceededException;
 use Startwind\Forrest\Command\Command;
 use Startwind\Forrest\Command\GistCommand;
 
-class GistAdapter implements Adapter, ClientAwareAdapter
+class GistAdapter implements Adapter, ClientAwareAdapter, ListAwareAdapter
 {
     public const TYPE = 'gist';
 
@@ -70,7 +70,7 @@ class GistAdapter implements Adapter, ClientAwareAdapter
     /**
      * @inheritDoc
      */
-    public function getCommands(): array
+    public function getCommands(bool $withParameters = true): array
     {
         $gists = $this->getRawGists($this->username);
 
@@ -101,27 +101,27 @@ class GistAdapter implements Adapter, ClientAwareAdapter
         return $adapter;
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function isEditable(): bool
+    public function getCommand(string $identifier): Command
     {
-        return false;
+        $commands = $this->getCommands(true);
+        foreach ($commands as $command) {
+            if ($command->getName() == $identifier) {
+                return $command;
+            }
+        }
+
+        throw new \RuntimeException('No command with name ' . $identifier . ' found.');
     }
 
     /**
      * @inheritDoc
      */
-    public function addCommand(Command $command): void
+    public function assertHealth(): void
     {
-        throw new \RuntimeException('Unable to add a command to a GIST repository.');
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function removeCommand(string $commandName): void
-    {
-        throw new \RuntimeException('Unable to remove a command to a GIST repository.');
+        try {
+            $this->client->get('https://api.github.com');
+        } catch (\Exception $exception) {
+            throw new \RuntimeException('Cannot connect to the github API. Please check if your computer is online.');
+        }
     }
 }

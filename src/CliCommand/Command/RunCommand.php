@@ -3,9 +3,8 @@
 namespace Startwind\Forrest\CliCommand\Command;
 
 use Startwind\Forrest\CliCommand\Search\FileCommand;
+use Startwind\Forrest\CliCommand\Search\PatternCommand;
 use Symfony\Component\Console\Command\Command as SymfonyCommand;
-use Symfony\Component\Console\Completion\CompletionInput;
-use Symfony\Component\Console\Completion\CompletionSuggestions;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -19,6 +18,7 @@ class RunCommand extends CommandCommand
 
     protected function configure(): void
     {
+        parent::configure();
         $this->setAliases(['run']);
         $this->addArgument('identifier', InputArgument::OPTIONAL, 'The commands identifier.', false);
         $this->addArgument('pattern', InputArgument::OPTIONAL, 'Small filter', false);
@@ -31,36 +31,67 @@ class RunCommand extends CommandCommand
      */
     protected function doExecute(InputInterface $input, OutputInterface $output): int
     {
-        if (!$input->getArgument('identifier')) {
+        $commandIdentifier = $input->getArgument('identifier');
+        $pattern = $input->getArgument('pattern');
+
+        if (!$commandIdentifier) {
             $this->renderListCommand();
             return SymfonyCommand::SUCCESS;
         }
 
-        $commandIdentifier = $input->getArgument('identifier');
-
-        if (!str_contains($commandIdentifier, ':') && file_exists($commandIdentifier)) {
-            $arguments = [
-                'filename' => $commandIdentifier,
-                'pattern' => $input->getArgument('pattern')
-            ];
-
-            $fileArguments = new ArrayInput($arguments);
-            $fileCommand = $this->getApplication()->find(FileCommand::COMMAND_NAME);
-            return $fileCommand->run($fileArguments, $output);
+        if (!str_contains($commandIdentifier, ':')) {
+            if (file_exists($commandIdentifier)) {
+                return $this->runSearchFileCommand($commandIdentifier, $pattern, $input->getOption('debug'));
+            } else {
+                return $this->runSearchPatternCommand($commandIdentifier, $input->getOption('debug'));
+            }
         }
 
         $this->enrichRepositories();
 
-        $userParameters = json_decode($input->getOption('parameters'), true);
+        $command = $this->getRepositoryCollection()->getCommand($commandIdentifier);
 
-
-        return $this->runCommand($commandIdentifier, $userParameters);
+        return $this->runCommand($command, $this->extractUserParameters($input));
     }
 
-    public function complete(CompletionInput $input, CompletionSuggestions $suggestions): void
+    /**
+     * The run command can also be applied to a file. This is a shortcut for the
+     * search:file symfony console command.
+     */
+    private function runSearchFileCommand(string $filename, string $pattern, bool $debug): int
     {
-        if ($input->mustSuggestArgumentValuesFor('identifier')) {
-            $suggestions->suggestValues(['linux:run', 'linux:delete']);
-        }
+        $arguments = [
+            'filename' => $filename,
+            'pattern' => $pattern,
+            '--debug' => $debug
+        ];
+
+        $fileArguments = new ArrayInput($arguments);
+        $fileCommand = $this->getApplication()->find(FileCommand::COMMAND_NAME);
+        return $fileCommand->run($fileArguments, $this->getOutput());
+    }
+
+    /**
+     * The run command can also be applied to a file. This is a shortcut for the
+     * search:file symfony console command.
+     */
+    private function runSearchPatternCommand(string $pattern, bool $debug): int
+    {
+        $arguments = [
+            'pattern' => $pattern,
+            '--debug' => $debug
+        ];
+
+        $patternArguments = new ArrayInput($arguments);
+        $command = $this->getApplication()->find(PatternCommand::COMMAND_NAME);
+        return $command->run($patternArguments, $this->getOutput());
+    }
+
+    /**
+     * Return the parameters that are prefilled via the input option.
+     */
+    private function extractUserParameters(InputInterface $input): array
+    {
+        return json_decode($input->getOption('parameters'), true);
     }
 }
