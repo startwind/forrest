@@ -37,12 +37,13 @@ class MoveAllCommand extends RepositoryCommand
         $questionHelper = $this->getHelper('question');
 
         $destinationRepositoryName = $input->getArgument('destinationRepository');
+        $sourceRepositoryName = $input->getArgument('sourceRepository');
 
-        $sourceRepository = $this->getRepositoryCollection()->getRepository($input->getArgument('sourceRepository'));
+        $sourceRepository = $this->getRepositoryCollection()->getRepository($sourceRepositoryName);
         $destinationRepository = $this->getRepositoryCollection()->getRepository($destinationRepositoryName);
 
         if (!$sourceRepository instanceof ListAware) {
-            throw new \RuntimeException('The given repository "' . $sourceRepository . '" is not listable.');
+            throw new \RuntimeException('The given repository "' . $destinationRepositoryName . '" is not listable.');
         }
 
         if (!$destinationRepository instanceof EditableRepository) {
