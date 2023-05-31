@@ -2,10 +2,8 @@
 
 namespace Startwind\Forrest\Repository;
 
-use GuzzleHttp\Client;
 use GuzzleHttp\RequestOptions;
 use Startwind\Forrest\Command\Command;
-use Startwind\Forrest\Command\CommandFactory;
 use Startwind\Forrest\Logger\ForrestLogger;
 
 class EditableApiRepository extends ApiRepository implements EditableRepository
@@ -26,6 +24,9 @@ class EditableApiRepository extends ApiRepository implements EditableRepository
             $this->endpoint . 'command/' . $command->getName(),
             [
                 RequestOptions::JSON => $command,
+                RequestOptions::HEADERS => [
+                    'Authorization' => $this->password
+                ],
                 'verify' => false
             ]
         );
