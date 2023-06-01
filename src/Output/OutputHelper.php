@@ -70,7 +70,18 @@ class OutputHelper
                 $numberPrefix = '  ' . $number;
                 $number++;
             }
-            $output->writeln($numberPrefix . '  <fg=green>' . $commandIdentifier . '</>' . $spaces . $command->getDescription());
+
+            $placeholder = '';
+
+            if ($number < 100) {
+                $placeholder = ' ';
+            }
+
+            if ($number < 11) {
+                $placeholder = '  ';
+            }
+
+            $output->writeln($numberPrefix . '  <fg=green>' . $commandIdentifier . '</>' . $placeholder . $spaces . $command->getDescription());
         }
 
         if ($askForCommand) {
