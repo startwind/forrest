@@ -25,9 +25,18 @@ class Command implements \JsonSerializable
      */
     private array $parameters = [];
 
+    private array $plainCommandArray = [];
 
     public function __construct(private string $name, private readonly string $description, private readonly string $prompt)
     {
+    }
+
+    /**
+     * @param array $plainCommandArray
+     */
+    public function setPlainCommandArray(array $plainCommandArray): void
+    {
+        $this->plainCommandArray = $plainCommandArray;
     }
 
     /**
@@ -170,16 +179,18 @@ class Command implements \JsonSerializable
 
     public function jsonSerialize(): array
     {
-        $command = [
-            'name' => $this->getName(),
-            'description' => $this->getDescription(),
-            'prompt' => $this->getPrompt()
-        ];
-
-        foreach ($this->getParameters() as $identifier => $parameter) {
-            $command['parameters'][$identifier] = $parameter->jsonSerialize();
+        if ($this->plainCommandArray) {
+            return $this->plainCommandArray;
+        } else {
+            $command = [
+                'name' => $this->getName(),
+                'description' => $this->getDescription(),
+                'prompt' => $this->getPrompt()
+            ];
+            foreach ($this->getParameters() as $identifier => $parameter) {
+                $command['parameters'][$identifier] = $parameter->jsonSerialize();
+            }
+            return $command;
         }
-
-        return $command;
     }
 }

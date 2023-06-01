@@ -8,9 +8,9 @@ use Startwind\Forrest\Runner\CommandRunner;
 use Startwind\Forrest\Runner\Exception\ToolNotFoundException;
 use Symfony\Component\Console\Command\Command;
 
-class DockerImagesStringFunction extends BasicExplodeFunction implements CacheableFunction
+class DockerNamesStringFunction extends BasicExplodeFunction implements CacheableFunction
 {
-    protected string $functionName = 'docker-images';
+    protected string $functionName = 'docker-names';
 
     protected function getValue(string $value): array
     {
@@ -34,15 +34,14 @@ class DockerImagesStringFunction extends BasicExplodeFunction implements Cacheab
         foreach ($output as $containerJson) {
             $container = json_decode($containerJson, true);
             if ($container) {
-                $names[] = $container['Image'];
+                $names[] = $container['Names'];
             }
         }
 
         if (count($names) == 0) {
-            ForrestLogger::warn('Currently there are no docker containers running. Please start one to use the "docker-images" function.');
+            ForrestLogger::warn('Currently there are no docker containers running. Please start one to use the "docker-names" function.');
         }
 
         return $names;
     }
-
 }

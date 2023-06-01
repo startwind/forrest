@@ -23,6 +23,8 @@ class CommandFactory
 
         $command = new Command($commandConfig[self::CONFIG_FIELD_NAME], $commandConfig[self::CONFIG_FIELD_DESCRIPTION], $prompt);
 
+        $command->setPlainCommandArray($commandConfig);
+
         if (array_key_exists(self::CONFIG_FIELD_OUTPUT, $commandConfig)) {
             $command->setOutputFormat($commandConfig[self::CONFIG_FIELD_OUTPUT]);
         }

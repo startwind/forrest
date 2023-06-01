@@ -16,7 +16,8 @@ class FunctionComposite implements ExplodeEnrichFunction
     {
         if (empty(self::$functions)) {
             self::$functions = [
-                new DockerImagesStringFunction()
+                new DockerImagesStringFunction(),
+                new DockerNamesStringFunction(),
             ];
         }
     }
