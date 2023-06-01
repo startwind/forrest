@@ -13,7 +13,9 @@ use Symfony\Component\Yaml\Yaml;
 
 class RegisterCommand extends RepositoryCommand
 {
-    protected static $defaultName = 'repository:register';
+    public const NAME = 'repository:register';
+
+    protected static $defaultName = self::NAME;
     protected static $defaultDescription = 'Add an existing local repository.';
 
     protected function configure(): void

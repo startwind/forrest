@@ -5,11 +5,20 @@ namespace Tests\Startwind\Forrest\Functional;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Startwind\Forrest\CliCommand\Command\RunCommand;
+use Startwind\Forrest\CliCommand\Repository\RegisterCommand;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
 
 class RunCommandTest extends TestCase
 {
+    public function setUp(): void
+    {
+        $application = new Application();
+        $application->add(new RegisterCommand());
+        $command = $application->find(RegisterCommand::NAME);
+        $commandTester = new CommandTester($command);
+        $commandTester->execute(['repositoryFileName' => __DIR__ . '/../commands/tests.yml']);
+    }
 
     #[DataProvider('inputProvider')]
     public function testExecute(string $commandIdentifier, bool $isSuccessful, array $expectedOutputs, array $inputs = [])
