@@ -60,7 +60,10 @@ class RunCommandTest extends TestCase
             ['forrest-dev-tests:parameters:password', true, ['ls ${password}', 'ls ****', 'Are you sure you want to run that command'], [1234, 'y']],
             # command with kay-value enum
             ['forrest-dev-tests:parameters:enum:with-key', true, ['echo ${enum}', '[0] eins', 'one'], [0, 'y']],
-
+            # command with parameter validation (constraint) - success
+            ['forrest-dev-tests:constraints:identifier', true, ['echo ${identifier}', 'Select value for identifier'], ['a1b2c3', 'y']],
+            # command with parameter validation (constraint) - failure
+            ['forrest-dev-tests:constraints:identifier', false, ['echo ${identifier}', 'Select value for identifier'], ['a1 b2c3', 'y']],
             # works only locally ['forrest-dev-tests:parameters:enum:with-explode', true, ['[0]'], [0, 'y']],
         ];
     }
