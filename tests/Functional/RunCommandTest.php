@@ -49,6 +49,10 @@ class RunCommandTest extends TestCase
             ['forrest-dev-tests:test:tool:not-exists', false, ['Are you sure you want to run that command', "The tool \"sls\" is not installed"], ['y']],
             # command with replaced password
             ['forrest-dev-tests:parameters:password', true, ['ls ${password}', 'ls ****', 'Are you sure you want to run that command'], [1234, 'y']],
+            # command with kay-value enum
+            ['forrest-dev-tests:parameters:enum:with-key', true, ['echo ${enum}', '[0] eins', 'one'], [0, 'y']],
+
+            # works only locally ['forrest-dev-tests:parameters:enum:with-explode', true, ['[0]'], [0, 'y']],
         ];
     }
 }
