@@ -3,6 +3,7 @@
 Forrest is constantly evolving. Sometimes so fast that you might not even get around to trying out the new features. For this reason, we have introduced a changelog.
 
 - **develop**
+  - Fixed `--force` bug. 
 
 
 - **2.1.0**

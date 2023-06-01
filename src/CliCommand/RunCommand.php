@@ -39,20 +39,15 @@ abstract class RunCommand extends ForrestCommand
 
         $force = $this->getInput()->getOption('force');
 
-        var_dump($force);
-
         if (!$runHelper->handleRunnable($command, $prompt->getFinalPrompt())) {
-            var_dump(0);
             return SymfonyCommand::SUCCESS;
         }
 
         if (!$runHelper->handleForceOption($force, $command, $repositoryIdentifier)) {
-            var_dump(1);
             return SymfonyCommand::FAILURE;
         }
 
         if (!$runHelper->confirmRun($force)) {
-            var_dump(2);
             return SymfonyCommand::FAILURE;
         }
 
