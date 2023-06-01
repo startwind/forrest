@@ -1,13 +1,17 @@
 <?php
 
-namespace Startwind\Forrest\Repository;
+namespace Startwind\Forrest\Repository\File;
 
 use Startwind\Forrest\Adapter\Adapter;
+use Startwind\Forrest\Adapter\ListAwareAdapter;
 use Startwind\Forrest\Command\Command;
 use Startwind\Forrest\Command\Parameters\FileParameter;
 use Startwind\Forrest\Logger\ForrestLogger;
+use Startwind\Forrest\Repository\ListAware;
+use Startwind\Forrest\Repository\Repository;
+use Startwind\Forrest\Repository\SearchAware;
 use Startwind\Forrest\Runner\CommandRunner;
-use Startwind\Forrest\Adapter\ListAwareAdapter;
+use function Startwind\Forrest\Repository\str_contains;
 
 class FileRepository implements Repository, SearchAware, ListAware
 {

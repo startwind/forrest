@@ -102,6 +102,25 @@ class RepositoryCollection implements SearchAware
     }
 
     /**
+     * @return \Startwind\Forrest\Command\Tool\Tool[]
+     */
+    public function getToolInformation(string $tool): array
+    {
+        $toolInformation = [];
+
+        foreach ($this->getRepositories() as $repoName => $repository) {
+            if ($repository instanceof ToolAware) {
+                $toolInfo = $repository->findToolInformation($tool);
+                if ($toolInfo) {
+                    $toolInformation[$repoName] = $repository->findToolInformation($tool);
+                }
+            }
+        }
+
+        return $toolInformation;
+    }
+
+    /**
      * Return a command by the fully qualified command name.
      */
     public function getCommand(string $fullyQualifiedCommandName): Command

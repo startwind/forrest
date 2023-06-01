@@ -1,9 +1,10 @@
 <?php
 
-namespace Startwind\Forrest\Repository;
+namespace Startwind\Forrest\Repository\File;
 
-use Startwind\Forrest\Command\Command;
 use Startwind\Forrest\Adapter\EditableAdapter;
+use Startwind\Forrest\Command\Command;
+use Startwind\Forrest\Repository\EditableRepository;
 
 class EditableFileRepository extends FileRepository implements EditableRepository
 {

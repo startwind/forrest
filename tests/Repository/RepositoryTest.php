@@ -3,13 +3,10 @@
 namespace Tests\Startwind\Forrest\Repository;
 
 use PHPUnit\Framework\MockObject\MockObject;
-use Startwind\Forrest\Adapter\Adapter;
-use Startwind\Forrest\Adapter\EditableAdapter;
-use Startwind\Forrest\Adapter\ListAwareAdapter;
-use Startwind\Forrest\Command\Command;
-use Startwind\Forrest\Repository\FileRepository;
 use PHPUnit\Framework\TestCase;
-
+use Startwind\Forrest\Adapter\Adapter;
+use Startwind\Forrest\Adapter\ListAwareAdapter;
+use Startwind\Forrest\Repository\File\FileRepository;
 use function PHPUnit\Framework\once;
 
 class RepositoryTest extends TestCase

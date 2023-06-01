@@ -3,7 +3,6 @@
 namespace Startwind\Forrest\CliCommand\Command;
 
 use Startwind\Forrest\Output\OutputHelper;
-use Startwind\Forrest\Repository\FileRepository;
 use Startwind\Forrest\Repository\ListAware;
 use Startwind\Forrest\Repository\RepositoryCollection;
 

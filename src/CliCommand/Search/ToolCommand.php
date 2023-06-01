@@ -2,11 +2,7 @@
 
 namespace Startwind\Forrest\CliCommand\Search;
 
-use Startwind\Forrest\Command\Command;
 use Startwind\Forrest\Output\OutputHelper;
-use Startwind\Forrest\Repository\FileRepository;
-use Startwind\Forrest\Repository\SearchAware;
-use Startwind\Forrest\Runner\CommandRunner;
 use Symfony\Component\Console\Command\Command as SymfonyCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -40,6 +36,22 @@ class ToolCommand extends SearchCommand
 
         $commands = $this->getRepositoryCollection()->searchByTools([$tool]);
 
+        $toolInformation = $this->getRepositoryCollection()->getToolInformation($tool);
+
+        if (count($toolInformation) > 0) {
+            $output->writeln(['  Information about "<options=bold>' . $tool . '</>"', '']);
+
+            foreach ($toolInformation as $repo => $information) {
+                $output->writeln($this->indentText($information->getDescription()));
+                if ($see = $information->getSee()) {
+                    $output->writeln(['', '  For more information visit: <href=' . $see . '>' . $see . '</>', '']);
+                }
+            }
+
+
+            $output->writeln('');
+        }
+
         if (empty($commands)) {
             $this->renderErrorBox('No commands found that match the given tool.');
             return SymfonyCommand::FAILURE;
@@ -47,4 +59,18 @@ class ToolCommand extends SearchCommand
 
         return $this->runFromCommands($commands);
     }
+
+    private function indentText(string $text, int $indent = 2, int $width = 100): array
+    {
+        $wrapped = explode("\n", wordwrap($text, $width));
+
+        $result = [];
+
+        foreach ($wrapped as $line) {
+            $result[] = str_repeat(' ', $indent) . $line;
+        }
+
+        return $result;
+    }
+
 }

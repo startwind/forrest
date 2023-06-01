@@ -2,11 +2,8 @@
 
 namespace Startwind\Forrest\CliCommand\Search;
 
-use Startwind\Forrest\CliCommand\ForrestCommand;
 use Startwind\Forrest\CliCommand\RunCommand;
 use Startwind\Forrest\Output\OutputHelper;
-use Startwind\Forrest\Repository\FileRepository;
-use Startwind\Forrest\Repository\RepositoryCollection;
 use Symfony\Component\Console\Command\Command as SymfonyCommand;
 
 abstract class SearchCommand extends RunCommand

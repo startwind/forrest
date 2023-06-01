@@ -1,10 +1,11 @@
 <?php
 
-namespace Startwind\Forrest\Repository;
+namespace Startwind\Forrest\Repository\Api;
 
 use GuzzleHttp\RequestOptions;
 use Startwind\Forrest\Command\Command;
 use Startwind\Forrest\Logger\ForrestLogger;
+use Startwind\Forrest\Repository\EditableRepository;
 
 class EditableApiRepository extends ApiRepository implements EditableRepository
 {

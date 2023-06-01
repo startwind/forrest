@@ -4,7 +4,7 @@ namespace Startwind\Forrest\Repository\Loader;
 
 use Startwind\Forrest\Adapter\ManualAdapter;
 use Startwind\Forrest\Command\Command;
-use Startwind\Forrest\Repository\FileRepository;
+use Startwind\Forrest\Repository\File\FileRepository;
 use Startwind\Forrest\Repository\RepositoryCollection;
 use Symfony\Component\Yaml\Yaml;
 
