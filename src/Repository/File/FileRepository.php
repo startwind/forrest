@@ -11,7 +11,6 @@ use Startwind\Forrest\Repository\ListAware;
 use Startwind\Forrest\Repository\Repository;
 use Startwind\Forrest\Repository\SearchAware;
 use Startwind\Forrest\Runner\CommandRunner;
-use function Startwind\Forrest\Repository\str_contains;
 
 class FileRepository implements Repository, SearchAware, ListAware
 {
