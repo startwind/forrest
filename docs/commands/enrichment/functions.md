@@ -48,3 +48,21 @@ commands:
       docker_name:
         enum: "${docker-names()}"
 ```
+
+## `docker-images()`
+
+The `docker-images()` function will list all currently running docker containers by image name.
+
+### Example
+
+```yaml
+commands:
+  'enum-explode':
+    name: 'docker:ssh'
+    description: 'Show prompt for login'
+    runnable: false
+    prompt: 'docker exec -it ${docker_image} /bin/bash'
+    parameters:
+      docker_image:
+        enum: "${docker-images()}"
+```
