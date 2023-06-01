@@ -13,7 +13,9 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class RunCommand extends CommandCommand
 {
-    protected static $defaultName = 'commands:run';
+    public const NAME = 'commands:run';
+
+    protected static $defaultName = self::NAME;
     protected static $defaultDescription = 'Run a specific command.';
 
     protected function configure(): void
