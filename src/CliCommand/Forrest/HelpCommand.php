@@ -51,8 +51,8 @@ class HelpCommand extends ForrestCommand
             '',
             '  <fg=green>forrest list</>           Show all available Forrest commands (many of them are not listed here).',
             '  <fg=green>forrest commands:list</>  Show all custom commands (might be empty in the beginning).',
-            '  <fg=green>forrest history</>        Show the recent commands that were run be forrest.',
-            '  <fg=green>forrest tool</>           Show all commands that are connected to the given tool.',
+            '  <fg=green>forrest history</>        Show the recent commands that were run by forrest.',
+            '  <fg=green>forrest tool [tool]</>    Show all commands that are connected to the given tool.',
             '',
         ]);
 
