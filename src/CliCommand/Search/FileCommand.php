@@ -26,7 +26,7 @@ class FileCommand extends SearchCommand
         $this->addArgument('filename', InputArgument::REQUIRED, 'The filename you want to get commands for.');
         $this->addArgument('pattern', InputArgument::OPTIONAL, 'Filter the results for a given pattern.');
 
-        $this->addOption('force', null, InputOption::VALUE_OPTIONAL, 'Run the command without asking for permission.', false);
+        $this->addOption('force', null, InputOption::VALUE_NONE, 'Run the command without asking for permission.');
 
         $this->setAliases(['file']);
     }

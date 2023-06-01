@@ -53,7 +53,7 @@ class RunHelper
         if ($hasChanged) {
             return !$this->questionHelper->ask($this->input, $this->output, new ConfirmationQuestion('  The signature of the command has changed since you last run it. Do you confirm to still run it? [y/n] ', false));
         } else {
-            return false;
+            return true;
         }
     }
 

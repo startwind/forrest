@@ -22,7 +22,7 @@ class RunCommand extends CommandCommand
         $this->setAliases(['run']);
         $this->addArgument('identifier', InputArgument::OPTIONAL, 'The commands identifier.', false);
         $this->addArgument('pattern', InputArgument::OPTIONAL, 'Small filter', false);
-        $this->addOption('force', null, InputOption::VALUE_OPTIONAL, 'Run the command without asking for permission.', false);
+        $this->addOption('force', null, InputOption::VALUE_NONE, 'Run the command without asking for permission.');
         $this->addOption('parameters', 'p', InputOption::VALUE_OPTIONAL, 'Parameters as json string. E.g:  -p \'{"dir_to_search_in":".", "number_on_days":"12"}\'', "{}");
     }
 
