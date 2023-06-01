@@ -3,6 +3,9 @@
 Forrest is constantly evolving. Sometimes so fast that you might not even get around to trying out the new features. For this reason, we have introduced a changelog.
 
 - **develop**
+
+
+- **2.1.0**
   - Fixed bug where search:tool does not find any commands but still asks "Which tool to run".
   - Rebuild the "home screen" of Forrest. It will now show all the important Forrest commands at one glance.
   - New function for enums `docker-images`. This will show all docker images that are currently running. [read more](commands/enrichment/functions.md#docker-images)
