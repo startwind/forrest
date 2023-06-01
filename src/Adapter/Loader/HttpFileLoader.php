@@ -62,7 +62,7 @@ class HttpFileLoader implements Loader, HttpAwareLoader, CachableLoader
         }
 
         try {
-            $this->client->get('https://www.google.com');
+            $this->client->get('https://www.example.com');
         } catch (\Exception $exception) {
             self::$offline = true;
             throw new \RuntimeException('Cannot connect to the internet. Please check if your computer is online.');
