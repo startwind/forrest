@@ -3,7 +3,8 @@
 namespace Startwind\Forrest\CliCommand\Command;
 
 use Startwind\Forrest\Output\OutputHelper;
-use Startwind\Forrest\Repository\Repository;
+use Startwind\Forrest\Repository\ListAware;
+use Startwind\Forrest\Repository\RepositoryCollection;
 
 class CommandCommand extends \Startwind\Forrest\CliCommand\RunCommand
 {
@@ -27,16 +28,18 @@ class CommandCommand extends \Startwind\Forrest\CliCommand\RunCommand
         }
 
         foreach ($repositories as $repoIdentifier => $repository) {
-            try {
-                foreach ($repository->getCommands() as $command) {
-                    $maxLength = max($maxLength, strlen(Repository::createUniqueCommandName($repoIdentifier, $command)));
+            if ($repository instanceof ListAware) {
+                try {
+                    foreach ($repository->getCommands(false) as $command) {
+                        $maxLength = max($maxLength, strlen(RepositoryCollection::createUniqueCommandName($repoIdentifier, $command)));
+                    }
+                } catch (\Exception $exception) {
+                    unset($repositories[$repoIdentifier]);
+                    $this->renderErrorBox([
+                        'Unable to fetch commands from ' . $repoIdentifier . '. ' . $exception->getMessage(),
+                    ]);
+                    $output->writeln('');
                 }
-            } catch (\Exception $exception) {
-                unset($repositories[$repoIdentifier]);
-                $this->renderErrorBox([
-                    'Unable to fetch commands from ' . $repoIdentifier . '. ' . $exception->getMessage(),
-                ]);
-                $output->writeln('');
             }
         }
 
@@ -48,9 +51,14 @@ class CommandCommand extends \Startwind\Forrest\CliCommand\RunCommand
         ]);
 
         foreach ($repositories as $repoIdentifier => $repository) {
+            if (!$repository instanceof ListAware) {
+                continue;
+            }
+
             if (!$repository->hasCommands()) {
                 continue;
             }
+
             if ($repository->isSpecial()) {
                 $this->renderWarningBox($repository->getName() . ' (' . $repoIdentifier . ')');
                 $output->writeln(['  ' . $repository->getDescription(), '']);
@@ -66,7 +74,7 @@ class CommandCommand extends \Startwind\Forrest\CliCommand\RunCommand
             /** @var \Symfony\Component\Console\Helper\QuestionHelper $questionHelper */
             $questionHelper = $this->getHelper('question');
 
-            OutputHelper::renderCommands($output, $this->getInput(), $questionHelper, $repository->getCommands(), $repoIdentifier, $maxLength);
+            OutputHelper::renderCommands($output, $this->getInput(), $questionHelper, $repository->getCommands(false), $repoIdentifier, $maxLength);
         }
 
         $output->writeln('');

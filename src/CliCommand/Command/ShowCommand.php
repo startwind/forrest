@@ -7,6 +7,7 @@ use Symfony\Component\Console\Command\Command as SymfonyCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Helper\QuestionHelper;
 
 class ShowCommand extends CommandCommand
 {
@@ -15,6 +16,7 @@ class ShowCommand extends CommandCommand
 
     protected function configure(): void
     {
+        parent::configure();
         $this->addArgument('identifier', InputArgument::REQUIRED, 'The commands identifier.');
     }
 
@@ -23,16 +25,15 @@ class ShowCommand extends CommandCommand
         $this->enrichRepositories();
 
         $commandIdentifier = $input->getArgument('identifier');
-        $repositoryIdentifier = $this->getRepositoryIdentifier($commandIdentifier);
 
-        /** @var \Symfony\Component\Console\Helper\QuestionHelper $questionHelper */
+        /** @var QuestionHelper $questionHelper */
         $questionHelper = $this->getHelper('question');
 
         $promptHelper = new PromptHelper($this->getInput(), $this->getOutput(), $questionHelper, $this->getRecentParameterMemory());
 
         $command = $this->getCommand($commandIdentifier);
 
-        $prompt = $promptHelper->askForPrompt($repositoryIdentifier, $command, []);
+        $prompt = $promptHelper->askForPrompt($command);
 
         $promptHelper->showFinalPrompt($prompt);
 

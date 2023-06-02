@@ -3,16 +3,17 @@
 namespace Startwind\Forrest\Command;
 
 use Startwind\Forrest\Command\Parameters\Parameter;
-use Startwind\Forrest\Enrichment\EnrichFunction\EnrichFunction;
-use Startwind\Forrest\Enrichment\EnrichFunction\FunctionComposite;
+use Startwind\Forrest\Command\Parameters\PasswordParameter;
 
-class Command
+class Command implements \JsonSerializable
 {
     private bool $isRunnable = true;
 
     private string $fullyQualifiedIdentifier = '';
 
     private string $outputFormat = '';
+
+    private bool $allowedInHistory = true;
 
     public function setOutputFormat(string $output): void
     {
@@ -24,9 +25,18 @@ class Command
      */
     private array $parameters = [];
 
+    private array $plainCommandArray = [];
 
-    public function __construct(private readonly string $name, private readonly string $description, private readonly string $prompt)
+    public function __construct(private string $name, private readonly string $description, private readonly string $prompt)
     {
+    }
+
+    /**
+     * @param array $plainCommandArray
+     */
+    public function setPlainCommandArray(array $plainCommandArray): void
+    {
+        $this->plainCommandArray = $plainCommandArray;
     }
 
     /**
@@ -35,6 +45,14 @@ class Command
     public function isRunnable(): bool
     {
         return $this->isRunnable;
+    }
+
+    /**
+     * @param string $name
+     */
+    public function setName(string $name): void
+    {
+        $this->name = $name;
     }
 
     /**
@@ -131,5 +149,48 @@ class Command
         }
 
         return (sprintf($this->outputFormat, trim($output)));
+    }
+
+    /**
+     * @return bool
+     */
+    public function isAllowedInHistory(): bool
+    {
+        if (!$this->allowedInHistory) {
+            return false;
+        }
+
+        foreach ($this->parameters as $parameter) {
+            if ($parameter instanceof PasswordParameter) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * @param bool $allowedInHistory
+     */
+    public function setAllowedInHistory(bool $allowedInHistory): void
+    {
+        $this->allowedInHistory = $allowedInHistory;
+    }
+
+    public function jsonSerialize(): array
+    {
+        if ($this->plainCommandArray) {
+            return $this->plainCommandArray;
+        } else {
+            $command = [
+                'name' => $this->getName(),
+                'description' => $this->getDescription(),
+                'prompt' => $this->getPrompt()
+            ];
+            foreach ($this->getParameters() as $identifier => $parameter) {
+                $command['parameters'][$identifier] = $parameter->jsonSerialize();
+            }
+            return $command;
+        }
     }
 }

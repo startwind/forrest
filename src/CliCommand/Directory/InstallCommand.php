@@ -16,6 +16,7 @@ class InstallCommand extends DirectoryCommand
 
     protected function configure(): void
     {
+        parent::configure();
         $this->addArgument('identifier', InputArgument::REQUIRED, 'The repositories identifier');
     }
 
@@ -29,9 +30,14 @@ class InstallCommand extends DirectoryCommand
     {
         $this->initRepositoryLoader();
 
-        $directory = $this->getDirectory();
+        $directories = $this->getDirectories();
         $identifier = $input->getArgument('identifier');
-        $repositories = $directory['repositories'];
+
+        $repositories = [];
+
+        foreach ($directories as $directory) {
+            $repositories = array_merge($repositories, $directory['repositories']);
+        }
 
         if (!array_key_exists($identifier, $repositories)) {
             $this->renderErrorBox('No repository with identifier "' . $identifier . '" found.');

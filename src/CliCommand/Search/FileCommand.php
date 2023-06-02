@@ -10,16 +10,24 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Helper\QuestionHelper;
 
 class FileCommand extends SearchCommand
 {
-    protected static $defaultName = 'search:file';
+    public const COMMAND_NAME = 'search:file';
+
+    protected static $defaultName = self::COMMAND_NAME;
     protected static $defaultDescription = 'Search for commands that fit the given file.';
 
     protected function configure(): void
     {
+        parent::configure();
+
         $this->addArgument('filename', InputArgument::REQUIRED, 'The filename you want to get commands for.');
-        $this->addOption('force', null, InputOption::VALUE_OPTIONAL, 'Run the command without asking for permission.', false);
+        $this->addArgument('pattern', InputArgument::OPTIONAL, 'Filter the results for a given pattern.');
+
+        $this->addOption('force', null, InputOption::VALUE_NONE, 'Run the command without asking for permission.');
+
         $this->setAliases(['file']);
     }
 
@@ -30,8 +38,9 @@ class FileCommand extends SearchCommand
         $this->enrichRepositories();
 
         $filename = $input->getArgument('filename');
+        $pattern = $input->getArgument('pattern');
 
-        /** @var \Symfony\Component\Console\Helper\QuestionHelper $questionHelper */
+        /** @var QuestionHelper $questionHelper */
         $questionHelper = $this->getHelper('question');
 
         if (!file_exists($filename)) {
@@ -39,22 +48,28 @@ class FileCommand extends SearchCommand
             return SymfonyCommand::FAILURE;
         }
 
-        $filenames = [$filename];
+        $filenames = [
+            basename($filename),
+            pathinfo($filename, PATHINFO_EXTENSION)
+        ];
+
         if (is_dir($filename)) {
             $filenames[] = FileParameter::DIRECTORY;
         }
 
-        $fileCommands = $this->search(function (Command $command, $config) {
-            $parameters = $command->getParameters();
-            foreach ($parameters as $parameter) {
-                if ($parameter instanceof FileParameter) {
-                    if ($parameter->isCompatibleWithFiles($config['filenames'])) {
-                        return true;
-                    }
+        $fileCommands = $this->getRepositoryCollection()->searchByFile($filenames);
+
+        if ($pattern) {
+            foreach ($fileCommands as $key => $fileCommand) {
+                if (str_contains(strtolower($fileCommand->getName()), strtolower($pattern))) {
+                    continue;
                 }
+                if (str_contains(strtolower($fileCommand->getDescription()), strtolower($pattern))) {
+                    continue;
+                }
+                unset($fileCommands[$key]);
             }
-            return false;
-        }, ['filenames' => $filenames]);
+        }
 
         $this->renderInfoBox('This is a list of commands that are applicable to the given file or file type.');
 
@@ -81,7 +96,7 @@ class FileCommand extends SearchCommand
 
         $values = [$this->getParameterIdentifier($command, $filenames) => $filename];
 
-        return $this->runCommand($command->getFullyQualifiedIdentifier(), $values);
+        return $this->runCommand($command, $values);
     }
 
     /**

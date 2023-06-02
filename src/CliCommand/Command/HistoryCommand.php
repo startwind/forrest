@@ -13,6 +13,7 @@ class HistoryCommand extends CommandCommand
 
     protected function configure()
     {
+        parent::configure();
         $this->setAliases(['history']);
     }
 
@@ -25,8 +26,6 @@ class HistoryCommand extends CommandCommand
         $output->writeln('');
 
         $count = 1;
-
-        # strlen((string)count($commands));
 
         foreach ($commands as $command) {
             $output->write($count . '  ' . $command);

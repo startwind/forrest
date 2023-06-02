@@ -2,15 +2,16 @@
 
 namespace Startwind\Forrest\Command\Parameters;
 
-use Startwind\Forrest\Enrichment\EnrichFunction\FunctionComposite;
+use Startwind\Forrest\Command\Parameters\Validation\Constraint\ConstraintFactory;
+use Startwind\Forrest\Enrichment\EnrichFunction\String\FunctionComposite;
 
 class ParameterFactory
 {
-    public const TYPE_MIXED = 'forrest_mixed';
-    public const TYPE_FILENAME = 'forrest_filename';
-
-    public const TYPE_PASSWORD = 'forrest_password';
-    public const FIELD_TYPE = 'type';
+    private const TYPE_MIXED = 'forrest_mixed';
+    private const TYPE_FILENAME = 'forrest_filename';
+    private const TYPE_PASSWORD = 'forrest_password';
+    private const FIELD_TYPE = 'type';
+    private const FIELD_CONSTRAINTS = 'constraints';
 
     /**
      * Create a Parameter configuration object from the given config array.
@@ -41,6 +42,8 @@ class ParameterFactory
 
     private static function enrichParameters(Parameter $parameter, array $config): void
     {
+        $parameter->setRawStructure($config);
+
         if (array_key_exists('name', $config)) {
             $parameter->setName($config['name']);
         }
@@ -50,15 +53,41 @@ class ParameterFactory
         }
 
         if (array_key_exists('default', $config)) {
+            if (!is_string($config['default']) && !is_int($config['default'])) {
+                throw new \RuntimeException('The default value must be a string or an integer. ' . ucfirst(gettype($config['default'])) . ' with value ' . json_encode($config['default']) . ' given.');
+            }
             $defaultValue = self::getDefaultValue($config['default']);
             if ($defaultValue !== '') {
                 $parameter->setDefaultValue($defaultValue);
             }
         }
 
+        if (array_key_exists(self::FIELD_CONSTRAINTS, $config)) {
+            $constraints = self::getConstraints($config[self::FIELD_CONSTRAINTS]);
+            $parameter->setConstraints($constraints);
+        }
+
         if (array_key_exists('enum', $config)) {
             $parameter->setValues($config['enum']);
         }
+    }
+
+    private static function getConstraints(array $constraintArray): array
+    {
+        $constraints = [];
+
+        foreach ($constraintArray as $constraint) {
+            try {
+                if (is_null($constraint)) {
+                    throw new \RuntimeException('The given constraint must not be null.');
+                }
+                $constraints[] = ConstraintFactory::getConstraint($constraint);
+            } catch (\Exception $exception) {
+                // @todo log error
+            }
+        }
+
+        return $constraints;
     }
 
     /**

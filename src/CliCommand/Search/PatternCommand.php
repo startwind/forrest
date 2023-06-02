@@ -2,21 +2,27 @@
 
 namespace Startwind\Forrest\CliCommand\Search;
 
-use Startwind\Forrest\Command\Command;
 use Startwind\Forrest\Output\OutputHelper;
-use Symfony\Component\Console\Command\Command as SymfonyCommand;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class PatternCommand extends SearchCommand
 {
-    protected static $defaultName = 'search:pattern';
+    public const COMMAND_NAME = 'search:pattern';
+
+    protected static $defaultName = self::COMMAND_NAME;
     protected static $defaultDescription = 'Search for commands that fit the given pattern.';
 
     protected function configure(): void
     {
+        parent::configure();
+
         $this->addArgument('pattern', InputArgument::REQUIRED, 'The pattern you want to search for.');
+        $this->addOption('force', null, InputOption::VALUE_NONE, 'Run the command without asking for permission.');
+
         $this->setAliases(['pattern']);
     }
 
@@ -30,31 +36,13 @@ class PatternCommand extends SearchCommand
 
         $this->renderInfoBox('This is a list of commands that match the given pattern.');
 
-        $commands = $this->search(function (Command $command, $config) {
-            $pattern = $config['pattern'];
+        $commands = $this->getRepositoryCollection()->searchByPattern([$pattern]);
 
-            if (str_contains(strtolower($command->getName()), strtolower($pattern))) {
-                return true;
-            }
-
-            if (str_contains(strtolower($command->getDescription()), strtolower($pattern))) {
-                return true;
-            }
-
-            return false;
-        }, ['pattern' => $pattern]);
-
-        if (!empty($commands)) {
-            /** @var \Symfony\Component\Console\Helper\QuestionHelper $questionHelper */
-            $questionHelper = $this->getHelper('question');
-            OutputHelper::renderCommands($output, $input, $questionHelper, $commands);
-        } else {
-            $this->renderErrorBox('No commands found that match this pattern.');
+        if (empty($commands)) {
+            $this->renderErrorBox('No commands found that match the given pattern.');
+            return Command::FAILURE;
         }
 
-        $output->writeln('');
-
-        return SymfonyCommand::SUCCESS;
+        return $this->runFromCommands($commands);
     }
-
 }

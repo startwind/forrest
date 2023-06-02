@@ -8,8 +8,10 @@ use GuzzleHttp\Exception\ServerException;
 use Startwind\Forrest\Adapter\Exception\RepositoryNotFoundException;
 use Startwind\Forrest\Adapter\Exception\UnableToFetchRepositoryException;
 
-class HttpFileLoader implements Loader, HttpAwareLoader
+class HttpFileLoader implements Loader, HttpAwareLoader, CachableLoader
 {
+    private static $offline = false;
+
     private string $filename;
     private ?Client $client;
 
@@ -27,7 +29,7 @@ class HttpFileLoader implements Loader, HttpAwareLoader
             $response = $this->client->get($this->filename);
         } catch (ClientException $exception) {
             if ($exception->getResponse()->getStatusCode() === 404) {
-                throw new RepositoryNotFoundException("The given repository can't be found.");
+                throw new RepositoryNotFoundException("The given repository (" . $this->filename . ") can't be found.");
             } else {
                 throw $exception;
             }
@@ -51,5 +53,24 @@ class HttpFileLoader implements Loader, HttpAwareLoader
     public static function fromConfigArray(array $config): Loader
     {
         return new self($config['file']);
+    }
+
+    public function assertHealth(): void
+    {
+        if (self::$offline) {
+            throw new \RuntimeException('Cannot connect to the internet. Please check if your computer is online.');
+        }
+
+        try {
+            $this->client->get('https://www.example.com');
+        } catch (\Exception $exception) {
+            self::$offline = true;
+            throw new \RuntimeException('Cannot connect to the internet. Please check if your computer is online.');
+        }
+    }
+
+    public function getCacheKey(): string
+    {
+        return md5($this->filename);
     }
 }

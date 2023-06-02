@@ -2,33 +2,36 @@
 
 namespace Startwind\Forrest\CliCommand\Search;
 
-use Startwind\Forrest\CliCommand\ForrestCommand;
 use Startwind\Forrest\CliCommand\RunCommand;
-use Startwind\Forrest\Repository\Repository;
+use Startwind\Forrest\Output\OutputHelper;
+use Symfony\Component\Console\Command\Command as SymfonyCommand;
 
 abstract class SearchCommand extends RunCommand
 {
     /**
-     * Search for commands that match a given pattern. The pattern is defined in the
-     * callable function that has to be injected.
-     *
-     * @return \Startwind\Forrest\Command\Command[]
+     * Choose from a list of commands and execute one.
      */
-    protected function search(callable $finder, array $config): array
+    protected function runFromCommands(array $commands, $values = []): int
     {
-        $repositories = $this->getRepositoryCollection()->getRepositories();
+        /** @var \Symfony\Component\Console\Helper\QuestionHelper $questionHelper */
+        $questionHelper = $this->getHelper('question');
 
-        $foundCommands = [];
+        $command = OutputHelper::renderCommands(
+            $this->getOutput(),
+            $this->getInput(),
+            $questionHelper,
+            $commands,
+            null,
+            -1,
+            true
+        );
 
-        foreach ($repositories as $repositoryId => $repository) {
-            $commands = $repository->getCommands();
-            foreach ($commands as $command) {
-                if ($finder($command, $config)) {
-                    $foundCommands[Repository::createUniqueCommandName($repositoryId, $command)] = $command;
-                }
-            }
+        if ($command === false) {
+            return SymfonyCommand::FAILURE;
         }
 
-        return $foundCommands;
+        $this->getOutput()->writeln('');
+
+        return $this->runCommand($command, $values);
     }
 }

@@ -3,7 +3,7 @@
 namespace Startwind\Forrest\Output;
 
 use Startwind\Forrest\Command\Command;
-use Startwind\Forrest\Repository\Repository;
+use Startwind\Forrest\Repository\RepositoryCollection;
 use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputInterface;
@@ -25,7 +25,8 @@ class OutputHelper
     {
         $output->writeln([
             '',
-            'Forrest - Package manager for CLI scripts <fg=green>' . FORREST_VERSION . '</>',
+            '<options=bold>Forrest</> - Unifying the Command Line <fg=green>' . FORREST_VERSION . '</>',
+            // '         by Nils Langner and contributors.',
             '',
         ]);
     }
@@ -39,7 +40,7 @@ class OutputHelper
 
         foreach ($commands as $commandId => $command) {
             if ($repoIdentifier) {
-                $commandIdentifier = Repository::createUniqueCommandName($repoIdentifier, $command);
+                $commandIdentifier = RepositoryCollection::createUniqueCommandName($repoIdentifier, $command);
             } else {
                 $commandIdentifier = $commandId;
             }
@@ -56,11 +57,9 @@ class OutputHelper
         $number = 1;
         $numberPrefix = '';
 
-        $commandIdentifier = '';
-
         foreach ($commands as $commandId => $command) {
             if ($repoIdentifier) {
-                $commandIdentifier = Repository::createUniqueCommandName($repoIdentifier, $command);
+                $commandIdentifier = RepositoryCollection::createUniqueCommandName($repoIdentifier, $command);
             } else {
                 $commandIdentifier = $commandId;
             }
@@ -71,11 +70,22 @@ class OutputHelper
                 $numberPrefix = '  ' . $number;
                 $number++;
             }
-            $output->writeln($numberPrefix . '  <fg=green>' . $commandIdentifier . '</>' . $spaces . $command->getDescription());
+
+            $placeholder = '';
+
+            if ($number < 100) {
+                $placeholder = ' ';
+            }
+
+            if ($number < 11) {
+                $placeholder = '  ';
+            }
+
+            $output->writeln($numberPrefix . '  <fg=green>' . $commandIdentifier . '</>' . $placeholder . $spaces . $command->getDescription());
         }
 
         if ($askForCommand) {
-            return self::askForCommand($output, $input, $questionHelper, $commands, $commandIdentifier);
+            return self::askForCommand($output, $input, $questionHelper, $commands);
         }
 
         return false;
@@ -84,7 +94,7 @@ class OutputHelper
     /**
      * @param Command[] $commands
      */
-    private static function askForCommand(OutputInterface $output, InputInterface $input, QuestionHelper $questionHelper, array $commands, string $commandIdentifier): bool|Command
+    private static function askForCommand(OutputInterface $output, InputInterface $input, QuestionHelper $questionHelper, array $commands): bool|Command
     {
         $output->writeln('');
 
@@ -103,6 +113,7 @@ class OutputHelper
             $commandIdentifier = array_keys($commands)[$commandNumber - 1];
             $command = $commands[$commandIdentifier];
         }
+
 
         $command->setFullyQualifiedIdentifier($commandIdentifier);
 

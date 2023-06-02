@@ -3,6 +3,8 @@
 namespace Startwind\Forrest\CliCommand\Repository\Command;
 
 use Startwind\Forrest\CliCommand\Repository\RepositoryCommand;
+use Startwind\Forrest\Repository\EditableRepository;
+use Startwind\Forrest\Repository\RepositoryCollection;
 use Startwind\Forrest\Util\OutputHelper;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\QuestionHelper;
@@ -14,10 +16,11 @@ use Symfony\Component\Console\Question\ConfirmationQuestion;
 class RemoveCommand extends RepositoryCommand
 {
     protected static $defaultName = 'repository:command:remove';
-    protected static $defaultDescription = 'Creates a boilerplate for a new command repository.';
+    protected static $defaultDescription = 'Removes a command from an editable repository.';
 
     protected function configure()
     {
+        parent::configure();
         $this->addArgument('commandName', InputArgument::REQUIRED, 'The name of the command you want to remove');
     }
 
@@ -27,9 +30,13 @@ class RemoveCommand extends RepositoryCommand
 
         $identifier = $input->getArgument('commandName');
 
-        $repositoryIdentifier = $this->getRepositoryIdentifier($identifier);
+        $repositoryIdentifier = RepositoryCollection::getRepositoryIdentifier($identifier);
 
         $repository = $this->getRepositoryCollection()->getRepository($repositoryIdentifier);
+
+        if (!$repository instanceof EditableRepository) {
+            throw new \RuntimeException('The given repository "' . $repositoryIdentifier . '" is read-only.');
+        }
 
         OutputHelper::writeWarningBox($output, 'Removing ' . $identifier . '. Please notice that this removing can not be undone.');
 
@@ -42,7 +49,7 @@ class RemoveCommand extends RepositoryCommand
             return Command::FAILURE;
         }
 
-        $commandName = $this->getCommandName($identifier);
+        $commandName = RepositoryCollection::getCommandName($identifier);
 
         try {
             $repository->removeCommand($commandName);

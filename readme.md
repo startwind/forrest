@@ -2,7 +2,7 @@
 <img src="docs/images/logo-darkmode.png#gh-dark-mode-only" width="300">
 
 
-# Forrest - The package manager for command line scripts
+# Forrest - Unifying the Command Line
 
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/startwind/forrest/badges/quality-score.png?b=main&s=579fbe045436392cced69014e18889609b7d2b1a)](https://scrutinizer-ci.com/g/startwind/forrest/?branch=main)
 
@@ -76,7 +76,7 @@ Run command with name `forrest-linux:files:find:older` which will search for fil
 ```shell
 forrest file WordPress.zip
 ```
-Show all commands that are connected to a `zip` file or the `WordPress-zip` file. This would for example show the unzip command archives.
+Show all commands that are connected to a `zip` file or the `WordPress.zip` file. This would for example show the unzip command archives.
 
 ## How to support
 

@@ -9,14 +9,14 @@ use GuzzleHttp\RequestOptions;
 /**
  * @see https://docs.github.com/de/rest/repos/contents?apiVersion=2022-11-28#create-a-file
  */
-class PrivateGitHubLoader implements Loader, HttpAwareLoader, WritableLoader
+class PrivateGitHubLoader implements Loader, HttpAwareLoader, WritableLoader, CachableLoader
 {
     private const GIT_HUB_API_ENDPOINT = 'https://api.github.com/repos/%s/%s/contents/%s';
 
     private string $file;
     private string $token;
 
-    private ?Client $client;
+    private ?Client $client = null;
     private string $user;
     private string $repository;
 
@@ -72,6 +72,10 @@ class PrivateGitHubLoader implements Loader, HttpAwareLoader, WritableLoader
      */
     public function load(): string
     {
+        if (is_null($this->client)) {
+            throw  new \RuntimeException('The client for this loader was not set but is needed. Please call setClient() before the load() function.');
+        }
+
         if (!empty($this->fileInformation)) {
             return base64_decode($this->fileInformation['content']);
         }
@@ -101,6 +105,7 @@ class PrivateGitHubLoader implements Loader, HttpAwareLoader, WritableLoader
     public function write(string $content)
     {
         $this->load();
+
         $this->client->request('PUT', $this->getUrl(), [
             'headers' => $this->getHeaders(),
             RequestOptions::JSON => [
@@ -117,5 +122,22 @@ class PrivateGitHubLoader implements Loader, HttpAwareLoader, WritableLoader
     public function setClient(Client $client): void
     {
         $this->client = $client;
+    }
+
+    public function assertHealth(): void
+    {
+        try {
+            $this->client->get('https://api.github.com');
+        } catch (\Exception $exception) {
+            throw new \RuntimeException('Cannot connect to the github API. Please check if your computer is online.');
+        }
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getCacheKey(): string
+    {
+        return md5($this->repository . $this->user . $this->file);
     }
 }

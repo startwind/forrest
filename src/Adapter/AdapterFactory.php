@@ -21,7 +21,7 @@ class AdapterFactory
         $adapterClass = self::$adapters[$adapterType];
 
         /** @var Adapter $adapter */
-        $adapter = call_user_func([$adapterClass, 'fromConfigArray'], $config);
+        $adapter = call_user_func([$adapterClass, 'fromConfigArray'], $config, $client);
 
         if ($adapter instanceof ClientAwareAdapter) {
             $adapter->setClient($client);

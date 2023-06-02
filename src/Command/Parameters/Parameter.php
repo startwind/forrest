@@ -2,8 +2,15 @@
 
 namespace Startwind\Forrest\Command\Parameters;
 
-class Parameter
+use Startwind\Forrest\Command\Parameters\Validation\Constraint\NotEmptyConstraint;
+use Startwind\Forrest\Command\Parameters\Validation\ValidationResult;
+use Startwind\Forrest\Enrichment\EnrichFunction\Explode\FunctionComposite;
+
+class Parameter implements \JsonSerializable
 {
+    public const PARAMETER_PREFIX = '${';
+    public const PARAMETER_POSTFIX = '}';
+
     public const TYPE = 'mixed';
 
     private string $name = '';
@@ -11,6 +18,20 @@ class Parameter
     private string $defaultValue = '';
 
     private array $values = [];
+
+    private array $rawStructure = [];
+
+    private array $constraints = [
+        NotEmptyConstraint::class
+    ];
+
+    /**
+     * @param array $rawStructure
+     */
+    public function setRawStructure(array $rawStructure): void
+    {
+        $this->rawStructure = $rawStructure;
+    }
 
     public function setName(string $name): void
     {
@@ -47,12 +68,14 @@ class Parameter
         return $this->values;
     }
 
-    /**
-     * @param array $values
-     */
-    public function setValues(array $values): void
+    public function setValues(array|string $values): void
     {
-        $this->values = $values;
+        if (is_array($values)) {
+            $this->values = $values;
+        } else {
+            $explodeFunctionComposite = new FunctionComposite();
+            $this->values = $explodeFunctionComposite->applyFunction($values);
+        }
     }
 
     public function hasValues(): bool
@@ -63,5 +86,30 @@ class Parameter
     public function getType(): string
     {
         return self::TYPE;
+    }
+
+    public function setConstraints(array $constraints): void
+    {
+        $this->constraints = $constraints;
+    }
+
+    /**
+     * Check if the given value is valid.
+     */
+    public function validate(string $value): ValidationResult
+    {
+        foreach ($this->constraints as $constraint) {
+            /** @var ValidationResult $constraintValidationResult */
+            $constraintValidationResult = (call_user_func([$constraint, 'validate'], $value));
+            if (!$constraintValidationResult->isValid()) {
+                return $constraintValidationResult;
+            }
+        }
+        return new ValidationResult(true);
+    }
+
+    public function jsonSerialize(): array
+    {
+        return $this->rawStructure;
     }
 }

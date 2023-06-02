@@ -43,13 +43,13 @@ class PromptHelper
         $this->memory = $memory;
     }
 
-    public function askForPrompt(string $repositoryIdentifier, Command $command, array $predefinedParameters = []): Prompt
+    public function askForPrompt(Command $command, array $predefinedParameters = []): Prompt
     {
         if ($command->isParameterMissing($predefinedParameters)) {
             $this->showCommandInformation($this->output, $command);
         }
 
-        $parameterValues = $this->askForParameterValues($repositoryIdentifier, $command, $predefinedParameters);
+        $parameterValues = $this->askForParameterValues($command, $predefinedParameters);
 
         return new Prompt($command->getPrompt(), $parameterValues);
     }
@@ -61,11 +61,11 @@ class PromptHelper
         OutputHelper::writeInfoBox($this->output, CommandRunner::stringToMultilinePrompt($prompt->getSecurePrompt()));
     }
 
-    private function askForParameterValues(string $repositoryIdentifier, Command $command, array $predefinedParameters = []): array
+    private function askForParameterValues(Command $command, array $predefinedParameters = []): array
     {
         $values = [];
 
-        $commandIdentifier = $repositoryIdentifier . ':' . $command->getName();
+        $commandIdentifier = $command->getFullyQualifiedIdentifier();
 
         foreach ($command->getParameters() as $identifier => $parameter) {
 
@@ -84,15 +84,27 @@ class PromptHelper
                 $name = $identifier;
             }
 
-            if ($parameter->hasValues()) {
-                $value = $this->questionHelper->ask($this->input, $this->output, new ChoiceQuestion('  Select value for ' . $name . $additional['string'] . ': ', $parameter->getValues()));
-            } else {
-                $question = new Question('  Select value for ' . $name . $additional['string'] . ': ', $additional['value']);
-                if ($parameter instanceof PasswordParameter) {
-                    $question->setHidden(true);
-                    $question->setHiddenFallback(false);
+            $valid = false;
+
+            while (!$valid) {
+                if ($parameter->hasValues()) {
+                    $value = $this->askForEnum('  Select value for ' . $name . $additional['string'] . ": \n", $parameter->getValues());
+                } else {
+                    $question = new Question('  Select value for ' . $name . $additional['string'] . ": ", $additional['value']);
+                    if ($parameter instanceof PasswordParameter) {
+                        $question->setHidden(true);
+                        $question->setHiddenFallback(false);
+                    }
+                    $value = $this->questionHelper->ask($this->input, $this->output, $question);
                 }
-                $value = $this->questionHelper->ask($this->input, $this->output, $question);
+
+                $validationResult = $parameter->validate($value);
+
+                $valid = $validationResult->isValid();
+
+                if (!$valid) {
+                    $this->output->writeln('  <error>' . $validationResult->getValidationMessage() . '</error>');
+                }
             }
 
             $values[] = new ParameterValue($identifier, $value, $parameter->getType());
@@ -103,6 +115,18 @@ class PromptHelper
         }
 
         return $values;
+    }
+
+    private function askForEnum(string $question, array $values): string
+    {
+        if (array_is_list($values)) {
+            $value = $this->questionHelper->ask($this->input, $this->output, new ChoiceQuestion($question, $values));
+        } else {
+            $key = $this->questionHelper->ask($this->input, $this->output, new ChoiceQuestion($question, array_keys($values)));
+            $value = $values[$key];
+        }
+
+        return $value;
     }
 
     /**

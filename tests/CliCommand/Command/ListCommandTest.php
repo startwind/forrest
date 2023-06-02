@@ -28,6 +28,7 @@ class ListCommandTest extends TestCase
 
         $output = $this->commandTester->getDisplay();
 
-        $this->assertStringContainsString('forrest-linux', $output);
+        $this->assertStringContainsString('forrest', $output);
+        $this->assertStringContainsString('forrest run [command]', $output);
     }
 }

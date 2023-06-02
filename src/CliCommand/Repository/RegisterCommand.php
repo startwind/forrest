@@ -13,18 +13,21 @@ use Symfony\Component\Yaml\Yaml;
 
 class RegisterCommand extends RepositoryCommand
 {
-    protected static $defaultName = 'repository:register';
+    public const NAME = 'repository:register';
+
+    protected static $defaultName = self::NAME;
     protected static $defaultDescription = 'Add an existing local repository.';
 
     protected function configure(): void
     {
+        parent::configure();
         $this->addArgument('repositoryFileName', InputArgument::REQUIRED, 'The filename of the repository.');
     }
 
     private function repositoryFileExists(string $repositoryFileName): bool
     {
         if (str_contains($repositoryFileName, '://')) {
-            $client = new Client();
+            $client = $this->getClient();
             try {
                 $client->get($repositoryFileName);
             } catch (\Exception $exception) {
@@ -38,6 +41,8 @@ class RegisterCommand extends RepositoryCommand
 
     protected function doExecute(InputInterface $input, OutputInterface $output): int
     {
+        $this->initRepositoryLoader();
+
         $repositoryFileName = $input->getArgument('repositoryFileName');
 
         if (!$this->repositoryFileExists($repositoryFileName)) {

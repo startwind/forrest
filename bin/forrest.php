@@ -32,19 +32,29 @@ $application->add(new \Startwind\Forrest\CliCommand\Repository\RemoveCommand());
 # Repository Command
 $application->add(new \Startwind\Forrest\CliCommand\Repository\Command\AddCommand());
 $application->add(new \Startwind\Forrest\CliCommand\Repository\Command\RemoveCommand());
+$application->add(new \Startwind\Forrest\CliCommand\Repository\Command\MoveAllCommand());
+
 
 # Directory
 $application->add(new \Startwind\Forrest\CliCommand\Directory\ListCommand());
 $application->add(new \Startwind\Forrest\CliCommand\Directory\InstallCommand());
+$application->add(new \Startwind\Forrest\CliCommand\Directory\ImportCommand());
+$application->add(new \Startwind\Forrest\CliCommand\Directory\ExportCommand());
+$application->add(new \Startwind\Forrest\CliCommand\Directory\RemoveCommand());
 
 # Search
 $application->add(new \Startwind\Forrest\CliCommand\Search\FileCommand());
 $application->add(new \Startwind\Forrest\CliCommand\Search\PatternCommand());
 $application->add(new \Startwind\Forrest\CliCommand\Search\ToolCommand());
 
+# Forrest
+$application->add(new \Startwind\Forrest\CliCommand\Forrest\HelpCommand());
+
 # Others
 if (!str_contains(FORREST_VERSION, '##FORREST_VERSION')) {
     $application->add(new SelfUpdateCommand(FORREST_NAME, FORREST_VERSION, "startwind/forrest"));
 }
+
+$application->setDefaultCommand(\Startwind\Forrest\CliCommand\Forrest\HelpCommand::COMMAND_NAME);
 
 $application->run();

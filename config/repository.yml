@@ -1,4 +1,8 @@
 ---
+directories:
+  forrest:
+    url: 'https://raw.githubusercontent.com/startwind/forrest-directory/main/directory.yml'
+
 repositories:
   # "friends-of-wp":
   #  adapter: gist
@@ -8,9 +12,10 @@ repositories:
   #    username: "friends-of-wp"
   #    prefix: 'wpdev: '
 
-  forrest-linux:
-    adapter: yaml
-    name: 'Forrest Linux Repository'
-    description: 'Some very helpful everyday Linux commands.'
+  forrest:
+    type: api
+    official: true
+    name: "Forrest Big Database"
+    description: "The big database with all commands known by Forrest."
     config:
-      file: 'https://raw.githubusercontent.com/startwind/forrest-directory/main/repositories/forrest-linux.yml'
+      endpoint: https://forrest.startwind.io/api/

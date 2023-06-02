@@ -5,6 +5,7 @@ declare(strict_types=1);
 
 namespace Tests\Startwind\Forrest\Adapter;
 
+use GuzzleHttp\Client;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Startwind\Forrest\Adapter\Loader\LocalFileLoader;
@@ -27,7 +28,7 @@ final class YamlAdapterTest extends TestCase
     #[DataProvider('yamlConfigProvider')]
     public function testConfigArray(array $config): void
     {
-        $result = YamlAdapter::fromConfigArray($config);
+        $result = YamlAdapter::fromConfigArray($config, new Client());
         $this->assertInstanceOf(YamlAdapter::class, $result);
     }
 

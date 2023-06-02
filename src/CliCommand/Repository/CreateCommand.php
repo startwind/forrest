@@ -18,6 +18,7 @@ class CreateCommand extends RepositoryCommand
 
     protected function configure(): void
     {
+        parent::configure();
         $this->addArgument('repositoryFileName', InputArgument::REQUIRED, 'The filename of new repository.');
     }
 

@@ -49,6 +49,8 @@ class CommandRunner
 
         exec($prompt . ' 2>&1', $execOutput, $resultCode);
 
+        // @todo https://stackoverflow.com/questions/7645499/getting-the-real-exit-code-after-proc-open
+
         return new CommandResult($execOutput, (int)$resultCode);
     }
 

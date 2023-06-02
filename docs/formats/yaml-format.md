@@ -50,20 +50,22 @@ commands:
 
 ## Command fields
 
-- **prompt** [required] The prompt is the most important and only required field. Basically it is the string that gets executed. There are many [possibilities to enrich the string](prompt.md).
+- **prompt** [required] The prompt is the most important and only required field. Basically it is the string that gets executed. There are many [possibilities to enrich the string](prompt.md). 
 
 
-- **runnable** [default: true] - if set to false Forrest will only show the command and not run it. This is the case if a command can be harmful or it does not return. *IMPORTANT: the parameters identifier must correspond to the parameter in the prompt.*
+- **runnable** [default: true] - if set to false Forrest will only show the command and not run it. This is the case if a command can be harmful or it does not return. If it is not runnable the command will be copied to the clipboard. 
 
 
-- **parameters** [optional] - The parameter field helps specifying and validating the parameter. It can also help predefine values or define enums. 
+- **parameters** [optional] - The parameter field helps specifying and validating the parameter. It can also help predefine values or define enums. *IMPORTANT: the parameters identifier must correspond to the parameter in the prompt.*
   - **name** - The name of the parameter.
   - **description** - The description of the parameter. Will be shown when the user has to enter the value.
   - **default** - The default value for this parameter.
   - **output-format** -  This is an easy way to enrich the output. This is valuable for commands that only return a single output string like `wc -l` for example. [read more](#output-format--optional-)
   - **type** - The type of the value. This will help validating the parameter and will provide new functionality based on the type. [read more](#type--optional-)
   - **file-formats** - The file format is only relevant if the type is `forrest_filename`. This field is also used for the reverse command search via `search:file`. If the command takes a directory as parameter use `directory` as filetype.
-  - **enum** You can define a list of values the user has to chose one from.
+  - **enum** You can define a list of values the user has to chose one from. [read more](#enum--optional-)
+  - **allowed-in-history** - If this field is set to false the command will not appear in the Forrest history. This can be important if some secret keys are included. If a parameter is type forrest_password this flag will automatically be set to false. 
+  - **constraints** - Constraints are used to pre-validate parameters before the actual run. [read more](#constraints--optional-)
 
 ## Parameter
 
@@ -87,4 +89,49 @@ This is an easy way to enrich the output. This is valuable for commands that onl
     description: 'Return the number of lines of a given file.'
     output-format: The file has %s lines.
     prompt: 'cat ${filename} | wc -l'
+```
+
+### `enum` (optional)
+
+Enums can be used to predefine values the user can choose from. There are two ways of using the enums. The easy way is to just define a list of values. The second possibility is to define a set of key-value-pairs. The key is the value the user will see and therefore should be human-readable.The value is the actual value that will be put into the prompt.
+
+#### Example
+ ```yaml
+'enum-key-values':
+   name: 'parameters:enum:with-key'
+   description: 'Check password handling'
+   prompt: 'ls ${enum}'
+   parameters:
+     enum:
+        enum:
+          eins: one
+          zwei: two
+          drei: three
+```
+### `constraints` (optional)
+
+Constraints are used to pre-validate parameters before the actual run. For example they can make sure that a parameter is a number or not empty.
+
+By default the active constraints for every parameter include the `not-empty` constraint. If the parameter is allowed to be empty you have to overwrite the constraints.
+
+#### Valid constraints
+
+- `integer`: checks if the given value is a number (integer).
+- `not-empty`: checks if the given value is not empty.
+- `file-exists`: checks if a file exists.
+- `file-not-exists`: checks if a file does not exist.
+- `identifer`: checks if a string only contains lowercase letters or numbers.
+
+#### Example
+
+```yaml
+"files:find:size":
+  name: 'files:find:size'
+  description: 'Command description'
+  prompt: 'find . -type f -size +${size_in_mega_byte}M$'
+  parameters:
+    size_in_mega_byte:
+      constraints:
+        - integer
+        - not-empty
 ```
