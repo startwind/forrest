@@ -41,4 +41,13 @@ abstract class OSHelper
         $written = fwrite($clip, $string);
         return (pclose($clip) === 0 && strlen($string) === $written);
     }
+
+    public static function getOS(): array
+    {
+        if (PHP_OS_FAMILY === "Darwin") {
+            return ['name' => 'MacOS', 'version' => ''];
+        }
+
+        return ['name' => PHP_OS_FAMILY, 'version' => ''];
+    }
 }

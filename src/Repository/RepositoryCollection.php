@@ -5,7 +5,7 @@ namespace Startwind\Forrest\Repository;
 use Startwind\Forrest\Command\Command;
 use Startwind\Forrest\Logger\ForrestLogger;
 
-class RepositoryCollection implements SearchAware
+class RepositoryCollection implements SearchAware, QuestionAware
 {
     public const COMMAND_SEPARATOR = ':';
 
@@ -156,4 +156,21 @@ class RepositoryCollection implements SearchAware
     {
         return $repositoryIdentifier . ':' . $command->getName();
     }
+
+    public function ask(string $question): array
+    {
+        $answers = [];
+
+        foreach ($this->repositories as $repositoryName => $repository) {
+            if ($repository instanceof QuestionAware) {
+                $answerList = $repository->ask($question);
+                foreach ($answerList as $item) {
+                    $answers[$repositoryName][] = $item;
+                }
+            }
+        }
+
+        return $answers;
+    }
+
 }

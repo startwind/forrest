@@ -8,8 +8,8 @@ use Startwind\Forrest\Command\Parameters\ParameterFactory;
 class CommandFactory
 {
     public const CONFIG_FIELD_PROMPT = 'prompt';
-    private const CONFIG_FIELD_NAME = 'name';
-    private const CONFIG_FIELD_DESCRIPTION = 'description';
+    public const CONFIG_FIELD_NAME = 'name';
+    public const CONFIG_FIELD_DESCRIPTION = 'description';
     public const CONFIG_FIELD_PARAMETERS = 'parameters';
     public const CONFIG_FIELD_ALLOWED_IN_HISTORY = 'allowed-in-history';
     public const CONFIG_FIELD_OUTPUT = 'output-format';

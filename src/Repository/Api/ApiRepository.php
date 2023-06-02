@@ -5,15 +5,18 @@ namespace Startwind\Forrest\Repository\Api;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\RequestOptions;
+use Startwind\Forrest\Command\Answer\Answer;
 use Startwind\Forrest\Command\Command;
 use Startwind\Forrest\Command\CommandFactory;
 use Startwind\Forrest\Command\Tool\Tool;
 use Startwind\Forrest\Logger\ForrestLogger;
+use Startwind\Forrest\Repository\QuestionAware;
 use Startwind\Forrest\Repository\Repository;
 use Startwind\Forrest\Repository\SearchAware;
 use Startwind\Forrest\Repository\ToolAware;
+use Startwind\Forrest\Util\OSHelper;
 
-class ApiRepository implements Repository, SearchAware, ToolAware
+class ApiRepository implements Repository, SearchAware, ToolAware, QuestionAware
 {
     public function __construct(
         protected readonly string $endpoint,
@@ -178,12 +181,37 @@ class ApiRepository implements Repository, SearchAware, ToolAware
 
         $information = json_decode((string)$response->getBody(), true);
 
-        $toolInfo =  new Tool($tool, $information['tool']['description']);
+        $toolInfo = new Tool($tool, $information['tool']['description']);
 
-        if(array_key_exists('see', $information['tool'])) {
+        if (array_key_exists('see', $information['tool'])) {
             $toolInfo->setSee($information['tool']['see']);
         }
 
         return $toolInfo;
+    }
+
+    public function ask(string $question): array
+    {
+        $payload = [
+            'os' => OSHelper::getOS(),
+            'question' => $question
+        ];
+
+        try {
+            $response = $this->client->post($this->endpoint . 'ai/ask', [RequestOptions::JSON => $payload, 'verify' => false]);
+        } catch (ClientException $exception) {
+            if ($exception->getResponse()->getStatusCode() == 404) {
+                return [];
+            }
+            ForrestLogger::warn('Unable to ask:  ' . $exception->getMessage());
+            return [];
+        }
+
+        $information = json_decode((string)$response->getBody(), true);
+        $answer = $information['suggestion'];
+
+        $answers[] = new Answer($answer['command'], $question, $answer['text']);
+
+        return $answers;
     }
 }
