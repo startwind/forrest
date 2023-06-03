@@ -48,7 +48,6 @@ class ToolCommand extends SearchCommand
                 }
             }
 
-
             $output->writeln('');
         }
 
