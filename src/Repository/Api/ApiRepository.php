@@ -214,4 +214,29 @@ class ApiRepository implements Repository, SearchAware, ToolAware, QuestionAware
 
         return $answers;
     }
+
+    public function explain(string $prompt): array
+    {
+        $payload = [
+            'prompt' => $prompt
+        ];
+
+        try {
+            $response = $this->client->post($this->endpoint . 'ai/explain', [RequestOptions::JSON => $payload, 'verify' => false]);
+        } catch (ClientException $exception) {
+            if ($exception->getResponse()->getStatusCode() == 404) {
+                return [];
+            }
+            ForrestLogger::warn('Unable to explain:  ' . $exception->getMessage());
+            return [];
+        }
+
+        $result = json_decode((string)$response->getBody(), true);
+
+        $answer = $result['suggestion'];
+
+        $answers[] = new Answer($prompt, $prompt, $answer['text']);
+
+        return $answers;
+    }
 }

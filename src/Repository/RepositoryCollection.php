@@ -172,5 +172,20 @@ class RepositoryCollection implements SearchAware, QuestionAware
 
         return $answers;
     }
+    public function explain(string $prompt): array
+    {
+        $answers = [];
+
+        foreach ($this->repositories as $repositoryName => $repository) {
+            if ($repository instanceof QuestionAware) {
+                $answerList = $repository->explain($prompt);
+                foreach ($answerList as $item) {
+                    $answers[$repositoryName][] = $item;
+                }
+            }
+        }
+
+        return $answers;
+    }
 
 }

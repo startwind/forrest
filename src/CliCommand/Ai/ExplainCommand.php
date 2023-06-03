@@ -11,16 +11,15 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Startwind\Forrest\Command\Answer\Answer;
 
-class AskCommand extends CommandCommand
+class ExplainCommand extends CommandCommand
 {
-    protected static $defaultName = 'ai:ask';
+    protected static $defaultName = 'ai:explain';
     protected static $defaultDescription = 'Suggest an answer to a question.';
 
     protected function configure(): void
     {
-        $this->addArgument('question', InputArgument::IS_ARRAY, 'The question you want to have answered.');
-        $this->setAliases(['ask']);
-        $this->addOption('force', null, InputOption::VALUE_NONE, 'Run the command without asking for permission.');
+        $this->addArgument('prompt', InputArgument::IS_ARRAY, 'The prompt you want to have explained.');
+        $this->setAliases(['explain']);
 
         parent::configure();
     }
@@ -31,21 +30,22 @@ class AskCommand extends CommandCommand
 
         \Startwind\Forrest\Output\OutputHelper::renderHeader($output);
 
-        $aiQuestion = implode(' ', $input->getArgument('question'));
+        $prompt = implode(' ', $input->getArgument('prompt'));
 
         OutputHelper::writeInfoBox($output, [
-            ucfirst($aiQuestion)
+            'Explanation of: "' . $prompt. '"'
         ]);
 
-        $answers = $this->getRepositoryCollection()->ask($aiQuestion);
+        $answers = $this->getRepositoryCollection()->explain($prompt);
 
         foreach ($answers as $repositoryName => $repoAnswers) {
             foreach ($repoAnswers as $answer) {
                 /** @var Answer $answer */
                 $output->writeln(OutputHelper::indentText($this->formatCliText($answer->getAnswer())));
-                return $this->runCommand($answer->getCommand(), []);
             }
         }
+
+        $output->writeln(['', '']);
 
         return SymfonyCommand::SUCCESS;
     }

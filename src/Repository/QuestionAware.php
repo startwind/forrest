@@ -10,4 +10,6 @@ interface QuestionAware
      * Ask a question and get an answer with a prompt.
      */
     public function ask(string $question): array;
+
+    public function explain(string $prompt): array;
 }
