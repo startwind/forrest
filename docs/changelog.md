@@ -3,7 +3,8 @@
 Forrest is constantly evolving. Sometimes so fast that you might not even get around to trying out the new features. For this reason, we have introduced a changelog.
 
 - **develop**
-  - Fixed `--force` bug. 
+  - Enum can ask for custom values. The user is able to combine enums with custom value by using the `enum-allow-custom` parameter field. [read more](formats/yaml-format.md#command-fields)
+  - Fixed `--force` bug.
 
 
 - **2.1.0**

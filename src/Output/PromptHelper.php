@@ -126,6 +126,10 @@ class PromptHelper
             $value = $values[$key];
         }
 
+        if ($value == Parameter::ENUM_CUSTOM || $value == Parameter::ENUM_CUSTOM_KEY) {
+            $value = $this->questionHelper->ask($this->input, $this->output, new Question('Please enter a custom value: '));
+        }
+
         return $value;
     }
 

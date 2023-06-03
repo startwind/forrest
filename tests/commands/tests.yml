@@ -53,3 +53,15 @@ commands:
       identifier:
         constraints:
           - identifier
+
+  "parameter:enum:custom":
+    name: parameter:enum:custom
+    description: Select custom field in enum
+    prompt: echo "${enum}"
+    parameters:
+      enum:
+        enum-allow-custom: true
+        enum:
+          - 'wordpress'
+          - 'wp'
+

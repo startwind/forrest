@@ -65,6 +65,9 @@ class RunCommandTest extends TestCase
             # command with parameter validation (constraint) - failure
             ['forrest-dev-tests:constraints:identifier', false, ['echo ${identifier}', 'Select value for identifier'], ['a1 b2c3', 'y']],
             # works only locally ['forrest-dev-tests:parameters:enum:with-explode', true, ['[0]'], [0, 'y']],
+
+            # command with custom enum
+            ['forrest-dev-tests:parameter:enum:custom', true, ['echo "nils langner"', 'echo "${enum}"', 'Select value for enum'], [0, 'nils langner', 'y']],
         ];
     }
 }
