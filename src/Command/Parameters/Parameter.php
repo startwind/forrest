@@ -11,6 +11,9 @@ class Parameter implements \JsonSerializable
     public const PARAMETER_PREFIX = '${';
     public const PARAMETER_POSTFIX = '}';
 
+    public const ENUM_CUSTOM_KEY = '##custom##';
+    public const ENUM_CUSTOM = '<custom value>';
+
     public const TYPE = 'mixed';
 
     private string $name = '';
@@ -68,13 +71,21 @@ class Parameter implements \JsonSerializable
         return $this->values;
     }
 
-    public function setValues(array|string $values): void
+    public function setValues(array|string $values, bool $allowCustomValue): void
     {
         if (is_array($values)) {
             $this->values = $values;
         } else {
             $explodeFunctionComposite = new FunctionComposite();
             $this->values = $explodeFunctionComposite->applyFunction($values);
+        }
+
+        if ($allowCustomValue) {
+            if (array_is_list($this->values)) {
+                array_unshift($this->values, self::ENUM_CUSTOM);
+            } else {
+                $this->values[self::ENUM_CUSTOM_KEY] = self::ENUM_CUSTOM;
+            }
         }
     }
 

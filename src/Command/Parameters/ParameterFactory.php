@@ -67,8 +67,14 @@ class ParameterFactory
             $parameter->setConstraints($constraints);
         }
 
+        if (!array_key_exists('enum-allow-custom', $config)) {
+            $enumAllowCustom = false;
+        } else {
+            $enumAllowCustom = $config['enum-allow-custom'];
+        }
+
         if (array_key_exists('enum', $config)) {
-            $parameter->setValues($config['enum']);
+            $parameter->setValues($config['enum'], $enumAllowCustom);
         }
     }
 
