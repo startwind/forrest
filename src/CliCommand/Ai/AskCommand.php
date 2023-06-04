@@ -43,7 +43,11 @@ class AskCommand extends CommandCommand
             foreach ($repoAnswers as $answer) {
                 /** @var Answer $answer */
                 $output->writeln(OutputHelper::indentText($this->formatCliText($answer->getAnswer())));
-                return $this->runCommand($answer->getCommand(), []);
+                $command = $answer->getCommand();
+
+                if ($command->getPrompt()) {
+                    return $this->runCommand($answer->getCommand(), []);
+                }
             }
         }
 
