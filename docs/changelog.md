@@ -4,7 +4,8 @@ Forrest is constantly evolving. Sometimes so fast that you might not even get ar
 
 - **develop**
   - Enum can ask for custom values. The user is able to combine enums with custom value by using the `enum-allow-custom` parameter field. [read more](formats/yaml-format.md#command-fields)
-  - Fixed `--force` bug.
+  - Parameters pre- and suffix. It is now possible to add a string before and after a parameter. This comes in handy a parameter is optional but for example a `-p` option must be only set when it is not empty. [read more](formats/yaml-format.md#command-fields)
+  - Fixed `--force` bug. It works again. 
 
 
 - **2.1.0**

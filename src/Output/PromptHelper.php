@@ -107,6 +107,10 @@ class PromptHelper
                 }
             }
 
+            if ($value) {
+                $value = $parameter->getPrefix() . $value . $parameter->getSuffix();
+            }
+
             $values[] = new ParameterValue($identifier, $value, $parameter->getType());
 
             if ($value && !($parameter instanceof PasswordParameter)) {

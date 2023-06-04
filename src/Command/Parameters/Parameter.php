@@ -18,6 +18,9 @@ class Parameter implements \JsonSerializable
 
     private string $name = '';
     private string $description = '';
+
+    private string $prefix = '';
+    private string $suffix = '';
     private string $defaultValue = '';
 
     private array $values = [];
@@ -117,6 +120,38 @@ class Parameter implements \JsonSerializable
             }
         }
         return new ValidationResult(true);
+    }
+
+    /**
+     * @return string
+     */
+    public function getPrefix(): string
+    {
+        return $this->prefix;
+    }
+
+    /**
+     * @param string $prefix
+     */
+    public function setPrefix(string $prefix): void
+    {
+        $this->prefix = $prefix;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSuffix(): string
+    {
+        return $this->suffix;
+    }
+
+    /**
+     * @param string $suffix
+     */
+    public function setSuffix(string $suffix): void
+    {
+        $this->suffix = $suffix;
     }
 
     public function jsonSerialize(): array
