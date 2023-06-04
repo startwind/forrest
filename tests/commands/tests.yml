@@ -65,3 +65,12 @@ commands:
           - 'wordpress'
           - 'wp'
 
+  "parameter:prefix-suffix":
+    name: parameter:prefix-suffix
+    description: Add a prefix and suffix to a parameter
+    prompt: echo "${parameter}"
+    parameters:
+      parameter:
+        prefix: "prefix "
+        suffix: " suffix"
+
