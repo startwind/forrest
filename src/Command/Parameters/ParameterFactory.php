@@ -85,6 +85,9 @@ class ParameterFactory
             $parameter->setSuffix($config['suffix']);
         }
 
+        if (array_key_exists('optional', $config)) {
+            $parameter->setOptional((bool)$config['optional']);
+        }
     }
 
     private static function getConstraints(array $constraintArray): array

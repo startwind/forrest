@@ -3,6 +3,7 @@
 namespace Startwind\Forrest\Command\Parameters;
 
 use Startwind\Forrest\Command\Parameters\Validation\Constraint\NotEmptyConstraint;
+use Startwind\Forrest\Command\Parameters\Validation\SuccessfulValidationResult;
 use Startwind\Forrest\Command\Parameters\Validation\ValidationResult;
 use Startwind\Forrest\Enrichment\EnrichFunction\Explode\FunctionComposite;
 
@@ -21,6 +22,8 @@ class Parameter implements \JsonSerializable
 
     private string $prefix = '';
     private string $suffix = '';
+
+    private bool $optional = false;
     private string $defaultValue = '';
 
     private array $values = [];
@@ -112,6 +115,10 @@ class Parameter implements \JsonSerializable
      */
     public function validate(string $value): ValidationResult
     {
+        if ($value == '' && $this->optional) {
+            return new SuccessfulValidationResult();
+        }
+
         foreach ($this->constraints as $constraint) {
             /** @var ValidationResult $constraintValidationResult */
             $constraintValidationResult = (call_user_func([$constraint, 'validate'], $value));
@@ -119,39 +126,37 @@ class Parameter implements \JsonSerializable
                 return $constraintValidationResult;
             }
         }
-        return new ValidationResult(true);
+        return new SuccessfulValidationResult();
     }
 
-    /**
-     * @return string
-     */
     public function getPrefix(): string
     {
         return $this->prefix;
     }
 
-    /**
-     * @param string $prefix
-     */
     public function setPrefix(string $prefix): void
     {
         $this->prefix = $prefix;
     }
 
-    /**
-     * @return string
-     */
     public function getSuffix(): string
     {
         return $this->suffix;
     }
 
-    /**
-     * @param string $suffix
-     */
     public function setSuffix(string $suffix): void
     {
         $this->suffix = $suffix;
+    }
+
+    public function isOptional(): bool
+    {
+        return $this->optional;
+    }
+
+    public function setOptional(bool $optional): void
+    {
+        $this->optional = $optional;
     }
 
     public function jsonSerialize(): array
