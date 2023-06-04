@@ -67,6 +67,7 @@ commands:
   - **enum-allow-custom** if set to true an option with the name <custom value> will be added. If this is selected the user can enter a custom value. Constraints still work with that combination.
   - **allowed-in-history** - If this field is set to false the command will not appear in the Forrest history. This can be important if some secret keys are included. If a parameter is type forrest_password this flag will automatically be set to false. 
   - **constraints** - Constraints are used to pre-validate parameters before the actual run. [read more](#constraints--optional-)
+  - **optional** - Optional parameter are not mandatory and can be empty. This can be used together with the prefix and suffix option.
   - **prefix**, **suffix** - It is now possible to add a string before and after a parameter. This comes in handy a parameter is optional but for example a `-p` option must be only set when it is not empty.
 
 ## Parameter

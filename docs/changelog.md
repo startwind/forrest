@@ -3,6 +3,10 @@
 Forrest is constantly evolving. Sometimes so fast that you might not even get around to trying out the new features. For this reason, we have introduced a changelog.
 
 - **develop**
+  - Optional parameter - We introduced the optional parameter that marks a commands parameter as not required. This can be combined with the pre- and suffix option.
+
+
+- **2.2.0**
   - Enum can ask for custom values. The user is able to combine enums with custom value by using the `enum-allow-custom` parameter field. [read more](formats/yaml-format.md#command-fields)
   - Parameters pre- and suffix. It is now possible to add a string before and after a parameter. This comes in handy a parameter is optional but for example a `-p` option must be only set when it is not empty. [read more](formats/yaml-format.md#command-fields)
   - Fixed `--force` bug. It works again. 
