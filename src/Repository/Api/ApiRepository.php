@@ -17,7 +17,7 @@ use Startwind\Forrest\Repository\StatusAwareRepository;
 use Startwind\Forrest\Repository\ToolAware;
 use Startwind\Forrest\Util\OSHelper;
 
-class ApiRepository implements Repository, SearchAware, ToolAware, StatusAwareRepository
+class ApiRepository implements Repository, SearchAware, ToolAware, StatusAwareRepository, QuestionAware
 {
     public function __construct(
         protected readonly string $endpoint,
@@ -248,9 +248,9 @@ class ApiRepository implements Repository, SearchAware, ToolAware, StatusAwareRe
 
         $result = json_decode((string)$response->getBody(), true);
 
-        $answer = $result['suggestion'];
+        $explanation = $result['explanation'];
 
-        $answers[] = new Answer($prompt, $prompt, $answer['text']);
+        $answers[] = new Answer($prompt, $prompt, $explanation);
 
         return $answers;
     }
