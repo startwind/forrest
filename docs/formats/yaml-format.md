@@ -121,6 +121,10 @@ By default the active constraints for every parameter include the `not-empty` co
 
 - `integer`: checks if the given value is a number (integer).
 - `not-empty`: checks if the given value is not empty.
+- `url`: checks for valid url.
+- `email`: checks for valid email address.
+- `mac`: checks for valid mac address.
+- `ip`: checks if valid IP address.
 - `file-exists`: checks if a file exists.
 - `file-not-exists`: checks if a file does not exist.
 - `identifer`: checks if a string only contains lowercase letters or numbers.
