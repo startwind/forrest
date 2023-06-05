@@ -207,8 +207,21 @@ class ApiRepository implements Repository, SearchAware, ToolAware, QuestionAware
             return [];
         }
 
-        $information = json_decode((string)$response->getBody(), true);
+        $body = (string)$response->getBody();
+        $information = json_decode($body, true);
+
+        if (is_null($information)) {
+            ForrestLogger::warn('Plain API result: ' . $body);
+            throw new \RuntimeException('The API did not return valid JSON.');
+
+        }
+
+        if (!array_key_exists('suggestion', $information)) {
+            throw new \RuntimeException('The API did not provide the mandatory field "suggestion".');
+        }
+
         $answer = $information['suggestion'];
+
 
         $answers[] = new Answer($answer['command'], $question, $answer['text']);
 
