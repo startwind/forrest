@@ -216,11 +216,12 @@ class ApiRepository implements Repository, SearchAware, ToolAware, QuestionAware
 
         }
 
-        if (!array_key_exists('suggestion', $information)) {
-            throw new \RuntimeException('The API did not provide the mandatory field "suggestion".');
+        if (!array_key_exists('answer', $information)) {
+            ForrestLogger::warn('Plain API result: ' . $body);
+            throw new \RuntimeException('The API did not provide the mandatory field "answer".');
         }
 
-        $answer = $information['suggestion'];
+        $answer = $information['answer'];
 
 
         $answers[] = new Answer($answer['command'], $question, $answer['text']);

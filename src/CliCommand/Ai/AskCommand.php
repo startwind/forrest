@@ -10,6 +10,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Startwind\Forrest\Command\Answer\Answer;
+use Symfony\Component\Console\Question\Question;
 
 class AskCommand extends CommandCommand
 {
@@ -18,7 +19,7 @@ class AskCommand extends CommandCommand
 
     protected function configure(): void
     {
-        $this->addArgument('question', InputArgument::IS_ARRAY, 'The question you want to have answered.');
+        $this->addArgument('question', InputArgument::IS_ARRAY, 'The question you want to have answered.', []);
         $this->setAliases(['ask']);
         $this->addOption('force', null, InputOption::VALUE_NONE, 'Run the command without asking for permission.');
 
@@ -33,9 +34,19 @@ class AskCommand extends CommandCommand
 
         $aiQuestion = implode(' ', $input->getArgument('question'));
 
-        OutputHelper::writeInfoBox($output, [
-            ucfirst($aiQuestion)
-        ]);
+        /** @var \Symfony\Component\Console\Helper\QuestionHelper $questionHelper */
+        $questionHelper = $this->getHelper('question');
+
+        if (!$aiQuestion) {
+            OutputHelper::writeInfoBox($output, ["Hi, I am Forrest, your AI command line helper. How can I help you?"]);
+            $output->writeln('');
+            $aiQuestion = $questionHelper->ask($input, $output, new Question('  Your question: '));
+            $output->writeln(['', '']);
+        } else {
+            OutputHelper::writeInfoBox($output, [
+                ucfirst($aiQuestion)
+            ]);
+        }
 
         $answers = $this->getRepositoryCollection()->ask($aiQuestion);
 
