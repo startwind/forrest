@@ -6,6 +6,7 @@ use Startwind\Forrest\Command\Command;
 use Startwind\Forrest\Output\PromptHelper;
 use Startwind\Forrest\Output\RunHelper;
 use Startwind\Forrest\Repository\RepositoryCollection;
+use Startwind\Forrest\Repository\StatusAwareRepository;
 use Startwind\Forrest\Runner\Exception\ToolNotFoundException;
 use Symfony\Component\Console\Command\Command as SymfonyCommand;
 use Symfony\Component\Console\Helper\QuestionHelper;
@@ -56,12 +57,15 @@ abstract class RunCommand extends ForrestCommand
         try {
             $runHelper->executeCommand($command, $prompt);
         } catch (ToolNotFoundException $exception) {
+            $this->getRepositoryCollection()->pushStatus($command->getFullyQualifiedIdentifier(), StatusAwareRepository::STATUS_FAILURE);
             $this->renderErrorBox($exception->getMessage());
             return SymfonyCommand::FAILURE;
         }
 
         $this->getConfigHandler()->persistChecksum($command, $repositoryIdentifier);
         $this->getRecentParameterMemory()->dump();
+
+        $this->getRepositoryCollection()->pushStatus($command->getFullyQualifiedIdentifier(), StatusAwareRepository::STATUS_SUCCESS);
 
         return SymfonyCommand::SUCCESS;
     }

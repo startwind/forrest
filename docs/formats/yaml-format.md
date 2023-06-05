@@ -60,13 +60,15 @@ commands:
   - **name** - The name of the parameter.
   - **description** - The description of the parameter. Will be shown when the user has to enter the value.
   - **default** - The default value for this parameter.
-  - **output-format** -  This is an easy way to enrich the output. This is valuable for commands that only return a single output string like `wc -l` for example. [read more](#output-format--optional-)
+  - **output-format** - This is an easy way to enrich the output. This is valuable for commands that only return a single output string like `wc -l` for example. [read more](#output-format--optional-)
   - **type** - The type of the value. This will help validating the parameter and will provide new functionality based on the type. [read more](#type--optional-)
   - **file-formats** - The file format is only relevant if the type is `forrest_filename`. This field is also used for the reverse command search via `search:file`. If the command takes a directory as parameter use `directory` as filetype.
   - **enum** You can define a list of values the user has to chose one from. [read more](#enum--optional-)
   - **enum-allow-custom** if set to true an option with the name <custom value> will be added. If this is selected the user can enter a custom value. Constraints still work with that combination.
   - **allowed-in-history** - If this field is set to false the command will not appear in the Forrest history. This can be important if some secret keys are included. If a parameter is type forrest_password this flag will automatically be set to false. 
   - **constraints** - Constraints are used to pre-validate parameters before the actual run. [read more](#constraints--optional-)
+  - **optional** - Optional parameter are not mandatory and can be empty. This can be used together with the prefix and suffix option.
+  - **prefix**, **suffix** - It is now possible to add a string before and after a parameter. This comes in handy a parameter is optional but for example a `-p` option must be only set when it is not empty.
 
 ## Parameter
 
@@ -119,6 +121,10 @@ By default the active constraints for every parameter include the `not-empty` co
 
 - `integer`: checks if the given value is a number (integer).
 - `not-empty`: checks if the given value is not empty.
+- `url`: checks for valid url.
+- `email`: checks for valid email address.
+- `mac`: checks for valid mac address.
+- `ip`: checks if valid IP address.
 - `file-exists`: checks if a file exists.
 - `file-not-exists`: checks if a file does not exist.
 - `identifer`: checks if a string only contains lowercase letters or numbers.

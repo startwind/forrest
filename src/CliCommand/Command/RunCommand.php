@@ -70,6 +70,7 @@ class RunCommand extends CommandCommand
 
         $fileArguments = new ArrayInput($arguments);
         $fileCommand = $this->getApplication()->find(FileCommand::COMMAND_NAME);
+
         return $fileCommand->run($fileArguments, $this->getOutput());
     }
 

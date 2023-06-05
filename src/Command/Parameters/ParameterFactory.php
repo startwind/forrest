@@ -76,6 +76,18 @@ class ParameterFactory
         if (array_key_exists('enum', $config)) {
             $parameter->setValues($config['enum'], $enumAllowCustom);
         }
+
+        if (array_key_exists('prefix', $config)) {
+            $parameter->setPrefix($config['prefix']);
+        }
+
+        if (array_key_exists('suffix', $config)) {
+            $parameter->setSuffix($config['suffix']);
+        }
+
+        if (array_key_exists('optional', $config)) {
+            $parameter->setOptional((bool)$config['optional']);
+        }
     }
 
     private static function getConstraints(array $constraintArray): array

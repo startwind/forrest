@@ -172,6 +172,7 @@ class RepositoryCollection implements SearchAware, QuestionAware
 
         return $answers;
     }
+
     public function explain(string $prompt): array
     {
         $answers = [];
@@ -188,4 +189,19 @@ class RepositoryCollection implements SearchAware, QuestionAware
         return $answers;
     }
 
+    public function pushStatus(string $fullyQualifiedCommandName, string $status): void
+    {
+        $repositoryIdentifier = RepositoryCollection::getRepositoryIdentifier($fullyQualifiedCommandName);
+        $commandName = RepositoryCollection::getCommandName($fullyQualifiedCommandName);
+
+        $repository = $this->getRepository($repositoryIdentifier);
+
+        if ($repository instanceof StatusAwareRepository) {
+            try {
+                $repository->pushStatus($commandName, $status);
+            } catch (\Exception $exception) {
+                ForrestLogger::warn($exception->getMessage());
+            }
+        }
+    }
 }

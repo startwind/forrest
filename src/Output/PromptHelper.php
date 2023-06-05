@@ -76,7 +76,7 @@ class PromptHelper
 
             $fullParameterIdentifier = $commandIdentifier . ':' . $identifier;
 
-            $additional = $this->getAdditionalInfo($commandIdentifier, $parameter);
+            $additional = $this->getAdditionalInfo($fullParameterIdentifier, $parameter);
 
             if ($parameter->getName()) {
                 $name = $identifier . ' (' . $parameter->getName() . ')';
@@ -105,6 +105,10 @@ class PromptHelper
                 if (!$valid) {
                     $this->output->writeln('  <error>' . $validationResult->getValidationMessage() . '</error>');
                 }
+            }
+
+            if ($value) {
+                $value = $parameter->getPrefix() . $value . $parameter->getSuffix();
             }
 
             $values[] = new ParameterValue($identifier, $value, $parameter->getType());
@@ -138,28 +142,29 @@ class PromptHelper
      */
     private function getAdditionalInfo(string $fullParameterIdentifier, Parameter $parameter): array
     {
-        if ($this->memory->hasParameter($fullParameterIdentifier)) {
-            $recentValue = $this->memory->getParameter($fullParameterIdentifier);
-        } else {
-            $recentValue = '';
-        }
+        $options = [];
+
+        $defaultValue = '';
 
         if ($parameter->getDefaultValue()) {
-            if ($recentValue != '' && $recentValue != $parameter->getDefaultValue()) {
-                $recentOutput = ', recent: ' . $recentValue;
-            } else {
-                $recentOutput = '';
-            }
-            $defaultString = ' [default: ' . $parameter->getDefaultValue() . $recentOutput . ']';
+            $options['default'] = 'default: "' . $parameter->getDefaultValue() . '"';
             $defaultValue = $parameter->getDefaultValue();
+        }
+
+        if ($this->memory->hasParameter($fullParameterIdentifier)) {
+            $recentValue = $this->memory->getParameter($fullParameterIdentifier);
+            $options['default'] = 'recent: "' . $recentValue . '"';
+            $defaultValue = $recentValue;
+        }
+
+        if ($parameter->isOptional()) {
+            $options['optional'] = 'optional';
+        }
+
+        if (count($options) > 0) {
+            $defaultString = ' [' . implode(', ', $options) . ']';
         } else {
-            if ($recentValue) {
-                $defaultString = ' [default: ' . $recentValue . ']';
-                $defaultValue = $recentValue;
-            } else {
-                $defaultString = '';
-                $defaultValue = '';
-            }
+            $defaultString = '';
         }
 
         return [

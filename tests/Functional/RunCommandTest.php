@@ -68,6 +68,10 @@ class RunCommandTest extends TestCase
 
             # command with custom enum
             ['forrest-dev-tests:parameter:enum:custom', true, ['echo "nils langner"', 'echo "${enum}"', 'Select value for enum'], [0, 'nils langner', 'y']],
+
+            # command with pre- and suffix
+            ['forrest-dev-tests:parameter:prefix-suffix', true, ['prefix 123 suffix', 'echo "${parameter}"'], ['123', 'y']],
+
         ];
     }
 }

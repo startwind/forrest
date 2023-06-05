@@ -11,6 +11,10 @@ abstract class ConstraintFactory
         'integer' => IntegerConstraint::class,
         'identifier' => IdentifierConstraint::class,
         'not-empty' => NotEmptyConstraint::class,
+        'url' => UrlConstraint::class,
+        'ip-address' => IpConstraint::class,
+        'mac-address' => MacConstraint::class,
+        'email' => EmailConstraint::class,
         # File constraints
         'file-exists' => FileExistsConstraint::class,
         'file-not-exists' => FileNotExistsConstraint::class,

@@ -13,10 +13,11 @@ use Startwind\Forrest\Logger\ForrestLogger;
 use Startwind\Forrest\Repository\QuestionAware;
 use Startwind\Forrest\Repository\Repository;
 use Startwind\Forrest\Repository\SearchAware;
+use Startwind\Forrest\Repository\StatusAwareRepository;
 use Startwind\Forrest\Repository\ToolAware;
 use Startwind\Forrest\Util\OSHelper;
 
-class ApiRepository implements Repository, SearchAware, ToolAware, QuestionAware
+class ApiRepository implements Repository, SearchAware, ToolAware, StatusAwareRepository
 {
     public function __construct(
         protected readonly string $endpoint,
@@ -252,5 +253,13 @@ class ApiRepository implements Repository, SearchAware, ToolAware, QuestionAware
         $answers[] = new Answer($prompt, $prompt, $answer['text']);
 
         return $answers;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function pushStatus(string $commandIdentifier, string $status): void
+    {
+        $this->client->post($this->endpoint . 'command/' . urlencode($commandIdentifier) . '/stats/' . urlencode($status), ['verify' => false]);
     }
 }
