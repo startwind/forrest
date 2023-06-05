@@ -11,9 +11,10 @@ use Startwind\Forrest\Command\Tool\Tool;
 use Startwind\Forrest\Logger\ForrestLogger;
 use Startwind\Forrest\Repository\Repository;
 use Startwind\Forrest\Repository\SearchAware;
+use Startwind\Forrest\Repository\StatusAwareRepository;
 use Startwind\Forrest\Repository\ToolAware;
 
-class ApiRepository implements Repository, SearchAware, ToolAware
+class ApiRepository implements Repository, SearchAware, ToolAware, StatusAwareRepository
 {
     public function __construct(
         protected readonly string $endpoint,
@@ -178,12 +179,20 @@ class ApiRepository implements Repository, SearchAware, ToolAware
 
         $information = json_decode((string)$response->getBody(), true);
 
-        $toolInfo =  new Tool($tool, $information['tool']['description']);
+        $toolInfo = new Tool($tool, $information['tool']['description']);
 
-        if(array_key_exists('see', $information['tool'])) {
+        if (array_key_exists('see', $information['tool'])) {
             $toolInfo->setSee($information['tool']['see']);
         }
 
         return $toolInfo;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function pushStatus(string $commandIdentifier, string $status): void
+    {
+        $this->client->post($this->endpoint . 'command/' . urlencode($commandIdentifier) . '/stats/' . urlencode($status), ['verify' => false]);
     }
 }
