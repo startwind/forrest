@@ -10,6 +10,7 @@ class CommandFactory
     public const CONFIG_FIELD_PROMPT = 'prompt';
     public const CONFIG_FIELD_NAME = 'name';
     public const CONFIG_FIELD_DESCRIPTION = 'description';
+    public const CONFIG_FIELD_EXPLANATION = 'explanation';
     public const CONFIG_FIELD_PARAMETERS = 'parameters';
     public const CONFIG_FIELD_ALLOWED_IN_HISTORY = 'allowed-in-history';
     public const CONFIG_FIELD_OUTPUT = 'output-format';
@@ -21,7 +22,13 @@ class CommandFactory
     {
         $prompt = $commandConfig[self::CONFIG_FIELD_PROMPT];
 
-        $command = new Command($commandConfig[self::CONFIG_FIELD_NAME], $commandConfig[self::CONFIG_FIELD_DESCRIPTION], $prompt);
+        if (array_key_exists(self::CONFIG_FIELD_EXPLANATION, $commandConfig)) {
+            $explanation = $commandConfig[self::CONFIG_FIELD_EXPLANATION];
+        } else {
+            $explanation = '';
+        }
+
+        $command = new Command($commandConfig[self::CONFIG_FIELD_NAME], $commandConfig[self::CONFIG_FIELD_DESCRIPTION], $prompt, $explanation);
 
         $command->setPlainCommandArray($commandConfig);
 

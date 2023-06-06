@@ -21,7 +21,7 @@ $application->add(new \Startwind\Forrest\CliCommand\Ai\ExplainCommand());
 # Command Commands
 $application->add(new \Startwind\Forrest\CliCommand\Command\ListCommand());
 $application->add(new \Startwind\Forrest\CliCommand\Command\RunCommand());
-$application->add(new \Startwind\Forrest\CliCommand\Command\ShowCommand());
+$application->add(new \Startwind\Forrest\CliCommand\Command\ExplainCommand());
 $application->add(new \Startwind\Forrest\CliCommand\Command\HistoryCommand());
 
 # Repository

@@ -2,22 +2,22 @@
 
 namespace Startwind\Forrest\CliCommand\Command;
 
-use Startwind\Forrest\Output\PromptHelper;
+use Startwind\Forrest\Util\OutputHelper;
 use Symfony\Component\Console\Command\Command as SymfonyCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Helper\QuestionHelper;
 
-class ShowCommand extends CommandCommand
+class ExplainCommand extends CommandCommand
 {
-    protected static $defaultName = 'commands:show';
+    protected static $defaultName = 'commands:explain';
     protected static $defaultDescription = 'Show a specific command. It will not run it.';
 
     protected function configure(): void
     {
         parent::configure();
         $this->addArgument('identifier', InputArgument::REQUIRED, 'The commands identifier.');
+        $this->setAliases(['explain']);
     }
 
     protected function doExecute(InputInterface $input, OutputInterface $output): int
@@ -26,17 +26,27 @@ class ShowCommand extends CommandCommand
 
         $commandIdentifier = $input->getArgument('identifier');
 
-        /** @var QuestionHelper $questionHelper */
-        $questionHelper = $this->getHelper('question');
-
-        $promptHelper = new PromptHelper($this->getInput(), $this->getOutput(), $questionHelper, $this->getRecentParameterMemory());
-
         $command = $this->getCommand($commandIdentifier);
 
-        $prompt = $promptHelper->askForPrompt($command);
+        OutputHelper::writeInfoBox($output, [
+            'Explanation of "' . $commandIdentifier . '":'
+        ]);
 
-        $promptHelper->showFinalPrompt($prompt);
+        $output->writeln([$command->getPrompt(), ""]);
+
+        $explanation = OutputHelper::indentText($command->getExplanation(), 2, 80, ' |');
+
+        $output->writeln($explanation);
+        $output->writeln([
+            '',
+            'To run this command type: ',
+            '',
+            'forrest run ' . $commandIdentifier,
+            '',
+        ]);
+
 
         return SymfonyCommand::SUCCESS;
     }
 }
+
