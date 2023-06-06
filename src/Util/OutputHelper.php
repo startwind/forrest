@@ -68,4 +68,17 @@ abstract class OutputHelper
     {
         return $message . str_repeat(' ', $maxLength - strlen($message) + $additionalSpaces);
     }
+
+    public static function indentText(string $text, int $indent = 2, int $width = 100, $prefix = ''): array
+    {
+        $wrapped = explode("\n", wordwrap($text, $width));
+
+        $result = [];
+
+        foreach ($wrapped as $line) {
+            $result[] = $prefix . str_repeat(' ', $indent) . $line;
+        }
+
+        return $result;
+    }
 }
