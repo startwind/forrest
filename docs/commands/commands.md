@@ -2,9 +2,9 @@
 
 ## Commands
 
-- `commands:list` - List all registered commands that can be run. [More information](commands_list.md)
 - `commands:run` - Run a single command.  [More information](commands_run.md)
-- `commands:show` - Show a single command with all its details and steps that will be executed.
+- `commands:list` - List all registered commands that can be run. [More information](commands_list.md)
+- `commands:explain` - Show a single command with all its details and steps that will be executed. It also adds a detailed explanation of the command.
 - `commands:history` - Show the recent commands that were executed.
 
 ## Search Commands
