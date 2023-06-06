@@ -15,6 +15,8 @@ class Command implements \JsonSerializable
 
     private bool $allowedInHistory = true;
 
+    private string $explanation = "";
+
     public function setOutputFormat(string $output): void
     {
         $this->outputFormat = $output;
@@ -27,8 +29,9 @@ class Command implements \JsonSerializable
 
     private array $plainCommandArray = [];
 
-    public function __construct(private string $name, private readonly string $description, private readonly string $prompt)
+    public function __construct(private string $name, private readonly string $description, private readonly string $prompt, string $explanation = "")
     {
+        $this->explanation = $explanation;
     }
 
     /**
@@ -151,9 +154,6 @@ class Command implements \JsonSerializable
         return (sprintf($this->outputFormat, trim($output)));
     }
 
-    /**
-     * @return bool
-     */
     public function isAllowedInHistory(): bool
     {
         if (!$this->allowedInHistory) {
@@ -169,12 +169,14 @@ class Command implements \JsonSerializable
         return true;
     }
 
-    /**
-     * @param bool $allowedInHistory
-     */
     public function setAllowedInHistory(bool $allowedInHistory): void
     {
         $this->allowedInHistory = $allowedInHistory;
+    }
+
+    public function getExplanation(): string
+    {
+        return $this->explanation;
     }
 
     public function jsonSerialize(): array

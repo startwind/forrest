@@ -6,6 +6,7 @@ Forrest is constantly evolving. Sometimes so fast that you might not even get ar
   - Optional parameter - We introduced the optional parameter that marks a commands parameter as not required. This can be combined with the pre- and suffix option.
   - Some new constraints for parameter validation: url, ip address, mac address and email address. [read more](formats/yaml-format.md#constraints--optional-)
   - We are collecting some data on the commands that are run. Only the command identifier - only if it comes from our API - and the status (success, failure) will be transferred. 
+  - Renamed `commands:show` to `commands:explain` and added a AI generated explanation to the command.
   
 
 - **2.2.0**
