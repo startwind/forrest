@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "bfd04f918d28775aa63b973c06338cca",
+    "content-hash": "cc2a9a39374a1aeb4b7ca3ff8fbd1c7f",
     "packages": [
         {
             "name": "cache/adapter-common",
@@ -661,6 +661,47 @@
                 }
             ],
             "time": "2023-04-17T16:11:26+00:00"
+        },
+        {
+            "name": "icanhazstring/symfony-console-spinner",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/icanhazstring/symfony-console-spinner.git",
+                "reference": "849c91a8ac19079d6f24c6b4f46540e96df45ead"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/icanhazstring/symfony-console-spinner/zipball/849c91a8ac19079d6f24c6b4f46540e96df45ead",
+                "reference": "849c91a8ac19079d6f24c6b4f46540e96df45ead",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.3 || ^8.0",
+                "symfony/console": "^4.3 || ^5.0 || ^6.0"
+            },
+            "default-branch": true,
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "icanhazstring\\SymfonyConsoleSpinner\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Custom symfony progressbar spinner",
+            "keywords": [
+                "console",
+                "spinner",
+                "symfony"
+            ],
+            "support": {
+                "issues": "https://github.com/icanhazstring/symfony-console-spinner/issues",
+                "source": "https://github.com/icanhazstring/symfony-console-spinner/tree/1.1.0"
+            },
+            "time": "2023-03-23T16:36:58+00:00"
         },
         {
             "name": "league/flysystem",
@@ -4829,6 +4870,7 @@
     "minimum-stability": "dev",
     "stability-flags": {
         "consolidation/self-update": 20,
+        "icanhazstring/symfony-console-spinner": 20,
         "phpstan/phpstan": 20,
         "rector/rector": 20,
         "friendsofphp/php-cs-fixer": 20
