@@ -24,14 +24,6 @@ jobs:
           path: src tests bin
           level: 5
 
-  php-cs-fixer:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - uses: php-actions/composer@v6
-      - name: run php-cs-fixer
-        run: vendor/bin/php-cs-fixer fix --rules=@PSR12 .
-
   validate-yaml:
     runs-on: ubuntu-latest
     steps:

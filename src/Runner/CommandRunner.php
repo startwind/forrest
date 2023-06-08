@@ -59,7 +59,7 @@ class CommandRunner
             } elseif ($pipe == Process::ERR) {
                 $output->write("<error>" . $outputString . "</error>");
             } else {
-                $output->write("<info>" . $output . "</info>");
+                $output->write("<info>" . $outputString . "</info>");
             }
         });
 
