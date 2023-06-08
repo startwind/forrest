@@ -90,7 +90,7 @@ class RunHelper
     /**
      * Run every single command in the executable command.
      */
-    public function executeCommand(OutputInterface $output, Command $actualCommand, Prompt $prompt): void
+    public function executeCommand(OutputInterface $output, Command $actualCommand, Prompt $prompt): int
     {
         $commands = CommandRunner::stringToMultilinePrompt($prompt->getFinalPrompt());
 
@@ -103,6 +103,12 @@ class RunHelper
                 true,
                 $actualCommand->isAllowedInHistory()
             );
+
+            if($exitCode != SymfonyCommand::SUCCESS) {
+                return $exitCode;
+            }
         }
+
+        return SymfonyCommand::SUCCESS;
     }
 }
