@@ -10,8 +10,13 @@
       "Tests\\Startwind\\Forrest\\": "tests/"
     }
   },
+  "config": {
+    "platform": {
+      "php": "8.1"
+    }
+  },
   "require": {
-    "php": "^8.1",
+    "php": "~8.1",
     "symfony/console": "^6.2",
     "symfony/yaml": "^6.2",
     "guzzlehttp/guzzle": "^7.5",
