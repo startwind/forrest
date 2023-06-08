@@ -8,10 +8,10 @@ Forrest is constantly evolving. Sometimes so fast that you might not even get ar
 - **2.3.0**
   - Optional parameter - We introduced the optional parameter that marks a commands parameter as not required. This can be combined with the pre- and suffix option.
   - Some new constraints for parameter validation: url, ip address, mac address and email address. [read more](formats/yaml-format.md#constraints--optional-)
-  - We are collecting some data on the commands that are run. Only the command identifier - only if it comes from our API - and the status (success, failure) will be transferred. 
+  - We are collecting some data on the commands that are run. Only the command identifier - only if it comes from our API - and the status (success, failure) will be transferred.
   - Renamed `commands:show` to `commands:explain` and added a AI generated explanation to the command.
   - When executing commands we now see the live stream of the command and not only at the end.
-  
+
 
 - **2.2.0**
   - Enum can ask for custom values. The user is able to combine enums with custom value by using the `enum-allow-custom` parameter field. [read more](formats/yaml-format.md#command-fields)

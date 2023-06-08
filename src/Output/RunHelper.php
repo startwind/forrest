@@ -98,7 +98,6 @@ class RunHelper
 
         foreach ($commands as $command) {
             if (count($commands) > 1) {
-                var_dump(PHP_VERSION);
                 if (PHP_VERSION >= 8) {
                     OutputHelper::writeMessage($output, 'Running: ' . $command, '<bg=#445760;fg=white>', '</>');
                 } else {
