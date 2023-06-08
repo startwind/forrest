@@ -10,6 +10,9 @@
       "Tests\\Startwind\\Forrest\\": "tests/"
     }
   },
+  "platform": {
+    "php": "8.1"
+  },
   "require": {
     "php": "^8.1",
     "symfony/console": "^6.2",
@@ -26,8 +29,8 @@
     "phpunit/phpunit": "^10"
   },
   "scripts": {
-    "test" : "vendor/bin/phpunit tests",
-    "cs" : "vendor/bin/php-cs-fixer fix --rules=@PSR12 .",
+    "test": "vendor/bin/phpunit tests",
+    "cs": "vendor/bin/php-cs-fixer fix --rules=@PSR12 .",
     "phpstan": "vendor/bin/phpstan analyse",
     "yamllint": "find . -path \\*/vendor -prune -false -o -name \\*.y\\*ml | xargs yamllint -d \"{extends: relaxed, rules: {line-length: {max: 120}}}\"",
     "fix": [
