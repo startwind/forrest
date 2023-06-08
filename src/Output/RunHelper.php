@@ -97,6 +97,9 @@ class RunHelper
         $commandRunner = new CommandRunner($this->historyHandler);
 
         foreach ($commands as $command) {
+            if (count($commands) > 1) {
+                OutputHelper::writeMessage($output, 'Running: ' . $command, '<bg=#445760;fg=white>', '</>');
+            }
             $exitCode = $commandRunner->execute(
                 $output,
                 $command,
@@ -104,7 +107,7 @@ class RunHelper
                 $actualCommand->isAllowedInHistory()
             );
 
-            if($exitCode != SymfonyCommand::SUCCESS) {
+            if ($exitCode != SymfonyCommand::SUCCESS) {
                 return $exitCode;
             }
         }

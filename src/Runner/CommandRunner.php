@@ -49,10 +49,8 @@ class CommandRunner
             $this->historyHandler->addEntry($prompt);
         }
 
-        $tool = self::extractToolFromPrompt($prompt);
-        $arguments = trim(str_replace($tool, '', $prompt));
+        $process = Process::fromShellCommandline($prompt);
 
-        $process = new Process([$tool, $arguments]);
         $process->run(function (string $pipe, string $outputString) use ($output) {
             if ($pipe == Process::OUT) {
                 $output->write($outputString);
