@@ -5,6 +5,8 @@ namespace Startwind\Forrest\Runner;
 use Startwind\Forrest\History\HistoryHandler;
 use Startwind\Forrest\Runner\Exception\ToolNotFoundException;
 use Symfony\Component\Console\Command\Command as SymfonyCommand;
+use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Process\Process;
 
 class CommandRunner
 {
@@ -37,7 +39,7 @@ class CommandRunner
     /**
      * Run a single command line.
      */
-    public function execute(string $prompt, bool $checkForExistence = true, $storeInHistory = true): CommandResult
+    public function execute(OutputInterface $output, string $prompt, bool $checkForExistence = true, $storeInHistory = true): int
     {
         if ($checkForExistence && !self::isToolInstalled($prompt, $tool)) {
             throw new ToolNotFoundException($tool);
@@ -47,11 +49,21 @@ class CommandRunner
             $this->historyHandler->addEntry($prompt);
         }
 
-        exec($prompt . ' 2>&1', $execOutput, $resultCode);
+        $tool = self::extractToolFromPrompt($prompt);
+        $arguments = trim(str_replace($tool, '', $prompt));
 
-        // @todo https://stackoverflow.com/questions/7645499/getting-the-real-exit-code-after-proc-open
+        $process = new Process([$tool, $arguments]);
+        $process->run(function (string $pipe, string $outputString) use ($output) {
+            if ($pipe == Process::OUT) {
+                $output->write($outputString);
+            } elseif ($pipe == Process::ERR) {
+                $output->write("<error>" . $outputString . "</error>");
+            } else {
+                $output->write("<info>" . $output . "</info>");
+            }
+        });
 
-        return new CommandResult($execOutput, (int)$resultCode);
+        return $process->getExitCode();
     }
 
     /**

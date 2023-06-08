@@ -55,7 +55,7 @@ abstract class RunCommand extends ForrestCommand
         $this->getOutput()->writeln('');
 
         try {
-            $runHelper->executeCommand($command, $prompt);
+            $runHelper->executeCommand($this->getOutput(), $command, $prompt);
         } catch (ToolNotFoundException $exception) {
             $this->getRepositoryCollection()->pushStatus($command->getFullyQualifiedIdentifier(), StatusAwareRepository::STATUS_FAILURE);
             $this->renderErrorBox($exception->getMessage());
