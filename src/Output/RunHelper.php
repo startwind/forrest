@@ -90,31 +90,25 @@ class RunHelper
     /**
      * Run every single command in the executable command.
      */
-    public function executeCommand(Command $actualCommand, Prompt $prompt): void
+    public function executeCommand(OutputInterface $output, Command $actualCommand, Prompt $prompt): int
     {
         $commands = CommandRunner::stringToMultilinePrompt($prompt->getFinalPrompt());
 
         $commandRunner = new CommandRunner($this->historyHandler);
 
         foreach ($commands as $command) {
-            $result = $commandRunner->execute($command, true, $actualCommand->isAllowedInHistory());
+            $exitCode = $commandRunner->execute(
+                $output,
+                $command,
+                true,
+                $actualCommand->isAllowedInHistory()
+            );
 
-            $execOutput = $result->getOutput();
-
-            if ($result->getResultCode() != SymfonyCommand::SUCCESS) {
-                if (count($result->getOutput()) > 0) {
-                    OutputHelper::writeErrorBox($this->output, 'Error executing prompt: ' . $execOutput[0]);
-                } else {
-                    OutputHelper::writeErrorBox($this->output, 'Error executing prompt.');
-                }
-            } else {
-                if (count($execOutput) > 0) {
-                    OutputHelper::writeInfoBox($this->output, 'Output: ');
-                    $this->output->writeln($actualCommand->formatOutput(implode("\n", $execOutput)));
-                } else {
-                    OutputHelper::writeInfoBox($this->output, 'No output from command');
-                }
+            if($exitCode != SymfonyCommand::SUCCESS) {
+                return $exitCode;
             }
         }
+
+        return SymfonyCommand::SUCCESS;
     }
 }
