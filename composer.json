@@ -10,27 +10,23 @@
       "Tests\\Startwind\\Forrest\\": "tests/"
     }
   },
-  "platform": {
-    "php": "8.1"
-  },
   "require": {
     "php": "^8.1",
     "symfony/console": "^6.2",
     "symfony/yaml": "^6.2",
     "guzzlehttp/guzzle": "^7.5",
     "consolidation/self-update": "2.x-dev",
-    "cache/filesystem-adapter": "1.2.0",
-    "icanhazstring/symfony-console-spinner": "dev-master",
-    "symfony/process": "7.0.x-dev"
+    "cache/filesystem-adapter": "1.2.0"
   },
   "require-dev": {
     "phpstan/phpstan": "1.11.x-dev",
     "rector/rector": "0.15.x-dev",
-    "phpunit/phpunit": "^10"
+    "phpunit/phpunit": "^10",
+    "friendsofphp/php-cs-fixer": "dev-master"
   },
   "scripts": {
-    "test": "vendor/bin/phpunit tests",
-    "cs": "vendor/bin/php-cs-fixer fix --rules=@PSR12 .",
+    "test" : "vendor/bin/phpunit tests",
+    "cs" : "vendor/bin/php-cs-fixer fix --rules=@PSR12 .",
     "phpstan": "vendor/bin/phpstan analyse",
     "yamllint": "find . -path \\*/vendor -prune -false -o -name \\*.y\\*ml | xargs yamllint -d \"{extends: relaxed, rules: {line-length: {max: 120}}}\"",
     "fix": [
