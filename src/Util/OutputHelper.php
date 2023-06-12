@@ -30,7 +30,7 @@ abstract class OutputHelper
         self::writeMessage($output, $message, '<fg=black;bg=yellow>', '</>');
     }
 
-    private static function writeMessage(OutputInterface $output, string|array $message, string $prefix = '', string $postfix = ''): void
+    public static function writeMessage(OutputInterface $output, string|array $message, string $prefix = '', string $postfix = ''): void
     {
         $maxLength = 0;
 
