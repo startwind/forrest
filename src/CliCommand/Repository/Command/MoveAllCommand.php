@@ -52,6 +52,11 @@ class MoveAllCommand extends RepositoryCommand
 
         $commands = $sourceRepository->getCommands();
 
+        if (count($commands) == 0) {
+            OutputHelper::writeInfoBox($output, 'No commands found in "' . $sourceRepositoryName . '". Cancelling move command.');
+            return Command::SUCCESS;
+        }
+
         OutputHelper::writeInfoBox($output, 'We are moving the following commands to the "' . $destinationRepositoryName . '" repository.');
 
         \Startwind\Forrest\Output\OutputHelper::renderCommands($output, $input, $questionHelper, $commands);
