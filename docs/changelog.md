@@ -2,8 +2,14 @@
 
 Forrest is constantly evolving. Sometimes so fast that you might not even get around to trying out the new features. For this reason, we have introduced a changelog.
 
-- **develop**
+## Version 3 - Artificial Intelligence
 
+- **3.0.0**
+  - We added two new main commands that use artificial intelligence to help you master the command line. 
+    - `ai:ask`: You can ask any dev-ops-related question. The AI will try to find the right command line prompt to answer it. 
+    - `ai:explain`: If you already got a command, and you are not sure what exactly it does, you can let Forrest explain it to you. 
+
+## Version 2 - Software as a Service (SaaS)
 
 - **2.3.0**
   - Optional parameter - We introduced the optional parameter that marks a commands parameter as not required. This can be combined with the pre- and suffix option.
@@ -27,10 +33,11 @@ Forrest is constantly evolving. Sometimes so fast that you might not even get ar
   - Enrich tool search: We are now able to enrich the tool search with fundamental information about the tool and also can link websites to help the user to learn more about the tool. 
 
 
-- **2.0.0**
+- **2.0.0 - SaaS**
   - **Search via API**. With this new major release we are able to search for commands using an API. This way we can find fitting commands much faster and are able to extend the systems on the fly. 
   - **Debug mode** We introduced a debug mode that will be activated via `--debug` and will show more verbose information if an error occurs.
 
+## Version 1 - Must haves
 
 - **1.5.0**
   - Shortcut for `search:file`. The functionality can now be used via the `run` command by simply using the file as first argument.
