@@ -42,12 +42,11 @@ class ToolCommand extends SearchCommand
             $output->writeln(['  Information about "<options=bold>' . $tool . '</>":', '']);
 
             foreach ($toolInformation as $repo => $information) {
-                $output->writeln($this->indentText($information->getDescription(), 0, 100, '  | '));
+                $output->writeln(\Startwind\Forrest\Util\OutputHelper::indentText($information->getDescription(), 0, 100, '  | '));
                 if ($see = $information->getSee()) {
                     $output->writeln(['', '  For more information visit: <href=' . $see . '>' . $see . '</>', '']);
                 }
             }
-
 
             $output->writeln('');
         }
@@ -59,18 +58,4 @@ class ToolCommand extends SearchCommand
 
         return $this->runFromCommands($commands);
     }
-
-    private function indentText(string $text, int $indent = 2, int $width = 100, $prefix = ''): array
-    {
-        $wrapped = explode("\n", wordwrap($text, $width));
-
-        $result = [];
-
-        foreach ($wrapped as $line) {
-            $result[] = $prefix . str_repeat(' ', $indent) . $line;
-        }
-
-        return $result;
-    }
-
 }

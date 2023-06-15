@@ -13,10 +13,11 @@ Often there are only a handful of commands that are used in everyday life, also 
 possible options, but only a few of them are used. We have designed Forrest to store exactly these commands centrally
 and thus simplify the use of the command line by a lot.
 
-![commands:show](docs/images/commands_list.png)
+![commands:show](docs/images/run_v3.png)
 
 **Forrest is ...**
 
+- ... [AI powered](docs/ai/overview.md)
 - ... [awesome](docs/awesome.md)
 - ... [constantly in development](docs/changelog.md)
 - ... [secure by design](docs/secure-by-design.md)
@@ -26,7 +27,7 @@ and thus simplify the use of the command line by a lot.
 
 ## Installation
 
-Download the latest version of our PHAR archive and give it afterwards rights to be executed.
+Download the latest version of our PHAR archive and give it afterwards rights to be executed. To run Forrest you need PHP installed.  
 
 ```shell
 wget https://github.com/startwind/forrest/releases/latest/download/forrest.phar
@@ -43,40 +44,34 @@ sudo mv forrest.phar /usr/local/bin/forrest
 ## Usage
 
 The default installation of Forrest comes with only a few commands. We decided to keep the basic version very clean.
-Nevertheless there is the official Forrest directory where a lot of predefined commands are located. To list all the
-repositories run
+Nevertheless there is the official Forrest directory where a lot of predefined commands are located. You can search for commands in three different ways:
+
 
 ```shell
-forrest directory:list
+forrest run [file] 
 ```
 
-Choose the repositories you want to use. Behind every of those there can be many commands. To learn more about the
-official repositories visit our [directory documentation](docs/directory.md).
-
-## Commands
-
-Forrest can do a lot of things. For every major task there is a command that can be used.
-
-- [List of all Forrest CLI commands](docs/commands/commands.md).
-
-### Most important commands
-
-Like in all extensive tools there are only a few commands that you will use on a daily basis. This includes:
+There are two main use cases. The first one is that we have a file, and we want to know what to do with it. In this case we use the run command in combination with the file we want to interact with. Afterwards Forrest will return all commands that are associated with that filename or file type. Example: `forrest run latest.zip` will return the command on how to unzip this file. 
 
 ```shell
-forrest run
+forrest run [pattern] 
 ```
-Show all registered commands.
+
+If the task you want to a accomplish is not directly associated to a file on your machine you can use the pattern argument. This way our SaaS search engine will try to find suiting commands. Example: `forrest run WordPress` will return all WordPress related commands. 
 
 ```shell
-forrest run forrest-linux:files:find:older
+forrest run [command] 
 ```
-Run command with name `forrest-linux:files:find:older` which will search for files that a older than a given number of days.
+
+Run a command by name. This is used when the user already knows what to do. To show a list of all commands visit [forrest.startwind.io](https://forrest.startwind.io) or run `forrest commands:list` (this list can be empty if you did not create commands on your ow yet.
+
 
 ```shell
-forrest file WordPress.zip
+forrest ask [question] 
 ```
-Show all commands that are connected to a `zip` file or the `WordPress.zip` file. This would for example show the unzip command archives.
+
+Forrest is AI powered. That means, if we do not find a matching command in our database you can ask our large language model for al solution to your problem. [read more about our AI features](docs/ai/overview.md)
+
 
 ## How to support
 

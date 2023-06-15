@@ -32,7 +32,12 @@ class EditableApiRepository extends ApiRepository implements EditableRepository
             ]
         );
 
-        $response = json_decode((string)$response->getBody(), true);
+        $plainResponse = (string)$response->getBody();
+        $response = json_decode($plainResponse, true);
+
+        if (!$response) {
+            throw new \RuntimeException('The APIs response was not a valid JSON string. Body was: ' . $plainResponse);
+        }
 
         if ($response['status'] == 'failure') {
             ForrestLogger::error($response['message']);

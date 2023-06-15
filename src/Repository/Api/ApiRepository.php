@@ -5,16 +5,19 @@ namespace Startwind\Forrest\Repository\Api;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\RequestOptions;
+use Startwind\Forrest\Command\Answer\Answer;
 use Startwind\Forrest\Command\Command;
 use Startwind\Forrest\Command\CommandFactory;
 use Startwind\Forrest\Command\Tool\Tool;
 use Startwind\Forrest\Logger\ForrestLogger;
+use Startwind\Forrest\Repository\QuestionAware;
 use Startwind\Forrest\Repository\Repository;
 use Startwind\Forrest\Repository\SearchAware;
 use Startwind\Forrest\Repository\StatusAwareRepository;
 use Startwind\Forrest\Repository\ToolAware;
+use Startwind\Forrest\Util\OSHelper;
 
-class ApiRepository implements Repository, SearchAware, ToolAware, StatusAwareRepository
+class ApiRepository implements Repository, SearchAware, ToolAware, StatusAwareRepository, QuestionAware
 {
     public function __construct(
         protected readonly string $endpoint,
@@ -186,6 +189,70 @@ class ApiRepository implements Repository, SearchAware, ToolAware, StatusAwareRe
         }
 
         return $toolInfo;
+    }
+
+    public function ask(string $question): array
+    {
+        $payload = [
+            'os' => OSHelper::getOS(),
+            'question' => $question
+        ];
+
+        try {
+            $response = $this->client->post($this->endpoint . 'ai/ask', [RequestOptions::JSON => $payload, 'verify' => false]);
+        } catch (ClientException $exception) {
+            if ($exception->getResponse()->getStatusCode() == 404) {
+                return [];
+            }
+            ForrestLogger::warn('Unable to ask:  ' . $exception->getMessage());
+            return [];
+        }
+
+        $body = (string)$response->getBody();
+        $information = json_decode($body, true);
+
+        if (is_null($information)) {
+            ForrestLogger::warn('Plain API result: ' . $body);
+            throw new \RuntimeException('The API did not return valid JSON.');
+
+        }
+
+        if (!array_key_exists('answer', $information)) {
+            ForrestLogger::warn('Plain API result: ' . $body);
+            throw new \RuntimeException('The API did not provide the mandatory field "answer".');
+        }
+
+        $answer = $information['answer'];
+
+
+        $answers[] = new Answer($answer['command'], $question, $answer['text']);
+
+        return $answers;
+    }
+
+    public function explain(string $prompt): array
+    {
+        $payload = [
+            'prompt' => $prompt
+        ];
+
+        try {
+            $response = $this->client->post($this->endpoint . 'ai/explain', [RequestOptions::JSON => $payload, 'verify' => false]);
+        } catch (ClientException $exception) {
+            if ($exception->getResponse()->getStatusCode() == 404) {
+                return [];
+            }
+            ForrestLogger::warn('Unable to explain:  ' . $exception->getMessage());
+            return [];
+        }
+
+        $result = json_decode((string)$response->getBody(), true);
+
+        $explanation = $result['explanation'];
+
+        $answers[] = new Answer($prompt, $prompt, $explanation);
+
+        return $answers;
     }
 
     /**
