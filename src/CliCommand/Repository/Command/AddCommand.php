@@ -23,7 +23,6 @@ class AddCommand extends RepositoryCommand
         $this->setAliases(['add']);
     }
 
-
     protected function doExecute(InputInterface $input, OutputInterface $output): int
     {
         $this->renderInfoBox([

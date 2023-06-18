@@ -195,7 +195,8 @@ class ApiRepository implements Repository, SearchAware, ToolAware, StatusAwareRe
     {
         $payload = [
             'os' => OSHelper::getOS(),
-            'question' => $question
+            'question' => $question,
+            'fromCli' => true
         ];
 
         try {
@@ -224,8 +225,11 @@ class ApiRepository implements Repository, SearchAware, ToolAware, StatusAwareRe
 
         $answer = $information['answer'];
 
-
-        $answers[] = new Answer($answer['command'], $question, $answer['text']);
+        if (array_key_exists('commandArray', $answer) && count($answer['commandArray']) > 0) {
+            $answers[] = new Answer($answer['commandArray'], $question, $answer['text']);
+        } else {
+            $answers[] = new Answer($answer['command'], $question, $answer['text']);
+        }
 
         return $answers;
     }

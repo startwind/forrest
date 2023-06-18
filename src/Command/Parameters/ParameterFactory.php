@@ -48,6 +48,10 @@ class ParameterFactory
             $parameter->setName($config['name']);
         }
 
+        if (array_key_exists('forceDefault', $config)) {
+            $parameter->setForceDefault($config['forceDefault']);
+        }
+
         if (array_key_exists('description', $config)) {
             $parameter->setDescription($config['description']);
         }

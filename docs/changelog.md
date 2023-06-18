@@ -2,7 +2,14 @@
 
 Forrest is constantly evolving. Sometimes so fast that you might not even get around to trying out the new features. For this reason, we have introduced a changelog.
 
+For more information please visit [our website](https://forrest.startwind.io).
+
 ## Version 3 - Artificial Intelligence
+
+- **3.1.0** 
+  - Big improvement for the `ai:ask` command. We can now change the parameters although the answer comes from the AI. 
+  - Added *init* command that creates an alias for the AI. When running this you are able to use the word `how` on the CLI.  
+
 
 - **3.0.0**
   - We added two new main commands that use artificial intelligence to help you master the command line. 

@@ -151,10 +151,12 @@ class PromptHelper
             $defaultValue = $parameter->getDefaultValue();
         }
 
-        if ($this->memory->hasParameter($fullParameterIdentifier)) {
-            $recentValue = $this->memory->getParameter($fullParameterIdentifier);
-            $options['default'] = 'recent: "' . $recentValue . '"';
-            $defaultValue = $recentValue;
+        if (!$parameter->isDefaultForced()) {
+            if ($this->memory->hasParameter($fullParameterIdentifier)) {
+                $recentValue = $this->memory->getParameter($fullParameterIdentifier);
+                $options['default'] = 'recent: "' . $recentValue . '"';
+                $defaultValue = $recentValue;
+            }
         }
 
         if ($parameter->isOptional()) {

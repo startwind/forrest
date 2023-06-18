@@ -34,12 +34,24 @@ class Parameter implements \JsonSerializable
         NotEmptyConstraint::class
     ];
 
+    protected bool $forceDefault = false;
+
     /**
      * @param array $rawStructure
      */
     public function setRawStructure(array $rawStructure): void
     {
         $this->rawStructure = $rawStructure;
+    }
+
+    public function isDefaultForced(): bool
+    {
+        return $this->forceDefault;
+    }
+
+    public function setForceDefault(bool $forceDefault): void
+    {
+        $this->forceDefault = $forceDefault;
     }
 
     public function setName(string $name): void
