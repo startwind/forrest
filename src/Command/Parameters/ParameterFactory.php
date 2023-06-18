@@ -58,7 +58,7 @@ class ParameterFactory
 
         if (array_key_exists('default', $config)) {
             if (!is_string($config['default']) && !is_int($config['default'])) {
-                throw new \RuntimeException('The default value must be a string or an integer. ' . ucfirst(gettype($config['default'])) . ' with value ' . json_encode($config['default']) . ' given.');
+                throw new \RuntimeException('The default value must be a string or an integer (name: '.$config['name'].'). ' . ucfirst(gettype($config['default'])) . ' with value ' . json_encode($config['default']) . ' given.');
             }
             $defaultValue = self::getDefaultValue($config['default']);
             if ($defaultValue !== '') {

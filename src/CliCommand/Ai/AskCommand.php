@@ -32,7 +32,12 @@ class AskCommand extends CommandCommand
 
         \Startwind\Forrest\Output\OutputHelper::renderHeader($output);
 
-        $aiQuestion = implode(' ', $input->getArgument('question'));
+        $aiQuestion = trim(implode(' ', $input->getArgument('question')));
+
+        if ($aiQuestion == 'how') {
+            OutputHelper::writeErrorBox($output, ["Please provide a question."]);
+            return SymfonyCommand::FAILURE;
+        }
 
         /** @var \Symfony\Component\Console\Helper\QuestionHelper $questionHelper */
         $questionHelper = $this->getHelper('question');
