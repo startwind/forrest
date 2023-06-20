@@ -39,6 +39,10 @@ class AskCommand extends CommandCommand
             return SymfonyCommand::FAILURE;
         }
 
+        if (!str_ends_with($aiQuestion, '?')) {
+            $aiQuestion = $aiQuestion . '?';
+        }
+
         /** @var \Symfony\Component\Console\Helper\QuestionHelper $questionHelper */
         $questionHelper = $this->getHelper('question');
 
@@ -49,7 +53,7 @@ class AskCommand extends CommandCommand
             $output->writeln(['', '']);
         } else {
             OutputHelper::writeInfoBox($output, [
-                ucfirst($aiQuestion)
+                "Question: " . ucfirst($aiQuestion)
             ]);
         }
 

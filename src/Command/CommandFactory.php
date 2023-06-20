@@ -85,7 +85,7 @@ class CommandFactory
      */
     private static function extractParametersFromPrompt(string $prompt): array
     {
-        preg_match_all('^\${[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*}^', $prompt, $matches);
+        preg_match_all('^\${[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff\/]*}^', $prompt, $matches);
 
         $parameters = [];
 
