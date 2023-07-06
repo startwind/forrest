@@ -8,6 +8,7 @@ use Startwind\Forrest\Repository\ListAware;
 use Startwind\Forrest\Repository\RepositoryCollection;
 use Startwind\Forrest\Util\OutputHelper;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -63,7 +64,7 @@ class MoveAllCommand extends RepositoryCommand
 
         $output->writeln('');
 
-        $move = $questionHelper->ask($input, $output, new ConfirmationQuestion('  Are you sure you want to move these command? (y/n) ', false));
+        $move = $questionHelper->ask($input, $output, new ConfirmationQuestion('  Are you sure you want to move these ' . count($commands) . ' command? (y/n) ', false));
 
         if (!$move) {
             return Command::FAILURE;
@@ -73,9 +74,16 @@ class MoveAllCommand extends RepositoryCommand
 
         if ($prefix) $prefix = $prefix . RepositoryCollection::COMMAND_SEPARATOR;
 
+        $progressBar = new ProgressBar($output, count($commands));
+
+        $output->writeln('');
+
         foreach ($commands as $command) {
 
+            $progressBar->advance();
+
             $command->setName($prefix . $command->getName());
+            $progressBar->setMessage('Moving ' . $prefix . $command->getName());
 
             $destinationRepository->addCommand($command);
 
@@ -85,6 +93,9 @@ class MoveAllCommand extends RepositoryCommand
                 }
             }
         }
+
+        $progressBar->finish();
+        $output->writeln('');
 
         OutputHelper::writeInfoBox($output, 'Successfully moved ' . count($commands) . ' commands to "' . $destinationRepositoryName . '".');
 
