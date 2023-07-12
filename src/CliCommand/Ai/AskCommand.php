@@ -39,7 +39,7 @@ class AskCommand extends CommandCommand
             return SymfonyCommand::FAILURE;
         }
 
-        if (!str_ends_with($aiQuestion, '?')) {
+        if ($aiQuestion && !str_ends_with($aiQuestion, '?')) {
             $aiQuestion = $aiQuestion . '?';
         }
 
