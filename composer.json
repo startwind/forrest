@@ -28,7 +28,8 @@
     "phpstan/phpstan": "1.11.x-dev",
     "rector/rector": "0.15.x-dev",
     "phpunit/phpunit": "^10",
-    "friendsofphp/php-cs-fixer": "dev-master"
+    "friendsofphp/php-cs-fixer": "dev-master",
+    "squizlabs/php_codesniffer": "4.0.x-dev"
   },
   "scripts": {
     "test" : "vendor/bin/phpunit tests",

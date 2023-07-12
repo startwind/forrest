@@ -3,7 +3,6 @@
 namespace Startwind\Forrest\CliCommand\Directory;
 
 use Startwind\Forrest\CliCommand\Directory\Exception\DirectoriesLoadException;
-
 use Startwind\Forrest\Util\OutputHelper;
 use Startwind\Forrest\Output\OutputHelper as TableOutputHelper;
 use Symfony\Component\Console\Command\Command as SymfonyCommand;
@@ -119,8 +118,7 @@ class ListCommand extends DirectoryCommand
                     '',
                     'This list only contains official repositories. If you also want to see',
                     'the other ' . $unofficialCount . ' unofficial repositories please use the --all option.'
-                ]
-            );
+                ]);
         }
 
         return SymfonyCommand::SUCCESS;

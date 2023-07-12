@@ -49,5 +49,4 @@ class Tool
     {
         return $this->description;
     }
-
 }

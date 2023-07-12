@@ -62,7 +62,6 @@ class CommandCommand extends \Startwind\Forrest\CliCommand\RunCommand
             if ($repository->isSpecial()) {
                 $this->renderWarningBox($repository->getName() . ' (' . $repoIdentifier . ')');
                 $output->writeln(['  ' . $repository->getDescription(), '']);
-
             } else {
                 $output->writeln([
                     '',

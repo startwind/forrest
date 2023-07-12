@@ -33,7 +33,7 @@ class ExplainCommand extends CommandCommand
         $prompt = implode(' ', $input->getArgument('prompt'));
 
         OutputHelper::writeInfoBox($output, [
-            'Explanation of: "' . $prompt. '"'
+            'Explanation of: "' . $prompt . '"'
         ]);
 
         $answers = $this->getRepositoryCollection()->explain($prompt);
@@ -65,7 +65,6 @@ class ExplainCommand extends CommandCommand
         preg_match_all('#`(.*)`#', $text, $matches);
 
         if (count($matches[1]) > 0) {
-
             foreach ($matches[0] as $key => $match) {
                 $text = str_replace($match, '<options=bold>' . $matches[1][$key] . '</>', $text);
             }

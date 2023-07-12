@@ -8,8 +8,7 @@ class Config
 
     public function __construct(
         private array $configArray
-    )
-    {
+    ) {
     }
 
     public function addRepository(string $key, array $repositoryConfig): void

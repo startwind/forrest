@@ -89,7 +89,6 @@ class AskCommand extends CommandCommand
         preg_match_all('#`(.*)`#', $text, $matches);
 
         if (count($matches[1]) > 0) {
-
             foreach ($matches[0] as $key => $match) {
                 $text = str_replace($match, '<options=bold>' . $matches[1][$key] . '</>', $text);
             }

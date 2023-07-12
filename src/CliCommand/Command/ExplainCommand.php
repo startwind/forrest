@@ -49,4 +49,3 @@ class ExplainCommand extends CommandCommand
         return SymfonyCommand::SUCCESS;
     }
 }
-

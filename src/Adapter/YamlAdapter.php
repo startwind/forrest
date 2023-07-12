@@ -25,7 +25,6 @@ class YamlAdapter extends BasicAdapter implements ClientAwareAdapter, ListAwareA
 
     public function __construct(private readonly Loader $loader)
     {
-
     }
 
     /**
@@ -59,7 +58,9 @@ class YamlAdapter extends BasicAdapter implements ClientAwareAdapter, ListAwareA
             throw new \RuntimeException('The given YAML file does not contain a section named "' . self::YAML_FIELD_COMMANDS . '".');
         }
 
-        if(is_null($config[self::YAML_FIELD_COMMANDS])) return [];
+        if (is_null($config[self::YAML_FIELD_COMMANDS])) {
+            return [];
+        }
 
         foreach ($config[self::YAML_FIELD_COMMANDS] as $identifier => $commandConfig) {
             if (!array_key_exists(self::YAML_FIELD_PROMPT, $commandConfig)) {

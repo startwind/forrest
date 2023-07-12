@@ -20,11 +20,10 @@ class FileRepository implements Repository, SearchAware, ListAware
 
     public function __construct(
         private readonly Adapter $adapter,
-        private readonly string  $name,
-        private readonly string  $description,
-        private readonly bool    $isSpecialRepo = false,
-    )
-    {
+        private readonly string $name,
+        private readonly string $description,
+        private readonly bool $isSpecialRepo = false,
+    ) {
     }
 
     /**

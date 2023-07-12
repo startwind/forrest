@@ -28,13 +28,12 @@ class RunHelper
     private HistoryHandler $historyHandler;
 
     public function __construct(
-        InputInterface    $input,
-        OutputInterface   $output,
-        QuestionHelper    $questionHelper,
+        InputInterface $input,
+        OutputInterface $output,
+        QuestionHelper $questionHelper,
         ConfigFileHandler $configHandler,
-        HistoryHandler    $historyHandler
-    )
-    {
+        HistoryHandler $historyHandler
+    ) {
         $this->input = $input;
         $this->output = $output;
         $this->questionHelper = $questionHelper;

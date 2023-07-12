@@ -53,7 +53,6 @@ class YamlLoader implements RepositoryLoader
     private function initRepositories(): void
     {
         foreach ($this->config[self::CONFIG_ELEMENT_REPOSITORIES] as $repoName => $repoConfig) {
-
             if (!array_key_exists('type', $repoConfig)) {
                 $repoType = Repository::TYPE_FILE;
             } else {

@@ -73,5 +73,4 @@ class LocalRepositoryLoader implements RepositoryLoader
 
         $repositoryCollection->addRepository($this->identifier, $repository);
     }
-
 }

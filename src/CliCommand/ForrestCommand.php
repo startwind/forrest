@@ -24,7 +24,6 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\Question;
 
-
 abstract class ForrestCommand extends SymfonyCommand
 {
     public const DEFAULT_CONFIG_FILE = __DIR__ . '/../../config/repository.yml';

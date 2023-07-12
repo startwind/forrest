@@ -44,5 +44,4 @@ class DockerImagesStringFunction extends BasicExplodeFunction implements Cacheab
 
         return $names;
     }
-
 }

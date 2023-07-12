@@ -21,11 +21,10 @@ class ApiRepository implements Repository, SearchAware, ToolAware, StatusAwareRe
 {
     public function __construct(
         protected readonly string $endpoint,
-        private readonly string   $name,
-        private readonly string   $description,
+        private readonly string $name,
+        private readonly string $description,
         protected readonly Client $client,
-    )
-    {
+    ) {
     }
 
     /**
@@ -215,7 +214,6 @@ class ApiRepository implements Repository, SearchAware, ToolAware, StatusAwareRe
         if (is_null($information)) {
             ForrestLogger::warn('Plain API result: ' . $body);
             throw new \RuntimeException('The API did not return valid JSON.');
-
         }
 
         if (!array_key_exists('answer', $information)) {

@@ -42,5 +42,4 @@ class CompositeLoader implements RepositoryLoader
             $loader->enrich($repositoryCollection);
         }
     }
-
 }

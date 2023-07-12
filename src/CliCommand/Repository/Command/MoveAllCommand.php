@@ -72,14 +72,15 @@ class MoveAllCommand extends RepositoryCommand
 
         $prefix = $input->getOption('prefix');
 
-        if ($prefix) $prefix = $prefix . RepositoryCollection::COMMAND_SEPARATOR;
+        if ($prefix) {
+            $prefix = $prefix . RepositoryCollection::COMMAND_SEPARATOR;
+        }
 
         $progressBar = new ProgressBar($output, count($commands));
 
         $output->writeln('');
 
         foreach ($commands as $command) {
-
             $progressBar->advance();
 
             $command->setName($prefix . $command->getName());
@@ -100,6 +101,5 @@ class MoveAllCommand extends RepositoryCommand
         OutputHelper::writeInfoBox($output, 'Successfully moved ' . count($commands) . ' commands to "' . $destinationRepositoryName . '".');
 
         return Command::SUCCESS;
-
     }
 }

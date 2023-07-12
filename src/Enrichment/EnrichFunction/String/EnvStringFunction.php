@@ -15,5 +15,4 @@ class EnvStringFunction extends BasicStringFunction
             return '';
         }
     }
-
 }
