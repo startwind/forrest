@@ -11,6 +11,8 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class PatternCommand extends SearchCommand
 {
+    const PERFECT_SCORE = 10;
+
     public const COMMAND_NAME = 'search:pattern';
 
     protected static $defaultName = self::COMMAND_NAME;
@@ -22,6 +24,7 @@ class PatternCommand extends SearchCommand
 
         $this->addArgument('pattern', InputArgument::IS_ARRAY, 'The pattern you want to search for.');
         $this->addOption('force', null, InputOption::VALUE_NONE, 'Run the command without asking for permission.');
+        $this->addOption('score', 's', InputOption::VALUE_OPTIONAL, 'The minimal search score.', 7);
 
         $this->setAliases(['pattern']);
     }
@@ -29,6 +32,8 @@ class PatternCommand extends SearchCommand
     protected function doExecute(InputInterface $input, OutputInterface $output): int
     {
         OutputHelper::renderHeader($output);
+
+        $minScore = $input->getOption('score');
 
         $this->enrichRepositories();
 
@@ -38,11 +43,32 @@ class PatternCommand extends SearchCommand
 
         $commands = $this->getRepositoryCollection()->searchByPattern($pattern);
 
-        if (empty($commands)) {
+        $filteredCommands = [];
+        $perfectCommands = [];
+
+        foreach ($commands as $key => $command) {
+            if ($command->getScore() > $minScore) {
+                $filteredCommands[$key] = $command;
+            }
+
+            if ($command->getScore() > self::PERFECT_SCORE) {
+                $perfectCommands[$key] = $command;
+            }
+        }
+
+        if (count($filteredCommands) == 0) {
+            $filteredCommands = $commands;
+        }
+
+        if (count($perfectCommands) > 0) {
+            $filteredCommands = $perfectCommands;
+        }
+
+        if (empty($filteredCommands)) {
             $this->renderErrorBox('No commands found that match the given pattern.');
             return Command::FAILURE;
         }
 
-        return $this->runFromCommands($commands);
+        return $this->runFromCommands($filteredCommands);
     }
 }
