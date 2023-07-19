@@ -44,7 +44,7 @@ jobs:
 
       - name: Downgrade to php 7.4
         run: |
-          vendor/bin/rector -c .devops/rector-php-74.php
+          vendor/bin/rector -c --debug .devops/rector-php-74.php
 
       - name: Download box.phar
         run: |
