@@ -10,6 +10,9 @@ For more information please visit [our website](https://forrest.startwind.io).
 
 
 
+- **3.2.0** 
+  - Pattern search is now able to process multiple words. [read more](commands/commands_run.md)
+
 - **3.1.0** 
   - Big improvement for the `ai:ask` command. We can now change the parameters although the answer comes from the AI. 
   - Added *init* command that creates an alias for the AI. When running this you are able to use the word `how` on the CLI.  
