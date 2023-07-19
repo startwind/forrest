@@ -35,7 +35,7 @@ class RunCommandTest extends TestCase
             $commandTester->setInputs($inputs);
         }
 
-        $commandTester->execute(['identifier' => $commandIdentifier]);
+        $commandTester->execute(['argument' => [$commandIdentifier]]);
         $output = $commandTester->getDisplay();
 
         if ($isSuccessful) {
