@@ -20,7 +20,7 @@ class PatternCommand extends SearchCommand
     {
         parent::configure();
 
-        $this->addArgument('pattern', InputArgument::REQUIRED, 'The pattern you want to search for.');
+        $this->addArgument('pattern', InputArgument::IS_ARRAY, 'The pattern you want to search for.');
         $this->addOption('force', null, InputOption::VALUE_NONE, 'Run the command without asking for permission.');
 
         $this->setAliases(['pattern']);
@@ -34,9 +34,9 @@ class PatternCommand extends SearchCommand
 
         $pattern = $input->getArgument('pattern');
 
-        $this->renderInfoBox('This is a list of commands that match the given pattern.');
+        $this->renderInfoBox('This is a list of commands that match the given pattern. Sorted by relevance.');
 
-        $commands = $this->getRepositoryCollection()->searchByPattern([$pattern]);
+        $commands = $this->getRepositoryCollection()->searchByPattern($pattern);
 
         if (empty($commands)) {
             $this->renderErrorBox('No commands found that match the given pattern.');

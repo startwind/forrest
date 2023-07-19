@@ -12,6 +12,7 @@ class CommandFactory
     public const CONFIG_FIELD_DESCRIPTION = 'description';
     public const CONFIG_FIELD_EXPLANATION = 'explanation';
     public const CONFIG_FIELD_PARAMETERS = 'parameters';
+    public const CONFIG_FIELD_SCORE = 'score';
     public const CONFIG_FIELD_ALLOWED_IN_HISTORY = 'allowed-in-history';
     public const CONFIG_FIELD_OUTPUT = 'output-format';
 
@@ -44,6 +45,11 @@ class CommandFactory
             $parameterConfig = $commandConfig[self::CONFIG_FIELD_PARAMETERS];
         } else {
             $parameterConfig = [];
+        }
+
+
+        if (array_key_exists(self::CONFIG_FIELD_SCORE, $commandConfig)) {
+            $command->setScore((float)$commandConfig[self::CONFIG_FIELD_SCORE]);
         }
 
         if (is_string($parameterConfig)) {

@@ -21,10 +21,11 @@ class ApiRepository implements Repository, SearchAware, ToolAware, StatusAwareRe
 {
     public function __construct(
         protected readonly string $endpoint,
-        private readonly string $name,
-        private readonly string $description,
+        private readonly string   $name,
+        private readonly string   $description,
         protected readonly Client $client,
-    ) {
+    )
+    {
     }
 
     /**
@@ -107,8 +108,10 @@ class ApiRepository implements Repository, SearchAware, ToolAware, StatusAwareRe
         $commands = [];
 
         foreach ($commandsArray as $commandsArrayElement) {
-            $commands[$commandsArrayElement['name']] = CommandFactory::fromArray($commandsArrayElement);
+            $commands[$commandsArrayElement['score'] . $commandsArrayElement['name']] = CommandFactory::fromArray($commandsArrayElement);
         }
+
+        ksort($commands);
 
         return $commands;
     }

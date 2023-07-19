@@ -51,6 +51,9 @@ class OutputHelper
         }
 
         uasort($commands, function (Command $a, Command $b) {
+            if($a->getScore() > -1) {
+                return$b->getScore() <=> $a->getScore()  ;
+            }
             return $a->getFullyQualifiedIdentifier() <=> $b->getFullyQualifiedIdentifier();
         });
 

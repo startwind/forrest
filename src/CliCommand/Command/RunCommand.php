@@ -22,8 +22,9 @@ class RunCommand extends CommandCommand
     {
         parent::configure();
         $this->setAliases(['run']);
-        $this->addArgument('identifier', InputArgument::OPTIONAL, 'The commands identifier.', false);
-        $this->addArgument('pattern', InputArgument::OPTIONAL, 'Small filter', false);
+        $this->addArgument('argument', InputArgument::IS_ARRAY, 'The commands identifier.');
+        // $this->addArgument('identifier', InputArgument::OPTIONAL, 'The commands identifier.', false);
+        // $this->addArgument('pattern', InputArgument::OPTIONAL, 'Small filter', false);
         $this->addOption('force', null, InputOption::VALUE_NONE, 'Run the command without asking for permission.');
         $this->addOption('parameters', 'p', InputOption::VALUE_OPTIONAL, 'Parameters as json string. E.g:  -p \'{"dir_to_search_in":".", "number_on_days":"12"}\'', "{}");
     }
@@ -33,25 +34,34 @@ class RunCommand extends CommandCommand
      */
     protected function doExecute(InputInterface $input, OutputInterface $output): int
     {
-        $commandIdentifier = $input->getArgument('identifier');
-        $pattern = $input->getArgument('pattern');
+        $arguments = $input->getArgument('argument');
 
-        if (!$commandIdentifier) {
+        if (count($arguments) == 0) {
             $this->renderListCommand();
             return SymfonyCommand::SUCCESS;
         }
 
-        if (!str_contains($commandIdentifier, ':')) {
-            if (file_exists($commandIdentifier)) {
-                return $this->runSearchFileCommand($commandIdentifier, $pattern, $input->getOption('debug'));
+        $commandName = array_pop($arguments);
+
+        if (count($arguments) >= 1) {
+            $pattern = $arguments;
+        } else {
+            $pattern = [];
+        }
+
+        if (!str_contains($commandName, ':')) {
+            $arguments = implode(' ', $input->getArgument('argument'));
+            if (file_exists($arguments[0])) {
+                return $this->runSearchFileCommand($commandName, $pattern, $input->getOption('debug'));
             } else {
-                return $this->runSearchPatternCommand($commandIdentifier, $input->getOption('debug'));
+                $pattern[] = $commandName;
+                return $this->runSearchPatternCommand($pattern, $input->getOption('debug'));
             }
         }
 
         $this->enrichRepositories();
 
-        $command = $this->getRepositoryCollection()->getCommand($commandIdentifier);
+        $command = $this->getRepositoryCollection()->getCommand($commandName);
 
         return $this->runCommand($command, $this->extractUserParameters($input));
     }
@@ -78,7 +88,7 @@ class RunCommand extends CommandCommand
      * The run command can also be applied to a file. This is a shortcut for the
      * search:file symfony console command.
      */
-    private function runSearchPatternCommand(string $pattern, bool $debug): int
+    private function runSearchPatternCommand(array $pattern, bool $debug): int
     {
         $arguments = [
             'pattern' => $pattern,

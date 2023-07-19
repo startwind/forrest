@@ -17,6 +17,8 @@ class Command implements \JsonSerializable
 
     private string $explanation = "";
 
+    private float $score = -1;
+
     public function setOutputFormat(string $output): void
     {
         $this->outputFormat = $output;
@@ -32,6 +34,22 @@ class Command implements \JsonSerializable
     public function __construct(private string $name, private readonly string $description, private readonly string $prompt, string $explanation = "")
     {
         $this->explanation = $explanation;
+    }
+
+    /**
+     * @return float
+     */
+    public function getScore(): float
+    {
+        return $this->score;
+    }
+
+    /**
+     * @param float $score
+     */
+    public function setScore(float $score): void
+    {
+        $this->score = $score;
     }
 
     /**
