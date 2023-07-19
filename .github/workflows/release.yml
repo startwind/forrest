@@ -40,7 +40,7 @@ jobs:
       - name: Install Composer dependencies
         uses: ramsey/composer-install@v2
         with:
-          composer-options: "--ignore-platform-reqs"
+          composer-options: "--ignore-platform-reqs --no-dev"
 
       - name: Downgrade to php 7.4
         run: |

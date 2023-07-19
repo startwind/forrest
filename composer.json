@@ -23,17 +23,17 @@
     "consolidation/self-update": "2.x-dev",
     "cache/filesystem-adapter": "1.2.0",
     "symfony/process": "6.4.x-dev"
+    "rector/rector": "0.15.x-dev"
   },
   "require-dev": {
-    "phpstan/phpstan": "1.11.x-dev",
-    "rector/rector": "0.15.x-dev",
+    "phpstan/phpstan": "1.11.x-dev"
     "phpunit/phpunit": "^10",
     "friendsofphp/php-cs-fixer": "dev-master",
     "squizlabs/php_codesniffer": "4.0.x-dev"
   },
   "scripts": {
-    "test" : "vendor/bin/phpunit tests",
-    "cs" : "vendor/bin/php-cs-fixer fix --rules=@PSR12 .",
+    "test": "vendor/bin/phpunit tests",
+    "cs": "vendor/bin/php-cs-fixer fix --rules=@PSR12 .",
     "phpstan": "vendor/bin/phpstan analyse",
     "yamllint": "find . -path \\*/vendor -prune -false -o -name \\*.y\\*ml | xargs yamllint -d \"{extends: relaxed, rules: {line-length: {max: 120}}}\"",
     "fix": [
