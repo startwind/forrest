@@ -4,11 +4,12 @@ Forrest is constantly evolving. Sometimes so fast that you might not even get ar
 
 For more information please visit [our website](https://forrest.startwind.io).
 
-## Version 3 - Artificial Intelligence
+
+## Develop 
 
 - **develop**
 
-
+## Version 3 - Artificial Intelligence
 
 - **3.2.0** 
   - Pattern search is now able to process multiple words. [read more](commands/commands_run.md)
