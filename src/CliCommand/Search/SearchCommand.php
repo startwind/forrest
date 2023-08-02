@@ -11,7 +11,7 @@ abstract class SearchCommand extends RunCommand
     /**
      * Choose from a list of commands and execute one.
      */
-    protected function runFromCommands(array $commands, $values = []): int
+    protected function runFromCommands(array $commands, $values = [], bool $addAiOption = false): int|bool
     {
         /** @var \Symfony\Component\Console\Helper\QuestionHelper $questionHelper */
         $questionHelper = $this->getHelper('question');
@@ -23,11 +23,16 @@ abstract class SearchCommand extends RunCommand
             $commands,
             null,
             -1,
-            true
+            true,
+            $addAiOption
         );
 
         if ($command === false) {
             return SymfonyCommand::FAILURE;
+        }
+
+        if ($command === true) {
+            return true;
         }
 
         $this->getOutput()->writeln('');

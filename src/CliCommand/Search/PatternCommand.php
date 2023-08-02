@@ -2,8 +2,10 @@
 
 namespace Startwind\Forrest\CliCommand\Search;
 
+use Startwind\Forrest\CliCommand\Ai\AskCommand;
 use Startwind\Forrest\Output\OutputHelper;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -39,6 +41,10 @@ class PatternCommand extends SearchCommand
 
         $pattern = $input->getArgument('pattern');
 
+        if (count($pattern) == 1 && str_contains($pattern[0], ' ')) {
+            $pattern = explode(' ', $pattern[0]);
+        }
+
         $this->renderInfoBox('This is a list of commands that match the given pattern. Sorted by relevance.');
 
         $commands = $this->getRepositoryCollection()->searchByPattern($pattern);
@@ -69,6 +75,32 @@ class PatternCommand extends SearchCommand
             return Command::FAILURE;
         }
 
-        return $this->runFromCommands($filteredCommands);
+        $result = $this->runFromCommands($filteredCommands, [], true);
+
+        if ($result !== true) {
+            return $result;
+        }
+
+        $this->renderInfoBox('We are asking the Forrest AI...');
+
+        return $this->runAiAskCommand($pattern);
     }
+
+    /**
+     * The run command can also be applied to a file. This is a shortcut for the
+     * search:file symfony console command.
+     */
+    private function runAiAskCommand(array $patterns): int
+    {
+        $arguments = [
+            'question' => $patterns,
+            '--silent' => true
+        ];
+
+        $fileArguments = new ArrayInput($arguments);
+        $fileCommand = $this->getApplication()->find(AskCommand::COMMAND_NAME);
+
+        return $fileCommand->run($fileArguments, $this->getOutput());
+    }
+
 }

@@ -34,7 +34,16 @@ class OutputHelper
     /**
      * @param Command[] $commands
      */
-    public static function renderCommands(OutputInterface $output, InputInterface $input, QuestionHelper $questionHelper, array $commands, ?string $repoIdentifier = null, int $maxLength = -1, $askForCommand = false): bool|Command
+    public static function renderCommands(
+        OutputInterface $output,
+        InputInterface  $input,
+        QuestionHelper  $questionHelper,
+        array           $commands,
+        ?string         $repoIdentifier = null,
+        int             $maxLength = -1,
+        bool            $askForCommand = false,
+        bool            $addAiOption = false
+    ): bool|Command
     {
         $identifierMaxLength = $maxLength;
 
@@ -51,8 +60,8 @@ class OutputHelper
         }
 
         uasort($commands, function (Command $a, Command $b) {
-            if($a->getScore() > -1) {
-                return$b->getScore() <=> $a->getScore()  ;
+            if ($a->getScore() > -1) {
+                return $b->getScore() <=> $a->getScore();
             }
             return $a->getFullyQualifiedIdentifier() <=> $b->getFullyQualifiedIdentifier();
         });
@@ -87,8 +96,18 @@ class OutputHelper
             $output->writeln($numberPrefix . '  <fg=green>' . $commandIdentifier . '</>' . $placeholder . $spaces . $command->getDescription());
         }
 
+        if ($addAiOption) {
+            $commandName = 'forrest:ai';
+            $spaces = str_repeat(' ', $identifierMaxLength - strlen($commandName) + 4);
+            //$output->writeln('');
+            $dashes = str_repeat('-', $identifierMaxLength);
+            $output->writeln('     ' . $dashes);
+            // $output->writeln('');
+            $output->writeln('  0  <fg=green>' . $commandName . '</>' . $spaces . "No matching command found. Please ask the Forrest AI.");
+        }
+
         if ($askForCommand) {
-            return self::askForCommand($output, $input, $questionHelper, $commands);
+            return self::askForCommand($output, $input, $questionHelper, $commands, $addAiOption);
         }
 
         return false;
@@ -97,26 +116,35 @@ class OutputHelper
     /**
      * @param Command[] $commands
      */
-    private static function askForCommand(OutputInterface $output, InputInterface $input, QuestionHelper $questionHelper, array $commands): bool|Command
+    private static function askForCommand(OutputInterface $output, InputInterface $input, QuestionHelper $questionHelper, array $commands, bool $allowZero = false): bool|Command
     {
         $output->writeln('');
 
-        if (count($commands) == 1) {
+        if (count($commands) == 1 && !$allowZero) {
             $commandIdentifier = array_key_first($commands);
             $command = array_pop($commands);
             if (!$questionHelper->ask($input, $output, new ConfirmationQuestion('  Do you want to run "' . $commandIdentifier . '" (y/n)? ', false))) {
                 return false;
             }
         } else {
-            $commandNumber = 0;
-            while ($commandNumber < 1 || $commandNumber > count($commands)) {
-                $commandNumber = (int)$questionHelper->ask($input, $output, new Question('  Which command do you want to run [1-' . count($commands) . ']? '));
+            $commandNumber = -1;
+            if ($allowZero) {
+                $minCommandNumber = 0;
+            } else {
+                $minCommandNumber = 1;
+            }
+
+            while ($commandNumber < $minCommandNumber || $commandNumber > count($commands)) {
+                $commandNumber = (int)$questionHelper->ask($input, $output, new Question('  Which command do you want to run [' . $minCommandNumber . '-' . count($commands) . ']? '));
+            }
+
+            if ($commandNumber === 0) {
+                return true;
             }
 
             $commandIdentifier = array_keys($commands)[$commandNumber - 1];
             $command = $commands[$commandIdentifier];
         }
-
 
         $command->setFullyQualifiedIdentifier($commandIdentifier);
 

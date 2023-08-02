@@ -14,7 +14,9 @@ use Symfony\Component\Console\Question\Question;
 
 class AskCommand extends CommandCommand
 {
-    protected static $defaultName = 'ai:ask';
+    public const COMMAND_NAME = 'ai:ask';
+
+    protected static $defaultName = self::COMMAND_NAME;
     protected static $defaultDescription = 'Suggest an answer to a question.';
 
     protected function configure(): void
@@ -22,6 +24,7 @@ class AskCommand extends CommandCommand
         $this->addArgument('question', InputArgument::IS_ARRAY, 'The question you want to have answered.', []);
         $this->setAliases(['ask']);
         $this->addOption('force', null, InputOption::VALUE_NONE, 'Run the command without asking for permission.');
+        $this->addOption('silent', null, InputOption::VALUE_NONE, 'Run the command without explanation.');
 
         parent::configure();
     }
@@ -30,7 +33,11 @@ class AskCommand extends CommandCommand
     {
         $this->enrichRepositories();
 
-        \Startwind\Forrest\Output\OutputHelper::renderHeader($output);
+        $silent = $input->getOption('silent');
+
+        if (!$silent) {
+            \Startwind\Forrest\Output\OutputHelper::renderHeader($output);
+        }
 
         $aiQuestion = trim(implode(' ', $input->getArgument('question')));
 
@@ -52,14 +59,16 @@ class AskCommand extends CommandCommand
             $aiQuestion = $questionHelper->ask($input, $output, new Question('  Your question: '));
             $output->writeln(['', '']);
         } else {
-            OutputHelper::writeInfoBox($output, [
-                "Question: " . ucfirst($aiQuestion)
-            ]);
+            if (!$silent) {
+                OutputHelper::writeInfoBox($output, [
+                    "Question: " . ucfirst($aiQuestion)
+                ]);
+            }
         }
 
         $answers = $this->getRepositoryCollection()->ask($aiQuestion);
 
-        foreach ($answers as $repositoryName => $repoAnswers) {
+        foreach ($answers as $repoAnswers) {
             foreach ($repoAnswers as $answer) {
                 /** @var Answer $answer */
                 $output->writeln(OutputHelper::indentText($this->formatCliText($answer->getAnswer())));

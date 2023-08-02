@@ -75,6 +75,7 @@ class YamlLoader implements RepositoryLoader
             // @todo this should be moved to a repository factory
 
             if ($repoType == Repository::TYPE_API) {
+                $repoConfig['config']['endpoint'] = str_replace('forrest.startwind.io/api', 'api.forrestcli.com', $repoConfig['config']['endpoint']);
                 if (array_key_exists('password', $repoConfig['config'])) {
                     $newRepo = new EditableApiRepository($repoConfig['config']['endpoint'], $repoConfig['name'], $repoConfig['description'], $this->client);
                     $newRepo->setPassword($repoConfig['config']['password']);
