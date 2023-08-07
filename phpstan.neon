@@ -3,3 +3,5 @@ parameters:
   paths:
     - src
   # phpVersion: 82000 # PHP 7.4
+  bootstrapFiles:
+    - .devops/constants-phpstan.php
