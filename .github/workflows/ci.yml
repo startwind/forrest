@@ -21,7 +21,7 @@ jobs:
       - uses: php-actions/composer@v6
       - uses: php-actions/phpstan@v3
         with:
-          path: src tests bin
+          configuration: phpstan.neon
           level: 5
 
   validate-yaml:

@@ -1,0 +1,5 @@
+parameters:
+  level: 6
+  paths:
+    - src
+  phpVersion: 80399 # PHP 7.4
