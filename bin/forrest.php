@@ -6,6 +6,13 @@ require __DIR__ . '/../vendor/autoload.php';
 use SelfUpdate\SelfUpdateCommand;
 use Symfony\Component\Console\Application;
 
+if (!function_exists('get_debug_type')) {
+    function get_debug_type($value): string
+    {
+        return \Symfony\Polyfill\Php80\Php80::get_debug_type($value);
+    }
+}
+
 const FORREST_VERSION = '##FORREST_VERSION##';
 const FORREST_NAME = 'Forrest';
 
