@@ -11,17 +11,22 @@ class Answer
     private string $question;
     private string $answer;
 
-    public function __construct(string|array $prompt, string $question, string $answer)
+    public function __construct(string|array $prompt, string $question, string $answer, string $name = '')
     {
+        if (!$name) {
+            $name = 'forrest-ai';
+        }
+
         if (is_string($prompt)) {
             $this->command = CommandFactory::fromArray([
-                CommandFactory::CONFIG_FIELD_NAME => 'forrest-ai',
+                CommandFactory::CONFIG_FIELD_NAME => $name,
                 CommandFactory::CONFIG_FIELD_DESCRIPTION => 'Answer to: ' . $question,
                 CommandFactory::CONFIG_FIELD_PROMPT => $prompt
             ]);
         } else {
             $this->command = CommandFactory::fromArray($prompt);
         }
+        $this->command->setFullyQualifiedIdentifier('forrest:' . $name);
 
         $this->question = $question;
         $this->answer = $answer;

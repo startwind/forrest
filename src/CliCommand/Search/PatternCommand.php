@@ -13,7 +13,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class PatternCommand extends SearchCommand
 {
-    const PERFECT_SCORE = 10;
+    private const PERFECT_SCORE = 20;
 
     public const COMMAND_NAME = 'search:pattern';
 
@@ -26,8 +26,9 @@ class PatternCommand extends SearchCommand
 
         $this->addArgument('pattern', InputArgument::IS_ARRAY, 'The pattern you want to search for.');
         $this->addOption('force', null, InputOption::VALUE_NONE, 'Run the command without asking for permission.');
-        $this->addOption('score', 's', InputOption::VALUE_OPTIONAL, 'The minimal search score.', 7);
+        $this->addOption('score', 's', InputOption::VALUE_OPTIONAL, 'The minimal search score.', 15);
 
+        $this->setAliases(['ask']);
         $this->setAliases(['pattern']);
     }
 
@@ -53,6 +54,9 @@ class PatternCommand extends SearchCommand
         $perfectCommands = [];
 
         foreach ($commands as $key => $command) {
+
+            // var_dump($command->getName() . ' - ' . $command->getScore());
+
             if ($command->getScore() > $minScore) {
                 $filteredCommands[$key] = $command;
             }

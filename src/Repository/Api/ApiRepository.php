@@ -227,7 +227,7 @@ class ApiRepository implements Repository, SearchAware, ToolAware, StatusAwareRe
         $answer = $information['answer'];
 
         if (array_key_exists('commandArray', $answer) && count($answer['commandArray']) > 0) {
-            $answers[] = new Answer($answer['commandArray'], $question, $answer['text']);
+            $answers[] = new Answer($answer['commandArray'], $question, $answer['text'], $answer['commandArray']['name']);
         } else {
             $answers[] = new Answer($answer['command'], $question, $answer['text']);
         }

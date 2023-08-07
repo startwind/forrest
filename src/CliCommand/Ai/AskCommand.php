@@ -22,7 +22,6 @@ class AskCommand extends CommandCommand
     protected function configure(): void
     {
         $this->addArgument('question', InputArgument::IS_ARRAY, 'The question you want to have answered.', []);
-        $this->setAliases(['ask']);
         $this->addOption('force', null, InputOption::VALUE_NONE, 'Run the command without asking for permission.');
         $this->addOption('silent', null, InputOption::VALUE_NONE, 'Run the command without explanation.');
 
