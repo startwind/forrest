@@ -4,6 +4,7 @@ namespace Startwind\Forrest\CliCommand\Command;
 
 use Startwind\Forrest\CliCommand\Search\FileCommand;
 use Startwind\Forrest\CliCommand\Search\PatternCommand;
+use Startwind\Forrest\CliCommand\Search\ToolCommand;
 use Symfony\Component\Console\Command\Command as SymfonyCommand;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputArgument;
@@ -51,8 +52,13 @@ class RunCommand extends CommandCommand
 
         if (!str_contains($commandName, ':')) {
             $arguments = implode(' ', $input->getArgument('argument'));
+
+            $query = trim(implode(' ', $pattern) . ' ' . $commandName);
+
             if (file_exists($commandName)) {
                 return $this->runSearchFileCommand($commandName, $pattern, $input->getOption('debug'));
+            } elseif (!str_contains($query, ' ')) {
+                return $this->runSearchToolCommand($query, $input->getOption('debug'));
             } else {
                 $pattern[] = $commandName;
                 return $this->runSearchPatternCommand($pattern, $input->getOption('debug'));
@@ -80,6 +86,23 @@ class RunCommand extends CommandCommand
 
         $fileArguments = new ArrayInput($arguments);
         $fileCommand = $this->getApplication()->find(FileCommand::COMMAND_NAME);
+
+        return $fileCommand->run($fileArguments, $this->getOutput());
+    }
+
+    /**
+     * The run command can also be applied to a file. This is a shortcut for the
+     * search:file symfony console command.
+     */
+    private function runSearchToolCommand(string $tool, bool $debug): int
+    {
+        $arguments = [
+            'tool' => $tool,
+            '--debug' => $debug
+        ];
+
+        $fileArguments = new ArrayInput($arguments);
+        $fileCommand = $this->getApplication()->find(ToolCommand::COMMAND_NAME);
 
         return $fileCommand->run($fileArguments, $this->getOutput());
     }

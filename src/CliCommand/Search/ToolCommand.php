@@ -11,7 +11,9 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class ToolCommand extends SearchCommand
 {
-    protected static $defaultName = 'search:tool';
+    public const COMMAND_NAME = 'search:tool';
+
+    protected static $defaultName = self::COMMAND_NAME;
     protected static $defaultDescription = 'Search for commands that fit the given tool.';
 
     protected function configure(): void
