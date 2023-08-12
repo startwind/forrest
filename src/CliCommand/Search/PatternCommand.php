@@ -26,10 +26,9 @@ class PatternCommand extends SearchCommand
 
         $this->addArgument('pattern', InputArgument::IS_ARRAY, 'The pattern you want to search for.');
         $this->addOption('force', null, InputOption::VALUE_NONE, 'Run the command without asking for permission.');
-        $this->addOption('score', 's', InputOption::VALUE_OPTIONAL, 'The minimal search score.', 15);
+        $this->addOption('score', 's', InputOption::VALUE_OPTIONAL, 'The minimal search score.', 10);
 
-        $this->setAliases(['ask']);
-        $this->setAliases(['pattern']);
+        $this->setAliases(['ask', 'pattern']);
     }
 
     protected function doExecute(InputInterface $input, OutputInterface $output): int
