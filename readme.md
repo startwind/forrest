@@ -2,7 +2,7 @@
 <img src="docs/images/logo-darkmode.png#gh-dark-mode-only" width="300">
 
 
-# Forrest - Unifying the Command Line
+# Forrest - AI supported command line.
 
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/startwind/forrest/badges/quality-score.png?b=main)](https://scrutinizer-ci.com/g/startwind/forrest/?branch=main)
 
