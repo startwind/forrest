@@ -11,9 +11,14 @@ For more information please visit [our website](https://forrest.startwind.io).
 
 ## Version 3 - Artificial Intelligence
 
+- **3.3.0**
+  - Tool search can now be done via the simple run command. [read more](commands/commands_run.md)
+
+
 - **3.2.0** 
   - Pattern search is now able to process multiple words. [read more](commands/commands_run.md)
   - The search has now a score which prevents not really matched results.
+
 
 - **3.1.0** 
   - Big improvement for the `ai:ask` command. We can now change the parameters although the answer comes from the AI. 
