@@ -20,7 +20,9 @@ class RunCommandTest extends TestCase
         $commandTester->execute(['repositoryFileName' => __DIR__ . '/../commands/tests.yml']);
     }
 
-    #[DataProvider('inputProvider')]
+    /**
+     * @dataProvider inputProvider
+     */
     public function testExecute(string $commandIdentifier, bool $isSuccessful, array $expectedOutputs, array $inputs = [])
     {
         $application = new Application();

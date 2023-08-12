@@ -13,7 +13,9 @@ use Startwind\Forrest\Command\Prompt;
 
 final class CommandTest extends TestCase
 {
-    #[DataProvider('promptProvider')]
+    /**
+     * @dataProvider promptProvider
+     */
     public function testGetPrompt(array $values, string $prompt, string $expected): void
     {
         $command = new Command(

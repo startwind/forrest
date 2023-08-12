@@ -25,7 +25,9 @@ final class YamlAdapterTest extends TestCase
         $this->assertEquals('yaml', $this->subject->getType());
     }
 
-    #[DataProvider('yamlConfigProvider')]
+    /**
+     * @dataProvider yamlConfigProvider
+     */
     public function testConfigArray(array $config): void
     {
         $result = YamlAdapter::fromConfigArray($config, new Client());
