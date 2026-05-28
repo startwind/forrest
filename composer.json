@@ -23,7 +23,7 @@
     "consolidation/self-update": "2.x-dev",
     "cache/filesystem-adapter": "1.2.0",
     "symfony/process": "^5.4",
-    "symfony/polyfill": "1.27.*",
+    "symfony/polyfill": "1.38.*",
     "rector/rector": "0.17.*"
   },
   "require-dev": {
